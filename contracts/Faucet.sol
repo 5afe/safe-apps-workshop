@@ -3,12 +3,13 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 
 uint256 constant claimableAmount = 0.02 ether;
 
 /// @title Faucet Contract - A simple faucet contract for the safe apps workshop
 /// @author Daniel Somoza - <daniel.somoza@safe.global>
-contract Faucet is Ownable {
+contract Faucet is Ownable, Pausable {
     event FoundsClaimed(address userAddress);
 
     mapping(address => bool) private claimants;
@@ -23,13 +24,25 @@ contract Faucet is Ownable {
         _;
     }
 
-    function claimFounds() external onlyCallOnce hasFounds {
+    constructor() {
+        _pause();
+    }
+
+    function claimFounds() external whenNotPaused onlyCallOnce hasFounds {
         claimants[msg.sender] = true;
         payable(msg.sender).transfer(claimableAmount);
     }
 
     function withdraw() external onlyOwner {
         payable(owner()).transfer(address(this).balance);
+    }
+
+    function pauseClaims() external onlyOwner {
+        _pause();
+    }
+
+    function unpauseClaims() external onlyOwner {
+        _unpause();
     }
 
     fallback() external payable {}
