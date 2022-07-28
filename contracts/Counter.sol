@@ -8,8 +8,7 @@ contract Counter {
     event CounterChanged(
         string eventType,
         int256 prevCounter,
-        int256 newCounter,
-        address userAddress
+        int256 newCounter
     );
 
     mapping(address => int256) private addressToCounter;
@@ -20,8 +19,7 @@ contract Counter {
         emit CounterChanged(
             "increment",
             prevCounter,
-            addressToCounter[msg.sender],
-            msg.sender
+            addressToCounter[msg.sender]
         );
     }
 
@@ -31,20 +29,14 @@ contract Counter {
         emit CounterChanged(
             "decrement",
             prevCounter,
-            addressToCounter[msg.sender],
-            msg.sender
+            addressToCounter[msg.sender]
         );
     }
 
     function reset() external {
         int256 prevCounter = addressToCounter[msg.sender];
         addressToCounter[msg.sender] = 0;
-        emit CounterChanged(
-            "reset",
-            prevCounter,
-            addressToCounter[msg.sender],
-            msg.sender
-        );
+        emit CounterChanged("reset", prevCounter, addressToCounter[msg.sender]);
     }
 
     function setCounter(int256 _newValue) external {
@@ -53,8 +45,7 @@ contract Counter {
         emit CounterChanged(
             "setCounter",
             prevCounter,
-            addressToCounter[msg.sender],
-            msg.sender
+            addressToCounter[msg.sender]
         );
     }
 
