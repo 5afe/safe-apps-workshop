@@ -10,7 +10,8 @@ node_modules
 .pnp.js
 
 # testing
-/coverage
+coverage
+coverage.json
 
 # production
 /build
@@ -26,7 +27,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# contract artifacts
-**/cache
-**/artifacts
-deployments/
+typechain
+typechain-types
+
+# Hardhat files
+cache
+artifacts
+deployments

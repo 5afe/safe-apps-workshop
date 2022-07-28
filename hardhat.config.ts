@@ -1,14 +1,15 @@
-require("dotenv").config();
-require("hardhat-deploy");
-require("@nomiclabs/hardhat-ethers");
-require("@nomiclabs/hardhat-etherscan");
+import { config } from "dotenv";
+import { HardhatUserConfig } from "hardhat/types";
+import "@nomicfoundation/hardhat-toolbox";
+import "hardhat-deploy";
 
 // tasks
-require("./src/hardhat/tasks/deploy_contracts");
+import "./src/hardhat/tasks/deploy_contracts";
 
+config();
 const { ETHERSCAN_API_KEY, INFURA_KEY, PRIVATE_KEY } = process.env;
 
-const hardhatConfig = {
+const hardhatConfig: HardhatUserConfig = {
   solidity: {
     version: "0.8.0",
     settings: {
@@ -38,7 +39,7 @@ const hardhatConfig = {
 
   paths: {
     sources: "./contracts",
-    tests: "./src/test",
+    tests: "./src/hardhat/test",
     cache: "./src/cache",
     artifacts: "./src/artifacts",
     deploy: "./src/hardhat/deploy",
@@ -48,7 +49,7 @@ const hardhatConfig = {
     deployer: 0,
   },
 
-  defaultNetwork: "rinkeby",
+  defaultNetwork: "hardhat",
 };
 
-module.exports = hardhatConfig;
+export default hardhatConfig;
