@@ -1,6 +1,12 @@
+import Header from "src/components/header/Header";
 
 function App() {
-  return <div>Safe Apps Workshop</div>;
+  return (
+    <div>
+      <Header />
+      Safe Apps Workshop
+    </div>
+  );
 }
 
 export default App;

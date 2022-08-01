@@ -89,39 +89,47 @@ describe("Counter Contract", () => {
 
   describe("events", () => {
     it("fires increment event", async () => {
+      const [userAddress] = await ethers.getSigners();
+
       const CounterContract = await ethers.getContractFactory("Counter");
       const counterContract = await CounterContract.deploy();
 
       await expect(counterContract.increment())
         .to.emit(counterContract, "CounterChanged")
-        .withArgs("increment", 0, 1);
+        .withArgs("increment", 0, 1, userAddress.address);
     });
 
     it("fires decrement event", async () => {
+      const [userAddress] = await ethers.getSigners();
+
       const CounterContract = await ethers.getContractFactory("Counter");
       const counterContract = await CounterContract.deploy();
 
       await expect(counterContract.decrement())
         .to.emit(counterContract, "CounterChanged")
-        .withArgs("decrement", 0, -1);
+        .withArgs("decrement", 0, -1, userAddress.address);
     });
 
     it("fires reset event", async () => {
+      const [userAddress] = await ethers.getSigners();
+
       const CounterContract = await ethers.getContractFactory("Counter");
       const counterContract = await CounterContract.deploy();
 
       await expect(counterContract.reset())
         .to.emit(counterContract, "CounterChanged")
-        .withArgs("reset", 0, 0);
+        .withArgs("reset", 0, 0, userAddress.address);
     });
 
     it("fires setCounter event", async () => {
+      const [userAddress] = await ethers.getSigners();
+
       const CounterContract = await ethers.getContractFactory("Counter");
       const counterContract = await CounterContract.deploy();
 
       await expect(counterContract.setCounter(7))
         .to.emit(counterContract, "CounterChanged")
-        .withArgs("setCounter", 0, 7);
+        .withArgs("setCounter", 0, 7, userAddress.address);
     });
   });
 });

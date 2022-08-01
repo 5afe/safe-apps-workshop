@@ -2,13 +2,14 @@
 
 pragma solidity >=0.7.0 <0.9.0;
 
-/// @title Counter Contract - A simple counter contract for the safe apps workshop
+/// @title Counter Contract - A simple counter contract for the Safe Apps Workshop
 /// @author Daniel Somoza - <daniel.somoza@safe.global>
 contract Counter {
     event CounterChanged(
         string eventType,
         int256 prevCounter,
-        int256 newCounter
+        int256 newCounter,
+        address userAddress
     );
 
     mapping(address => int256) private addressToCounter;
@@ -19,7 +20,8 @@ contract Counter {
         emit CounterChanged(
             "increment",
             prevCounter,
-            addressToCounter[msg.sender]
+            addressToCounter[msg.sender],
+            msg.sender
         );
     }
 
@@ -29,14 +31,20 @@ contract Counter {
         emit CounterChanged(
             "decrement",
             prevCounter,
-            addressToCounter[msg.sender]
+            addressToCounter[msg.sender],
+            msg.sender
         );
     }
 
     function reset() external {
         int256 prevCounter = addressToCounter[msg.sender];
         addressToCounter[msg.sender] = 0;
-        emit CounterChanged("reset", prevCounter, addressToCounter[msg.sender]);
+        emit CounterChanged(
+            "reset",
+            prevCounter,
+            addressToCounter[msg.sender],
+            msg.sender
+        );
     }
 
     function setCounter(int256 _newValue) external {
@@ -45,7 +53,8 @@ contract Counter {
         emit CounterChanged(
             "setCounter",
             prevCounter,
-            addressToCounter[msg.sender]
+            addressToCounter[msg.sender],
+            msg.sender
         );
     }
 

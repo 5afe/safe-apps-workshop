@@ -7,7 +7,7 @@ import "hardhat-deploy";
 import "./src/hardhat/tasks/deploy_contracts";
 
 config();
-const { ETHERSCAN_API_KEY, INFURA_KEY, PRIVATE_KEY } = process.env;
+const { ETHERSCAN_API_KEY, REACT_APP_INFURA_TOKEN, PRIVATE_KEY } = process.env;
 
 const hardhatConfig: HardhatUserConfig = {
   solidity: {
@@ -25,7 +25,7 @@ const hardhatConfig: HardhatUserConfig = {
     localhost: {},
     rinkeby: {
       accounts: [`0x${PRIVATE_KEY}`],
-      url: `https://rinkeby.infura.io/v3/${INFURA_KEY}`,
+      url: `https://rinkeby.infura.io/v3/${REACT_APP_INFURA_TOKEN}`,
     },
     xdai: {
       accounts: [`0x${PRIVATE_KEY}`],

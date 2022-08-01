@@ -46,17 +46,18 @@ contract Faucet is Ownable, Pausable {
         _pause();
     }
 
-    function claim()
+    function claimFunds(address userAddress)
         external
+        onlyOwner
         whenNotPaused
         hasFunds
         claimLimitNotReached
         isReadyToClaim
     {
-        claims[msg.sender].amount += claimableAmount;
-        claims[msg.sender].lastClaimTime = uint64(block.timestamp);
-        payable(msg.sender).transfer(claimableAmount);
-        emit FundsClaimed(msg.sender);
+        claims[userAddress].amount += claimableAmount;
+        claims[userAddress].lastClaimTime = uint64(block.timestamp);
+        payable(userAddress).transfer(claimableAmount);
+        emit FundsClaimed(userAddress);
     }
 
     function withdraw() external onlyOwner {
