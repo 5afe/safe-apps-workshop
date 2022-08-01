@@ -61,6 +61,7 @@ const ThemeProvider = ({ children }: { children: JSX.Element }) => {
     isDarkTheme,
     isLightTheme,
   };
+
   return (
     <themeContext.Provider value={state}>
       <MUIThemeProvider theme={theme}>{children}</MUIThemeProvider>

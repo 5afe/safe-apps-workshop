@@ -1,10 +1,13 @@
-import { ThemeProvider } from "src/store/themeContext";
 import { WalletProvider } from "src/store/walletContext";
+import { ThemeProvider } from "src/store/themeContext";
+import { CounterProvider } from "src/store/counterContext";
 
 const Providers = ({ children }: { children: JSX.Element }) => {
   return (
     <WalletProvider>
-      <ThemeProvider>{children}</ThemeProvider>
+      <ThemeProvider>
+        <CounterProvider>{children}</CounterProvider>
+      </ThemeProvider>
     </WalletProvider>
   );
 };

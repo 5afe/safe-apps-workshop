@@ -32,6 +32,7 @@ const ConnectedWallet = () => {
   const hasFounds = !!amount && nativeTokenSymbol;
 
   if (!userAddress) {
+    // TODO: Create Loader component
     return <div>Loading...</div>;
   }
 
@@ -58,13 +59,13 @@ const ConnectedWallet = () => {
       </Container>
 
       {/* native founds section */}
-      <Container>
-        {hasFounds && (
+      {hasFounds && (
+        <Container>
           <Typography variant="body2">
             <AmountLabel amount={amount} tokenSymbol={nativeTokenSymbol} />
           </Typography>
-        )}
-      </Container>
+        </Container>
+      )}
     </>
   );
 };

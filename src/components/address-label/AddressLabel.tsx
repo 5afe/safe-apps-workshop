@@ -42,7 +42,13 @@ const AddressLabel = ({
   const chain = chains.find((chain) => chain.id === chainId);
   const blockExplorerLink = `${chain?.blockExplorerUrl}/address/${address}`;
   return (
-    <Stack direction="row" alignItems="center" spacing={0.5} component="span">
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="center"
+      spacing={0.5}
+      component="span"
+    >
       <Tooltip title={address}>
         <span>{addressLabel}</span>
       </Tooltip>

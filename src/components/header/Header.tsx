@@ -1,11 +1,9 @@
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from "@mui/material";
+import AppBar from "@mui/material/AppBar";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import WalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import DarkThemeIcon from "@mui/icons-material/Brightness4";
