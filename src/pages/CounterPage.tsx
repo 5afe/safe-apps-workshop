@@ -7,17 +7,40 @@ import { styled } from "@mui/material/styles";
 import CounterLabel from "src/components/counter-label/CounterLabel";
 import { useCounter } from "src/store/counterContext";
 import AddressLabel from "src/components/address-label/AddressLabel";
+import TransactionTable from "src/components/transaction-table/TransactionTable";
 
 const CounterPage = () => {
   const {
-    counter,
     counterContractAddress,
+
+    counter,
     isCounterLoading,
+
+    counterEvents,
+    isEventsLoading,
 
     incrementCounter,
     resetCounter,
     decrementCounter,
   } = useCounter();
+
+  const columns: string[] = [
+    "status",
+    "method",
+    "user",
+    "value",
+    "transaction",
+  ];
+
+  const rows = counterEvents.map((event) => ({
+    id: event.transactionHash,
+    status: "OK",
+    method: event.eventType,
+    user: <AddressLabel address={event.userAddress} />,
+    value: event.prevCounter + " -> " + event.newCounter,
+    // TODO: ADD TRANSACTION LABEL
+    transaction: <AddressLabel address={event.transactionHash} />,
+  }));
 
   return (
     <Wrapper>
@@ -26,7 +49,7 @@ const CounterPage = () => {
       </Typography>
 
       {/* Counter Section */}
-      <CounterContainer>
+      <CounterDisplayContainer>
         {/* Counter contract address */}
         <Typography component="h3" variant="h5" gutterBottom>
           <AddressLabel address={counterContractAddress} />
@@ -49,9 +72,16 @@ const CounterPage = () => {
             <Button onClick={decrementCounter}>Decrement</Button>
           </Tooltip>
         </CounterActionsContainer>
-      </CounterContainer>
+      </CounterDisplayContainer>
 
       {/* Transactions Section */}
+      <CounteTableContainer>
+        <TransactionTable
+          rows={rows}
+          columns={columns}
+          ariaLabel="counter contract event table"
+        />
+      </CounteTableContainer>
     </Wrapper>
   );
 };
@@ -63,11 +93,17 @@ const Wrapper = styled("div")`
   margin-top: 64px;
 `;
 
-const CounterContainer = styled(Paper)`
+const CounterDisplayContainer = styled(Paper)`
   max-width: 800px;
   margin: 0 auto;
   margin-top: 24px;
   padding: 16px;
+`;
+
+const CounteTableContainer = styled(Paper)`
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 24px;
 `;
 
 const CounterActionsContainer = styled("div")`

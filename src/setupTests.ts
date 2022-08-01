@@ -3,4 +3,25 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom";
-import "@nomicfoundation/hardhat-chai-matchers";
+
+jest.mock("@web3-onboard/core", () => {
+  return () => ({
+    state: {
+      select: () => {
+        console.log("TODO: mock onboard");
+      },
+    },
+  });
+});
+
+jest.mock("@web3-onboard/injected-wallets", () => {
+  return () => {
+    console.log("TODO: mock  injected-wallets");
+  };
+});
+
+jest.mock("@web3-onboard/walletconnect", () => {
+  return () => {
+    console.log("TODO: mock walletconnect");
+  };
+});

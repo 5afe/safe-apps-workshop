@@ -28,9 +28,9 @@
     "typescript": "^4.5.0"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
+    "start": "hardhat compile && craco start",
+    "build": "hardhat compile && craco build",
+    "test": "hardhat compile && yarn contract:test && craco test",
     "contract:deploy": "hardhat deploy-contracts --network",
     "contract:test": "hardhat test"
   },

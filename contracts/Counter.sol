@@ -9,7 +9,7 @@ contract Counter {
         string eventType,
         int256 prevCounter,
         int256 newCounter,
-        address userAddress
+        address indexed userAddress
     );
 
     mapping(address => int256) private addressToCounter;
