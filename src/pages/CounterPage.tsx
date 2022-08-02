@@ -56,7 +56,10 @@ const CounterPage = () => {
           />
         ),
         transaction: (
-          <TransactionLabel transactionHash={event.transactionHash} />
+          <TransactionLabel
+            transactionHash={event.transactionHash}
+            showBlockExplorerLink
+          />
         ),
       })),
     [counterEvents]
@@ -72,7 +75,11 @@ const CounterPage = () => {
 
         {/* Counter contract address */}
         <Typography component="h3" variant="h5" gutterBottom>
-          <AddressLabel address={counterContractAddress} />
+          <AddressLabel
+            address={counterContractAddress}
+            showCopyIntoClipboardButton
+            showBlockExplorerLink
+          />
         </Typography>
 
         <Loader

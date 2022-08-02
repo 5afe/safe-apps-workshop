@@ -1,34 +1,33 @@
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import IosShareIcon from "@mui/icons-material/IosShare";
+import LaunchIcon from "@mui/icons-material/Launch";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { styled } from "@mui/material/styles";
-import chains from "src/chains/chains";
+
 import useMemoizedAddressLabel from "src/hooks/useMemoizedAddressLabel";
+import { useWallet } from "src/store/walletContext";
 
 type AddressLabelProps = {
   address: string;
-  showCopyIntoClipboardButton?: boolean;
   showBlockExplorerLink?: boolean;
   ariaLabel?: string;
   iconSize?: "small" | "medium" | "large" | undefined;
-  chainId?: string;
+  showCopyIntoClipboardButton?: boolean;
 };
 
 // TODO: Support chain short name
 
 const AddressLabel = ({
   address,
-  showCopyIntoClipboardButton,
   ariaLabel,
   iconSize,
   showBlockExplorerLink,
-  chainId,
+  showCopyIntoClipboardButton,
 }: AddressLabelProps) => {
+  const { chain } = useWallet();
   const addressLabel = useMemoizedAddressLabel(address);
 
-  const chain = chains.find((chain) => chain.id === chainId);
   const blockExplorerLink = `${chain?.blockExplorerUrl}/address/${address}`;
 
   return (
@@ -67,7 +66,7 @@ const AddressLabel = ({
             rel="noopener"
             size={iconSize || "small"}
           >
-            <IosShareIcon fontSize="inherit" />
+            <LaunchIcon fontSize="inherit" />
           </IconButton>
         </Tooltip>
       )}

@@ -49,7 +49,7 @@ const ConnectedWallet = () => {
         >
           <img src={walletLogo} alt="connected wallet logo" height={24} />
           <Typography variant="body2">
-            {userAddress && <AddressLabel address={userAddress} />}
+            {userAddress && <AddressLabel address={userAddress} showBlockExplorerLink />}
           </Typography>
         </Stack>
       </Container>

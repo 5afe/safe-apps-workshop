@@ -1,12 +1,12 @@
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import IosShareIcon from "@mui/icons-material/IosShare";
+import LaunchIcon from "@mui/icons-material/Launch";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { styled } from "@mui/material/styles";
 
-import chains from "src/chains/chains";
 import useMemoizedTransactionLabel from "src/hooks/useMemoizedTransactionLabel";
+import { useWallet } from "src/store/walletContext";
 
 type TransactionLabelProps = {
   transactionHash: string;
@@ -19,16 +19,16 @@ type TransactionLabelProps = {
 
 const TransactionLabel = ({
   transactionHash,
-  showCopyIntoClipboardButton,
   ariaLabel,
   iconSize,
   showBlockExplorerLink,
-  chainId,
+  showCopyIntoClipboardButton,
 }: TransactionLabelProps) => {
+  const { chain } = useWallet();
+
   const transactionHashLabel = useMemoizedTransactionLabel(transactionHash);
 
-  const chain = chains.find((chain) => chain.id === chainId);
-  const blockExplorerLink = `${chain?.blockExplorerUrl}/transaction/${transactionHash}`;
+  const blockExplorerLink = `${chain?.blockExplorerUrl}/tx/${transactionHash}`;
 
   return (
     <Stack
@@ -66,7 +66,7 @@ const TransactionLabel = ({
             rel="noopener"
             size={iconSize || "small"}
           >
-            <IosShareIcon fontSize="inherit" />
+            <LaunchIcon fontSize="inherit" />
           </IconButton>
         </Tooltip>
       )}
