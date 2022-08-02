@@ -35,7 +35,6 @@ const TransactionLabel = ({
       direction="row"
       alignItems="center"
       justifyContent="center"
-      spacing={0.5}
       component="span"
     >
       <Tooltip title={transactionHash}>

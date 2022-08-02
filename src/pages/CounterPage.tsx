@@ -1,7 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 
@@ -15,8 +17,19 @@ import TransactionLabel from "src/components/transaction-label/TransactionLabel"
 import useMultiOnClickPrevention from "src/hooks/useMultiOnClicksPrevention";
 import CounterEventLabel from "src/components/counter-event-label/CounterEventLabel";
 import StatusLabel from "src/components/status-label/StatusLabel";
+import { useWallet } from "src/store/walletContext";
+import { HOME_PATHNAME } from "src/routes/routes";
 
 const CounterPage = () => {
+  const { wallet } = useWallet();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!wallet) {
+      navigate(HOME_PATHNAME);
+    }
+  }, [wallet, navigate]);
+
   const {
     counterContractAddress,
 
@@ -88,7 +101,14 @@ const CounterPage = () => {
           minHeight={150}
         >
           <CounterLabel counter={counter} />
-          <CounterActionsContainer>
+
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            spacing={1}
+            component="span"
+          >
             {/* increment Button */}
             <Tooltip title={"increment your counter"}>
               <Button
@@ -118,7 +138,7 @@ const CounterPage = () => {
                 Decrement
               </Button>
             </Tooltip>
-          </CounterActionsContainer>
+          </Stack>
         </Loader>
       </CounterDisplayContainer>
 
@@ -158,8 +178,4 @@ const CounteTableContainer = styled(Paper)`
   max-width: 800px;
   margin: 0 auto;
   margin-top: 24px;
-`;
-
-const CounterActionsContainer = styled("div")`
-  padding: 12px;
 `;

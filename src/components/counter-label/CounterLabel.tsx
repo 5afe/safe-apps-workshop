@@ -23,8 +23,8 @@ const Container = styled("div")(
     
     display: inline-block;
     padding: 8px 16px;
-    margin: 16px;
-    border-radius: 4px;
+    margin: 24px;
+    border-radius: 8px;
     border: 1px solid;
     border-color: ${theme.palette.divider};
   
