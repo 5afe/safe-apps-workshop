@@ -4,11 +4,12 @@ import IconButton from "@mui/material/IconButton";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { styled } from "@mui/material/styles";
-import chains from "src/chains/chains";
-import useMemoizedAddressLabel from "src/hooks/useMemoizedAddressLabel";
 
-type AddressLabelProps = {
-  address: string;
+import chains from "src/chains/chains";
+import useMemoizedTransactionLabel from "src/hooks/useMemoizedTransactionLabel";
+
+type TransactionLabelProps = {
+  transactionHash: string;
   showCopyIntoClipboardButton?: boolean;
   showBlockExplorerLink?: boolean;
   ariaLabel?: string;
@@ -16,20 +17,18 @@ type AddressLabelProps = {
   chainId?: string;
 };
 
-// TODO: Support chain short name
-
-const AddressLabel = ({
-  address,
+const TransactionLabel = ({
+  transactionHash,
   showCopyIntoClipboardButton,
   ariaLabel,
   iconSize,
   showBlockExplorerLink,
   chainId,
-}: AddressLabelProps) => {
-  const addressLabel = useMemoizedAddressLabel(address);
+}: TransactionLabelProps) => {
+  const transactionHashLabel = useMemoizedTransactionLabel(transactionHash);
 
   const chain = chains.find((chain) => chain.id === chainId);
-  const blockExplorerLink = `${chain?.blockExplorerUrl}/address/${address}`;
+  const blockExplorerLink = `${chain?.blockExplorerUrl}/transaction/${transactionHash}`;
 
   return (
     <Stack
@@ -39,8 +38,8 @@ const AddressLabel = ({
       spacing={0.5}
       component="span"
     >
-      <Tooltip title={address}>
-        <span>{addressLabel}</span>
+      <Tooltip title={transactionHash}>
+        <span>{transactionHashLabel}</span>
       </Tooltip>
 
       {/* Button to copy into clipboard */}
@@ -48,7 +47,7 @@ const AddressLabel = ({
         <Tooltip title={"Copy address into clipboard"}>
           <StyledIconButton
             aria-label={`Copy ${ariaLabel} to clipboard`}
-            onClick={() => navigator?.clipboard?.writeText?.(address)}
+            onClick={() => navigator?.clipboard?.writeText?.(transactionHash)}
             size={iconSize || "small"}
           >
             <FileCopyOutlinedIcon fontSize="inherit" />
@@ -58,7 +57,7 @@ const AddressLabel = ({
 
       {/* Button to etherscan */}
       {showBlockExplorerLink && blockExplorerLink && (
-        <Tooltip title={"view details on block Explorer"}>
+        <Tooltip title={"view transaction details on block Explorer"}>
           <IconButton
             aria-label={`Show ${ariaLabel} details on block Explorer`}
             component="a"
@@ -75,7 +74,7 @@ const AddressLabel = ({
   );
 };
 
-export default AddressLabel;
+export default TransactionLabel;
 
 const StyledIconButton = styled(IconButton)`
   margin-left: 0px;

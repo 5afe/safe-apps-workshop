@@ -1,5 +1,6 @@
-import { useMemo } from "react";
 import Tooltip from "@mui/material/Tooltip";
+
+import useMemoizedAmountLabel from "src/hooks/useMemoizedAmountLabel";
 
 type AmountLabelType = {
   amount: string;
@@ -7,20 +8,11 @@ type AmountLabelType = {
 };
 
 function AmountLabel({ amount, tokenSymbol }: AmountLabelType) {
-  const amountLabel = useMemo(() => {
-    const [integerPart, decimalPart] = amount.split(".");
-
-    const hasDecimal = !!decimalPart;
-    const decimalLabel = hasDecimal ? `.${decimalPart.slice(0, 4)}` : "";
-
-    return `${integerPart}${decimalLabel}`;
-  }, [amount]);
+  const amountLabel = useMemoizedAmountLabel(amount, tokenSymbol);
 
   return (
     <Tooltip title={`${amount} ${tokenSymbol}`}>
-      <span>
-        {amountLabel} {tokenSymbol}
-      </span>
+      <span>{amountLabel}</span>
     </Tooltip>
   );
 }

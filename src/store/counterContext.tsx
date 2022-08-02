@@ -15,22 +15,23 @@ type counterContextValue = {
   counterContractAddress: string;
   counter: string;
   isCounterLoading: boolean;
-  counterEvents: CounterEvents[];
+  counterEvents: CounterEvent[];
   isEventsLoading: boolean;
-  incrementCounter: () => void;
-  resetCounter: () => void;
-  decrementCounter: () => void;
+  incrementCounter: () => Promise<any>;
+  resetCounter: () => Promise<any>;
+  decrementCounter: () => Promise<any>;
 };
 
-// TODO: refine this
-type CounterEvents = {
+export type CounterEventsStatus = "completed" | "pending";
+
+type CounterEvent = {
   transactionHash: string;
   event: string;
+  status: CounterEventsStatus;
   eventType: string;
   prevCounter: string;
   newCounter: string;
   userAddress: string;
-  blockNumber: number;
 };
 
 const initialState = {
@@ -39,9 +40,9 @@ const initialState = {
   isCounterLoading: true,
   counterEvents: [],
   isEventsLoading: true,
-  incrementCounter: () => {},
-  resetCounter: () => {},
-  decrementCounter: () => {},
+  incrementCounter: () => Promise.resolve(),
+  resetCounter: () => Promise.resolve(),
+  decrementCounter: () => Promise.resolve(),
 };
 
 const counterContext = createContext<counterContextValue>(initialState);
@@ -62,7 +63,7 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
   const [counter, setCounter] = useState<string>("0");
   const [isCounterLoading, setIsCounterLoading] = useState<boolean>(true);
 
-  const [counterEvents, setcounterEvents] = useState<CounterEvents[]>([]);
+  const [counterEvents, setcounterEvents] = useState<CounterEvent[]>([]);
   const [isEventsLoading, setIsEventsLoading] = useState<boolean>(true);
 
   const { userAddress, provider } = useWallet();
@@ -104,8 +105,6 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
     // see docs: https://docs.ethers.io/v5/api/contract/example/#erc20-meta-events
 
     if (counterContract && userAddress) {
-      setIsEventsLoading(true);
-
       // CounterChanged filterd by the current user
       const filteredCounterEvents = counterContract.filters.CounterChanged(
         null, // eventType
@@ -121,17 +120,15 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
       );
 
       setcounterEvents(
-        counterEvents
-          .reverse()
-          .map(({ transactionHash, event, args, blockNumber }) => ({
-            transactionHash,
-            event: event || "unknown event",
-            blockNumber,
-            eventType: args?.eventType,
-            prevCounter: args?.prevCounter.toString(),
-            newCounter: args?.newCounter.toString(),
-            userAddress: args?.userAddress,
-          }))
+        counterEvents.reverse().map(({ transactionHash, event, args }) => ({
+          transactionHash,
+          event: event || "unknown event",
+          status: "completed",
+          eventType: args?.eventType,
+          prevCounter: args?.prevCounter.toString(),
+          newCounter: args?.newCounter.toString(),
+          userAddress: args?.userAddress,
+        }))
       );
 
       setIsEventsLoading(false);
@@ -186,16 +183,61 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
   }, [counterContract]);
 
   const incrementCounter = useCallback(async () => {
-    return counterContract?.increment();
-  }, [counterContract]);
+    const transaction = await counterContract?.increment();
+
+    // we add the new pending transaction to the event table as "pending" status
+    setcounterEvents((events) => {
+      const newEvent: CounterEvent = {
+        transactionHash: transaction.hash,
+        event: "CounterChange",
+        status: "pending",
+        eventType: "increment",
+        prevCounter: counter,
+        newCounter: "?",
+        userAddress: transaction.from,
+      };
+
+      return [newEvent, ...events];
+    });
+  }, [counterContract, counter]);
 
   const resetCounter = useCallback(async () => {
-    return counterContract?.reset();
-  }, [counterContract]);
+    const transaction = await counterContract?.reset();
+
+    // we add the new pending transaction to the event table as "pending" status
+    setcounterEvents((events) => {
+      const newEvent: CounterEvent = {
+        transactionHash: transaction.hash,
+        event: "CounterChange",
+        status: "pending",
+        eventType: "reset",
+        prevCounter: counter,
+        newCounter: "0",
+        userAddress: transaction.from,
+      };
+
+      return [newEvent, ...events];
+    });
+  }, [counterContract, counter]);
 
   const decrementCounter = useCallback(async () => {
-    return counterContract?.decrement();
-  }, [counterContract]);
+    const transaction = await counterContract?.decrement();
+
+    // we add the new pending transaction to the event table as "pending" status
+    setcounterEvents((events) => {
+      const newEvent: CounterEvent = {
+        transactionHash: transaction.hash,
+        event: "CounterChange",
+        status: "pending",
+        eventType: "decrement",
+        prevCounter: counter,
+        newCounter: "?",
+        userAddress: transaction.from,
+      };
+
+      return [newEvent, ...events];
+    });
+  }, [counterContract, counter]);
 
   const state = {
     counterContractAddress,

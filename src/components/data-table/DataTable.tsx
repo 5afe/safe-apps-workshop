@@ -6,24 +6,26 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-// TODO: Add generics
-type TransactionTableProps = {
-  rows: any[];
-  columns: any[];
+interface RowType {
+  id: string;
+  [key: string]: React.ReactNode;
+}
+
+type DataTableProps = {
+  rows: RowType[];
+  columns: string[];
   ariaLabel: string;
 };
 
-const TransactionTable = ({
-  rows,
-  columns,
-  ariaLabel,
-}: TransactionTableProps) => {
+const DataTable = ({ rows, columns, ariaLabel }: DataTableProps) => {
   // TODO: ADD PAGINATION
-  // TODO: Add no rows state
+
+  const hasRows = rows.length > 0;
 
   return (
     <TableContainer component={Paper}>
       <Table aria-label={ariaLabel}>
+        <caption>{ariaLabel}</caption>
         <TableHead>
           <TableRow>
             {columns.map((column) => (
@@ -34,6 +36,13 @@ const TransactionTable = ({
           </TableRow>
         </TableHead>
         <TableBody>
+          {!hasRows && (
+            <TableRow>
+              <TableCell align="center" colSpan={columns.length}>
+                No data to dispay
+              </TableCell>
+            </TableRow>
+          )}
           {rows.map((row) => (
             <TableRow key={row.id}>
               {columns.map((column) => (
@@ -49,4 +58,4 @@ const TransactionTable = ({
   );
 };
 
-export default TransactionTable;
+export default DataTable;

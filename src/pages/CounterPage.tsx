@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -8,9 +8,13 @@ import { styled } from "@mui/material/styles";
 import Loader from "src/components/loader/Loader";
 import CounterLabel from "src/components/counter-label/CounterLabel";
 import AddressLabel from "src/components/address-label/AddressLabel";
-import TransactionTable from "src/components/transaction-table/TransactionTable";
+import DataTable from "src/components/data-table/DataTable";
 import CounterChangedLabel from "src/components/counter-changed-label/CounterChangedLabel";
 import { useCounter } from "src/store/counterContext";
+import TransactionLabel from "src/components/transaction-label/TransactionLabel";
+import useMultiOnClickPrevention from "src/hooks/useMultiOnClicksPrevention";
+import CounterEventLabel from "src/components/counter-event-label/CounterEventLabel";
+import StatusLabel from "src/components/status-label/StatusLabel";
 
 const CounterPage = () => {
   const {
@@ -27,9 +31,8 @@ const CounterPage = () => {
     decrementCounter,
   } = useCounter();
 
-  // TODO: create useMultipleClicksPrevention()
-  // to prevent multiple clicks on the same button
-  const [disableActions, setDisableActions] = useState(false);
+  // to prevent trigger multiple clicks
+  const { disabled, preventMultiOnClick } = useMultiOnClickPrevention();
 
   const columns: string[] = [
     "status",
@@ -43,10 +46,8 @@ const CounterPage = () => {
     () =>
       counterEvents.map((event) => ({
         id: event.transactionHash,
-        // TODO: ADD STATUS LABEL
-        status: "OK",
-        // TODO: ADD Event LABEL
-        method: event.eventType,
+        status: <StatusLabel status={event.status} />,
+        method: <CounterEventLabel eventType={event.eventType} />,
         user: <AddressLabel address={event.userAddress} />,
         value: (
           <CounterChangedLabel
@@ -54,8 +55,9 @@ const CounterPage = () => {
             newCounter={event.newCounter}
           />
         ),
-        // TODO: ADD TRANSACTION LABEL
-        transaction: <AddressLabel address={event.transactionHash} />,
+        transaction: (
+          <TransactionLabel transactionHash={event.transactionHash} />
+        ),
       })),
     [counterEvents]
   );
@@ -83,15 +85,8 @@ const CounterPage = () => {
             {/* increment Button */}
             <Tooltip title={"increment your counter"}>
               <Button
-                disabled={disableActions}
-                onClick={async () => {
-                  setDisableActions(true);
-                  try {
-                    await incrementCounter();
-                  } finally {
-                    setDisableActions(false);
-                  }
-                }}
+                disabled={disabled}
+                onClick={preventMultiOnClick(incrementCounter)}
               >
                 Increment
               </Button>
@@ -100,15 +95,8 @@ const CounterPage = () => {
             {/* reset Button */}
             <Tooltip title={"reset your counter"}>
               <Button
-                disabled={disableActions}
-                onClick={async () => {
-                  setDisableActions(true);
-                  try {
-                    await resetCounter();
-                  } finally {
-                    setDisableActions(false);
-                  }
-                }}
+                disabled={disabled}
+                onClick={preventMultiOnClick(resetCounter)}
               >
                 Reset
               </Button>
@@ -117,15 +105,8 @@ const CounterPage = () => {
             {/* decrement Button */}
             <Tooltip title={"decrement your counter"}>
               <Button
-                disabled={disableActions}
-                onClick={async () => {
-                  setDisableActions(true);
-                  try {
-                    await decrementCounter();
-                  } finally {
-                    setDisableActions(false);
-                  }
-                }}
+                disabled={disabled}
+                onClick={preventMultiOnClick(decrementCounter)}
               >
                 Decrement
               </Button>
@@ -141,7 +122,7 @@ const CounterPage = () => {
           loadingText={"Loading events..."}
           minHeight={200}
         >
-          <TransactionTable
+          <DataTable
             rows={rows}
             columns={columns}
             ariaLabel="counter contract event table"
@@ -156,7 +137,7 @@ export default CounterPage;
 
 const Wrapper = styled("div")`
   text-align: center;
-  margin-top: 64px;
+  margin: 64px 0;
 `;
 
 const CounterDisplayContainer = styled(Paper)`

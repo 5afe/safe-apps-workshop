@@ -26,17 +26,17 @@ contract Faucet is Ownable, Pausable {
         _;
     }
 
-    modifier claimLimitNotReached() {
+    modifier claimLimitNotReached(address userAddress) {
         require(
-            claims[msg.sender].amount < claimableAmountLimit,
+            claims[userAddress].amount < claimableAmountLimit,
             "Claim limit reached"
         );
         _;
     }
 
-    modifier isReadyToClaim() {
+    modifier isReadyToClaim(address userAddress) {
         require(
-            claims[msg.sender].lastClaimTime + claimCooldown < block.timestamp,
+            claims[userAddress].lastClaimTime + claimCooldown < block.timestamp,
             "Claim not ready"
         );
         _;
@@ -51,8 +51,8 @@ contract Faucet is Ownable, Pausable {
         onlyOwner
         whenNotPaused
         hasFunds
-        claimLimitNotReached
-        isReadyToClaim
+        claimLimitNotReached(userAddress)
+        isReadyToClaim(userAddress)
     {
         claims[userAddress].amount += claimableAmount;
         claims[userAddress].lastClaimTime = uint64(block.timestamp);
