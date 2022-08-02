@@ -24,7 +24,7 @@ module.exports = {
   },
   jest: {
     configure: {
-      modulePathIgnorePatterns: ["src/hardhat/test"],
+      modulePathIgnorePatterns: ["src/hardhat/*"],
     },
   },
 };

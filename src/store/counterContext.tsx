@@ -99,11 +99,13 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
     getCounter();
   }, [getCounter]);
 
-  // read all the user CounterChanged events to display the tx list
+  // get all the user CounterChanged events to display the transactions table
   const getCounterEvents = useCallback(async () => {
+    // see docs: https://docs.ethers.io/v5/api/contract/example/#erc20-meta-events
+
     if (counterContract && userAddress) {
       setIsEventsLoading(true);
-      // see docs: https://docs.ethers.io/v5/api/contract/example/#erc20-meta-events
+
       // CounterChanged filterd by the current user
       const filteredCounterEvents = counterContract.filters.CounterChanged(
         null, // eventType
@@ -119,16 +121,19 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
       );
 
       setcounterEvents(
-        counterEvents.reverse().map(({ transactionHash, event, args, blockNumber }) => ({
-          transactionHash,
-          event: event || "unknown event",
-          blockNumber,
-          eventType: args?.eventType,
-          prevCounter: args?.prevCounter.toString(),
-          newCounter: args?.newCounter.toString(),
-          userAddress: args?.userAddress,
-        }))
+        counterEvents
+          .reverse()
+          .map(({ transactionHash, event, args, blockNumber }) => ({
+            transactionHash,
+            event: event || "unknown event",
+            blockNumber,
+            eventType: args?.eventType,
+            prevCounter: args?.prevCounter.toString(),
+            newCounter: args?.newCounter.toString(),
+            userAddress: args?.userAddress,
+          }))
       );
+
       setIsEventsLoading(false);
     }
   }, [counterContract, userAddress]);
@@ -137,7 +142,7 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
     getCounterEvents();
   }, [getCounterEvents]);
 
-  // Subscribe & Unsubscribe to the user CounterChange events
+  // Subscribe to the new user CounterChange events
   useEffect(() => {
     if (counterContract && userAddress) {
       // see docs: https://docs.ethers.io/v5/api/contract/example/#erc20-meta-events
@@ -165,11 +170,6 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
         }
       );
     }
-
-    return () => {
-      // Unsubscribe all listeners for all events
-      counterContract?.removeAllListeners();
-    };
   }, [
     counterContract,
     userAddress,
@@ -178,16 +178,23 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
     getCounterEvents,
   ]);
 
-  const incrementCounter = useCallback(() => {
-    counterContract?.increment();
+  // remove all listeners if the contract changes
+  useEffect(() => {
+    return () => {
+      counterContract?.removeAllListeners();
+    };
   }, [counterContract]);
 
-  const resetCounter = useCallback(() => {
-    counterContract?.reset();
+  const incrementCounter = useCallback(async () => {
+    return counterContract?.increment();
   }, [counterContract]);
 
-  const decrementCounter = useCallback(() => {
-    counterContract?.decrement();
+  const resetCounter = useCallback(async () => {
+    return counterContract?.reset();
+  }, [counterContract]);
+
+  const decrementCounter = useCallback(async () => {
+    return counterContract?.decrement();
   }, [counterContract]);
 
   const state = {

@@ -1,13 +1,16 @@
+import { useMemo, useState } from "react";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 
+import Loader from "src/components/loader/Loader";
 import CounterLabel from "src/components/counter-label/CounterLabel";
-import { useCounter } from "src/store/counterContext";
 import AddressLabel from "src/components/address-label/AddressLabel";
 import TransactionTable from "src/components/transaction-table/TransactionTable";
+import CounterChangedLabel from "src/components/counter-changed-label/CounterChangedLabel";
+import { useCounter } from "src/store/counterContext";
 
 const CounterPage = () => {
   const {
@@ -24,6 +27,10 @@ const CounterPage = () => {
     decrementCounter,
   } = useCounter();
 
+  // TODO: create useMultipleClicksPrevention()
+  // to prevent multiple clicks on the same button
+  const [disableActions, setDisableActions] = useState(false);
+
   const columns: string[] = [
     "status",
     "method",
@@ -32,55 +39,114 @@ const CounterPage = () => {
     "transaction",
   ];
 
-  const rows = counterEvents.map((event) => ({
-    id: event.transactionHash,
-    status: "OK",
-    method: event.eventType,
-    user: <AddressLabel address={event.userAddress} />,
-    value: event.prevCounter + " -> " + event.newCounter,
-    // TODO: ADD TRANSACTION LABEL
-    transaction: <AddressLabel address={event.transactionHash} />,
-  }));
+  const rows = useMemo(
+    () =>
+      counterEvents.map((event) => ({
+        id: event.transactionHash,
+        // TODO: ADD STATUS LABEL
+        status: "OK",
+        // TODO: ADD Event LABEL
+        method: event.eventType,
+        user: <AddressLabel address={event.userAddress} />,
+        value: (
+          <CounterChangedLabel
+            prevCounter={event.prevCounter}
+            newCounter={event.newCounter}
+          />
+        ),
+        // TODO: ADD TRANSACTION LABEL
+        transaction: <AddressLabel address={event.transactionHash} />,
+      })),
+    [counterEvents]
+  );
 
   return (
     <Wrapper>
-      <Typography component="h2" variant="h2" gutterBottom>
-        Counter Contract
-      </Typography>
-
       {/* Counter Section */}
       <CounterDisplayContainer>
+        <Typography component="h2" variant="h3" gutterBottom>
+          Counter Contract
+        </Typography>
+
         {/* Counter contract address */}
         <Typography component="h3" variant="h5" gutterBottom>
           <AddressLabel address={counterContractAddress} />
         </Typography>
 
-        <CounterLabel counter={counter} />
-        <CounterActionsContainer>
-          {/* increment Button */}
-          <Tooltip title={"increment your counter"}>
-            <Button onClick={incrementCounter}>Increment</Button>
-          </Tooltip>
+        <Loader
+          isLoading={isCounterLoading}
+          loadingText={"Loading counter..."}
+          minHeight={150}
+        >
+          <CounterLabel counter={counter} />
+          <CounterActionsContainer>
+            {/* increment Button */}
+            <Tooltip title={"increment your counter"}>
+              <Button
+                disabled={disableActions}
+                onClick={async () => {
+                  setDisableActions(true);
+                  try {
+                    await incrementCounter();
+                  } finally {
+                    setDisableActions(false);
+                  }
+                }}
+              >
+                Increment
+              </Button>
+            </Tooltip>
 
-          {/* reset Button */}
-          <Tooltip title={"reset your counter"}>
-            <Button onClick={resetCounter}>Reset</Button>
-          </Tooltip>
+            {/* reset Button */}
+            <Tooltip title={"reset your counter"}>
+              <Button
+                disabled={disableActions}
+                onClick={async () => {
+                  setDisableActions(true);
+                  try {
+                    await resetCounter();
+                  } finally {
+                    setDisableActions(false);
+                  }
+                }}
+              >
+                Reset
+              </Button>
+            </Tooltip>
 
-          {/* decrement Button */}
-          <Tooltip title={"decrement your counter"}>
-            <Button onClick={decrementCounter}>Decrement</Button>
-          </Tooltip>
-        </CounterActionsContainer>
+            {/* decrement Button */}
+            <Tooltip title={"decrement your counter"}>
+              <Button
+                disabled={disableActions}
+                onClick={async () => {
+                  setDisableActions(true);
+                  try {
+                    await decrementCounter();
+                  } finally {
+                    setDisableActions(false);
+                  }
+                }}
+              >
+                Decrement
+              </Button>
+            </Tooltip>
+          </CounterActionsContainer>
+        </Loader>
       </CounterDisplayContainer>
 
       {/* Transactions Section */}
       <CounteTableContainer>
-        <TransactionTable
-          rows={rows}
-          columns={columns}
-          ariaLabel="counter contract event table"
-        />
+        <Loader
+          isLoading={isEventsLoading}
+          loadingText={"Loading events..."}
+          minHeight={200}
+        >
+          <TransactionTable
+            rows={rows}
+            columns={columns}
+            ariaLabel="counter contract event table"
+          />
+        </Loader>
       </CounteTableContainer>
     </Wrapper>
   );

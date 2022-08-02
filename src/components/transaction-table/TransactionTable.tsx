@@ -18,6 +18,9 @@ const TransactionTable = ({
   columns,
   ariaLabel,
 }: TransactionTableProps) => {
+  // TODO: ADD PAGINATION
+  // TODO: Add no rows state
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label={ariaLabel}>

@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 
 import { LIGHT_THEME } from "src/theme/theme";
 import { useWallet } from "src/store/walletContext";
+import Loader from "src/components/loader/Loader";
 import AddressLabel from "src/components/address-label/AddressLabel";
 import AmountLabel from "src/components/amount-label/AmountLabel";
 import ChainLabel from "src/components/chain-label/ChainLabel";
@@ -31,13 +32,8 @@ const ConnectedWallet = () => {
   const amount = userBalance?.[nativeTokenSymbol];
   const hasFounds = !!amount && nativeTokenSymbol;
 
-  if (!userAddress) {
-    // TODO: Create Loader component
-    return <div>Loading...</div>;
-  }
-
   return (
-    <>
+    <Loader isLoading={!userAddress}>
       {/* connected chain section */}
       <Typography variant="body2">
         <ChainLabel chain={chain} />
@@ -53,7 +49,7 @@ const ConnectedWallet = () => {
         >
           <img src={walletLogo} alt="connected wallet logo" height={24} />
           <Typography variant="body2">
-            <AddressLabel address={userAddress} />
+            {userAddress && <AddressLabel address={userAddress} />}
           </Typography>
         </Stack>
       </Container>
@@ -66,7 +62,7 @@ const ConnectedWallet = () => {
           </Typography>
         </Container>
       )}
-    </>
+    </Loader>
   );
 };
 

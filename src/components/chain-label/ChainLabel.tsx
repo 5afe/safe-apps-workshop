@@ -20,10 +20,8 @@ const Label = styled("span")(
     border-radius: 4px;
     padding: 4px 12px;
   
-  
     background-color: ${color};
   
-    color: ${theme.palette.getContrastText(color as string)};
-    
+    color: ${theme.palette.getContrastText(color as string)};  
     `
 );
