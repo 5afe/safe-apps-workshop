@@ -98,48 +98,48 @@ const CounterPage = () => {
         <Loader
           isLoading={isCounterLoading}
           loadingText={"Loading counter..."}
-          minHeight={150}
+          minHeight={140}
         >
           <CounterLabel counter={counter} />
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="center"
-            spacing={1}
-            component="span"
-          >
-            {/* increment Button */}
-            <Tooltip title={"increment your counter"}>
-              <Button
-                disabled={disabled}
-                onClick={preventMultiOnClick(incrementCounter)}
-              >
-                Increment
-              </Button>
-            </Tooltip>
-
-            {/* reset Button */}
-            <Tooltip title={"reset your counter"}>
-              <Button
-                disabled={disabled}
-                onClick={preventMultiOnClick(resetCounter)}
-              >
-                Reset
-              </Button>
-            </Tooltip>
-
-            {/* decrement Button */}
-            <Tooltip title={"decrement your counter"}>
-              <Button
-                disabled={disabled}
-                onClick={preventMultiOnClick(decrementCounter)}
-              >
-                Decrement
-              </Button>
-            </Tooltip>
-          </Stack>
         </Loader>
+
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          spacing={1}
+          component="span"
+        >
+          {/* increment Button */}
+          <Tooltip title={"increment your counter"}>
+            <Button
+              disabled={disabled || isCounterLoading}
+              onClick={preventMultiOnClick(incrementCounter)}
+            >
+              Increment
+            </Button>
+          </Tooltip>
+
+          {/* reset Button */}
+          <Tooltip title={"reset your counter"}>
+            <Button
+              disabled={disabled || isCounterLoading}
+              onClick={preventMultiOnClick(resetCounter)}
+            >
+              Reset
+            </Button>
+          </Tooltip>
+
+          {/* decrement Button */}
+          <Tooltip title={"decrement your counter"}>
+            <Button
+              disabled={disabled || isCounterLoading}
+              onClick={preventMultiOnClick(decrementCounter)}
+            >
+              Decrement
+            </Button>
+          </Tooltip>
+        </Stack>
       </CounterDisplayContainer>
 
       {/* Transactions Section */}

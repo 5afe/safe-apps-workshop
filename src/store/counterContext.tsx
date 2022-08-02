@@ -89,12 +89,13 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
 
   // read the current user counter value
   const getCounter = useCallback(async () => {
-    if (counterContract) {
+    if (counterContract && userAddress) {
+      setIsCounterLoading(true);
       const userCounter = await counterContract.getCounter();
       setCounter(userCounter.toString());
       setIsCounterLoading(false);
     }
-  }, [counterContract]);
+  }, [counterContract, userAddress]);
 
   useEffect(() => {
     getCounter();

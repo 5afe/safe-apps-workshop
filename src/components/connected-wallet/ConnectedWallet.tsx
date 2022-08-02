@@ -14,7 +14,7 @@ import walletConnectLogo from "src/assets/WalletConnect_logo.png";
 const logos: Record<string, string> = {
   WalletConnect: walletConnectLogo,
   MetaMask: metamaskLogo,
-  unknown: "TBD",
+  unknown: "TODO: Add unknown wallet icon",
 };
 
 const ConnectedWallet = () => {

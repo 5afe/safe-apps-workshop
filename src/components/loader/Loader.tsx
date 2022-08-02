@@ -29,6 +29,8 @@ const Loader = ({
       setTimeout(() => {
         setShowContent(true);
       }, timeout || DEFAULT_TIMEOUT);
+    } else {
+      setShowContent(false);
     }
   }, [isLoading, timeout]);
 

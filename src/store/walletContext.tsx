@@ -16,6 +16,8 @@ import { ethers } from "ethers";
 import Chain from "src/models/chain";
 import chains, { initialChain } from "src/chains/chains";
 
+// TODO: Remove ledger & trezor support
+
 const onboard = Onboard({
   wallets: [
     injectedModule(),
@@ -74,14 +76,36 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
 
-  // suscriptions
-  useEffect(() => {
-    onboard.state.select("wallets").subscribe((update) => {
-      console.log("wallets changed! ", update);
-    });
+  // TODO: ADD POLLING TO UPDATE BALANCES: updatedBalances
+  // onboard.state.actions.updateBalances(); // update all balances for all connected addresses
 
-    onboard.state.select("chains").subscribe((update) => {
-      console.log("chain changed! ", update);
+  // TODO: Setting the User's Chain
+  // const success = await onboard.setChain({ chainId: '0x89' })
+  // NOTE: onboard.state.select("chains").subscribe is not working ?
+  // TODO: Create invalid selected chain (only Rinkeby and Gnosis chain allowed)
+
+  // TODO: Autoselect previous wallets:
+  // see https://docs.blocknative.com/onboard/core#auto-selecting-a-wallet
+
+  // TODO: Add disconnect wallet logic
+  // https://docs.blocknative.com/onboard/core#disconnecting-a-wallet
+
+  // suscriptions to onboard state changes
+  useEffect(() => {
+    // if the user select a new wallet we update the state with it
+    onboard.state.select("wallets").subscribe((update) => {
+      setWallet((wallet) => {
+        const newWallet = update?.[0];
+        const newAddress = newWallet?.accounts?.[0]?.address;
+        const oldAddress = wallet?.accounts?.[0]?.address;
+        const walletHasChanged = oldAddress !== newAddress;
+
+        if (walletHasChanged) {
+          return newWallet;
+        }
+
+        return wallet;
+      });
     });
   }, []);
 
