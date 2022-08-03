@@ -23,15 +23,22 @@ const onboard = Onboard({
     walletConnectModule(),
     // To use this Dapp as a Safe App:
     //
-    // 1.- Install the Gnosis Safe web3-onboard module
+    // 1.- Update the manifest.json file and add this 3 lines:
+    // "name": "Counter App",
+    // "description": "Update your counter!",
+    // "iconPath": "logo512.png",
+    //
+    // 2.- Install the Gnosis Safe web3-onboard module
     // yarn add @web3-onboard/gnosis
     //
-    // 2.- after install it, uncomment the line 14 of this file to import the Gnosis Safe web3-onboard module
+    // 3.- after install it, uncomment the line 14 of this file to import the Gnosis Safe web3-onboard module
     //
-    // 3.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
+    // 4.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
     // gnosisModule(),
     //
-    // 4.- disable the last used wallet autoconnect uncommenting the line 222 in the bottom of this file
+    // 5.- disable the last used wallet autoconnect uncommenting the line 222 in the bottom of this file
+    //
+    // 6.- go to src/components/connected-wallet/ConnectedWallet.tsx file and add the safe logo in the UI
   ],
   chains,
   accountCenter: {

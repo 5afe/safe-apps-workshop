@@ -10,14 +10,19 @@ import Loader from "src/components/loader/Loader";
 import AddressLabel from "src/components/address-label/AddressLabel";
 import AmountLabel from "src/components/amount-label/AmountLabel";
 import ChainLabel from "src/components/chain-label/ChainLabel";
-import metamaskLogo from "src/assets/Metamask_logo.svg";
-import walletConnectLogo from "src/assets/WalletConnect_logo.png";
 import InvalidChainLabel from "../invalid-chain-label/InvalidChainLabel";
 import { WALLET_DETAILS_PATHNAME } from "src/routes/routes";
+import metamaskLogo from "src/assets/Metamask_logo.svg";
+import walletConnectLogo from "src/assets/WalletConnect_logo.png";
+
+// TODO: uncomment the line 20 and 25 to add the Safe Wallet logo in the UI
+
+// import safeWalletLogo from "src/assets/SafeWallet_logo.png";
 
 const logos: Record<string, string> = {
   WalletConnect: walletConnectLogo,
   MetaMask: metamaskLogo,
+  // SafeApp: safeWalletLogo,
   unknown: "TODO: Add unknown wallet icon",
 };
 
