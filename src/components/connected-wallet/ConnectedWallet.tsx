@@ -1,3 +1,4 @@
+import { useNavigate, useMatch } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
@@ -12,6 +13,7 @@ import ChainLabel from "src/components/chain-label/ChainLabel";
 import metamaskLogo from "src/assets/Metamask_logo.svg";
 import walletConnectLogo from "src/assets/WalletConnect_logo.png";
 import InvalidChainLabel from "../invalid-chain-label/InvalidChainLabel";
+import { WALLET_DETAILS_PATHNAME } from "src/routes/routes";
 
 const logos: Record<string, string> = {
   WalletConnect: walletConnectLogo,
@@ -20,20 +22,16 @@ const logos: Record<string, string> = {
 };
 
 const ConnectedWallet = () => {
-  const {
-    userAddress,
-    wallet,
-    chain,
-    userBalance,
-    isValidChain,
-    //  TODO: disconnectWallet
-  } = useWallet();
+  const { userAddress, wallet, chain, userBalance, isValidChain } = useWallet();
 
   const walletLabel = wallet?.label || "unknown";
   const walletLogo = logos[walletLabel];
   const nativeTokenSymbol = chain.token;
   const amount = userBalance?.[nativeTokenSymbol];
   const hasFounds = !!amount && nativeTokenSymbol;
+
+  const navigate = useNavigate();
+  const isWalletDetailsPage = useMatch(WALLET_DETAILS_PATHNAME);
 
   return (
     <Loader isLoading={!userAddress}>
@@ -52,7 +50,14 @@ const ConnectedWallet = () => {
       )}
 
       {/* connected address section */}
-      <Container>
+      {/* TODO: improve accessibility here */}
+      <Container
+        onClick={() => {
+          if (!isWalletDetailsPage) {
+            navigate(WALLET_DETAILS_PATHNAME);
+          }
+        }}
+      >
         <Stack
           direction="row"
           alignItems="center"
@@ -83,12 +88,13 @@ const ConnectedWallet = () => {
 export default ConnectedWallet;
 
 const Container = styled("div")(
-  ({ theme }) => `
+  ({ theme, onClick }) => `
   
   margin-right: 8px;
   border-radius: 4px;
   padding: 4px 12px;
 
+  cursor: ${!!onClick ? "pointer" : "initial"};
 
   background-color: ${
     theme.palette.mode === LIGHT_THEME

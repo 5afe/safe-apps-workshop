@@ -47,8 +47,7 @@ export default ConnectYourWalletPage;
 
 const Wrapper = styled(Paper)`
   max-width: 800px;
-  margin: 0 auto;
-  margin-top: 24px;
+  margin: 64px auto;
   padding: 16px;
   text-align: center;
 `;

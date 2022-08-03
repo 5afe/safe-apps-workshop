@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-interface RowType {
+export interface RowType {
   id: string;
   [key: string]: React.ReactNode;
 }

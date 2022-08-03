@@ -75,19 +75,14 @@ const useWallet = () => {
 };
 
 const WalletProvider = ({ children }: { children: JSX.Element }) => {
-  const [wallet, setWallet] = useState<WalletState>();
+  const [wallet, setWallet] = useState<WalletState | undefined>();
+
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
 
   const [chain, setChain] = useState<Chain>(initialChain);
   const [isValidChain, setIsValidChain] = useState<boolean>();
 
   const [userBalance, setUserBalance] = useState<Balances>();
-
-  // TODO: Autoselect previous wallets:
-  // see https://docs.blocknative.com/onboard/core#auto-selecting-a-wallet
-
-  // TODO: Add disconnect wallet logic (Wallet details page)
-  // https://docs.blocknative.com/onboard/core#disconnecting-a-wallet
 
   // suscriptions to onboard state (chain & wallet updates)
   useEffect(() => {
@@ -103,6 +98,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
           const walletHasChanged = oldAddress !== newAddress;
 
           if (walletHasChanged) {
+            setProvider(new ethers.providers.Web3Provider(newWallet.provider));
             return newWallet; // we update the wallet state
           }
 
@@ -135,8 +131,15 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
           setIsValidChain(false);
           setProvider(undefined);
         }
+      } else {
+        setProvider(undefined);
+        setWallet(undefined);
       }
     });
+
+    // auto selecting the user wallet
+    // see https://docs.blocknative.com/onboard/core#auto-selecting-a-wallet
+    getInitialWallet();
   }, []);
 
   const showConnectWalletModal = useCallback(async () => {
@@ -178,6 +181,13 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
   // user balance polling every 6 secs
   usePolling(getUserBalance);
 
+  // we update the localstorage with the lastUsedWallet
+  useEffect(() => {
+    if (wallet?.label) {
+      localStorage?.setItem(LAST_USED_USER_WALLET_KEY, wallet.label);
+    }
+  }, [wallet]);
+
   const state = {
     wallet,
     provider,
@@ -199,3 +209,17 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 };
 
 export { useWallet, WalletProvider };
+
+const LAST_USED_USER_WALLET_KEY = "lastUsedWallet";
+
+const getInitialWallet = async (): Promise<WalletState | undefined> => {
+  const lastUsedWallet = localStorage?.getItem(LAST_USED_USER_WALLET_KEY);
+
+  if (lastUsedWallet) {
+    onboard.connectWallet({
+      autoSelect: { label: lastUsedWallet, disableModals: true },
+    });
+  }
+
+  return;
+};
