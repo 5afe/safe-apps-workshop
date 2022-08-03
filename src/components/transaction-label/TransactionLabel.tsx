@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import LaunchIcon from "@mui/icons-material/Launch";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import FileCopyOutlinedIcon from "@mui/icons-material/FileCopyOutlined";
 import { styled } from "@mui/material/styles";
 
@@ -65,7 +65,7 @@ const TransactionLabel = ({
             rel="noopener"
             size={iconSize || "small"}
           >
-            <LaunchIcon fontSize="inherit" />
+            <OpenInNew fontSize="inherit" />
           </IconButton>
         </Tooltip>
       )}

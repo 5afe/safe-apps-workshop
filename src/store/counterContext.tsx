@@ -6,10 +6,15 @@ import { createContext } from "react";
 
 import { useWallet } from "src/store/walletContext";
 import CounterContractArtifact from "src/artifacts/contracts/Counter.sol/Counter.json";
+import { gnosisChain, rinkebyChain } from "src/chains/chains";
+import Chain from "src/models/chain";
 
 const counterAbi = CounterContractArtifact.abi;
 
-const { REACT_APP_COUNTER_CONTRACT_ADDRESS } = process.env;
+const {
+  REACT_APP_COUNTER_CONTRACT_ADDRESS_RINKEBY,
+  REACT_APP_COUNTER_CONTRACT_ADDRESS_GNOSIS_CHAIN,
+} = process.env;
 
 type counterContextValue = {
   counterContractAddress: string;
@@ -66,13 +71,9 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
   const [counterEvents, setcounterEvents] = useState<CounterEvent[]>([]);
   const [isEventsLoading, setIsEventsLoading] = useState<boolean>(true);
 
-  const { userAddress, provider } = useWallet();
+  const { userAddress, provider, chain, isValidChain } = useWallet();
 
-  const counterContractAddress = REACT_APP_COUNTER_CONTRACT_ADDRESS;
-
-  if (!counterContractAddress) {
-    throw new Error("no contract address provided in the .env file");
-  }
+  const counterContractAddress = getCounterContractAddress(chain, isValidChain);
 
   // load counter contract
   useEffect(() => {
@@ -260,3 +261,21 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
 };
 
 export { useCounter, CounterProvider };
+
+const counterContractAddresses = {
+  [rinkebyChain.id]: REACT_APP_COUNTER_CONTRACT_ADDRESS_RINKEBY,
+  [gnosisChain.id]: REACT_APP_COUNTER_CONTRACT_ADDRESS_GNOSIS_CHAIN,
+};
+
+const getCounterContractAddress = (
+  chain: Chain,
+  isValidChain?: boolean
+): string => {
+  const counterContractAddress = counterContractAddresses[chain.id] || "";
+
+  if (!counterContractAddress && isValidChain) {
+    throw new Error("no contract address provided in the .env file");
+  }
+
+  return counterContractAddress;
+};

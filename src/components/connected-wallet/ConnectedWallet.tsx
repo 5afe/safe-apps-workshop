@@ -1,5 +1,6 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
 
 import { LIGHT_THEME } from "src/theme/theme";
@@ -10,6 +11,7 @@ import AmountLabel from "src/components/amount-label/AmountLabel";
 import ChainLabel from "src/components/chain-label/ChainLabel";
 import metamaskLogo from "src/assets/Metamask_logo.svg";
 import walletConnectLogo from "src/assets/WalletConnect_logo.png";
+import InvalidChainLabel from "../invalid-chain-label/InvalidChainLabel";
 
 const logos: Record<string, string> = {
   WalletConnect: walletConnectLogo,
@@ -23,7 +25,8 @@ const ConnectedWallet = () => {
     wallet,
     chain,
     userBalance,
-    // disconnectWallet
+    isValidChain,
+    //  TODO: disconnectWallet
   } = useWallet();
 
   const walletLabel = wallet?.label || "unknown";
@@ -35,9 +38,18 @@ const ConnectedWallet = () => {
   return (
     <Loader isLoading={!userAddress}>
       {/* connected chain section */}
-      <Typography variant="body2">
-        <ChainLabel chain={chain} />
-      </Typography>
+
+      {isValidChain ? (
+        <Typography variant="body2">
+          <ChainLabel chain={chain} />
+        </Typography>
+      ) : (
+        <Tooltip title="Invalid selected chain, only Gnosis Chain and Rinkeby are allowed">
+          <Typography variant="body2">
+            <InvalidChainLabel />
+          </Typography>
+        </Tooltip>
+      )}
 
       {/* connected address section */}
       <Container>
@@ -49,7 +61,9 @@ const ConnectedWallet = () => {
         >
           <img src={walletLogo} alt="connected wallet logo" height={24} />
           <Typography variant="body2">
-            {userAddress && <AddressLabel address={userAddress} showBlockExplorerLink />}
+            {userAddress && (
+              <AddressLabel address={userAddress} showBlockExplorerLink />
+            )}
           </Typography>
         </Stack>
       </Container>

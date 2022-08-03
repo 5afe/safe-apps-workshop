@@ -2,7 +2,7 @@ import Chain from "src/models/chain";
 
 const { REACT_APP_INFURA_TOKEN } = process.env;
 
-const rinkebyChain: Chain = {
+export const rinkebyChain: Chain = {
   id: "0x4",
   token: "rETH",
   label: "Rinkeby",
@@ -11,7 +11,7 @@ const rinkebyChain: Chain = {
   color: "#e8673c",
 };
 
-const gnosisChain: Chain = {
+export const gnosisChain: Chain = {
   id: "0x64",
   token: "xDai",
   label: "Gnosis Chain",

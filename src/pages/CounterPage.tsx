@@ -18,10 +18,10 @@ import useMultiOnClickPrevention from "src/hooks/useMultiOnClicksPrevention";
 import CounterEventLabel from "src/components/counter-event-label/CounterEventLabel";
 import StatusLabel from "src/components/status-label/StatusLabel";
 import { useWallet } from "src/store/walletContext";
-import { HOME_PATHNAME } from "src/routes/routes";
+import { HOME_PATHNAME, INVALID_CHAIN_PATHNAME } from "src/routes/routes";
 
 const CounterPage = () => {
-  const { wallet } = useWallet();
+  const { wallet, isValidChain } = useWallet();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +29,12 @@ const CounterPage = () => {
       navigate(HOME_PATHNAME);
     }
   }, [wallet, navigate]);
+
+  useEffect(() => {
+    if (!isValidChain) {
+      navigate(INVALID_CHAIN_PATHNAME);
+    }
+  }, [isValidChain, navigate]);
 
   const {
     counterContractAddress,
@@ -112,32 +118,38 @@ const CounterPage = () => {
         >
           {/* increment Button */}
           <Tooltip title={"increment your counter"}>
-            <Button
-              disabled={disabled || isCounterLoading}
-              onClick={preventMultiOnClick(incrementCounter)}
-            >
-              Increment
-            </Button>
+            <span>
+              <Button
+                disabled={disabled || isCounterLoading}
+                onClick={preventMultiOnClick(incrementCounter)}
+              >
+                Increment
+              </Button>
+            </span>
           </Tooltip>
 
           {/* reset Button */}
           <Tooltip title={"reset your counter"}>
-            <Button
-              disabled={disabled || isCounterLoading}
-              onClick={preventMultiOnClick(resetCounter)}
-            >
-              Reset
-            </Button>
+            <span>
+              <Button
+                disabled={disabled || isCounterLoading}
+                onClick={preventMultiOnClick(resetCounter)}
+              >
+                Reset
+              </Button>
+            </span>
           </Tooltip>
 
           {/* decrement Button */}
           <Tooltip title={"decrement your counter"}>
-            <Button
-              disabled={disabled || isCounterLoading}
-              onClick={preventMultiOnClick(decrementCounter)}
-            >
-              Decrement
-            </Button>
+            <span>
+              <Button
+                disabled={disabled || isCounterLoading}
+                onClick={preventMultiOnClick(decrementCounter)}
+              >
+                Decrement
+              </Button>
+            </span>
           </Tooltip>
         </Stack>
       </CounterDisplayContainer>

@@ -45,8 +45,10 @@ type walletContextValue = {
   userBalance?: Balances;
   wallet?: WalletState;
   showConnectWalletModal: () => Promise<void>;
+  switchChain: (chain: Chain) => Promise<void>;
   disconnectWallet: () => void;
   isWalletConnected: boolean;
+  isValidChain?: boolean;
   chain: Chain;
   provider?: ethers.providers.Web3Provider;
 };
@@ -54,6 +56,7 @@ type walletContextValue = {
 const initialState = {
   isWalletConnected: false,
   showConnectWalletModal: () => Promise.resolve(),
+  switchChain: () => Promise.resolve(),
   disconnectWallet: () => {},
   chain: initialChain,
 };
@@ -71,50 +74,65 @@ const useWallet = () => {
 };
 
 const WalletProvider = ({ children }: { children: JSX.Element }) => {
-  const [chain, setChain] = useState<Chain>(initialChain);
   const [wallet, setWallet] = useState<WalletState>();
-
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
+
+  const [chain, setChain] = useState<Chain>(initialChain);
+  const [isValidChain, setIsValidChain] = useState<boolean>();
 
   // TODO: ADD POLLING TO UPDATE BALANCES: updatedBalances
   // onboard.state.actions.updateBalances(); // update all balances for all connected addresses
 
-  // TODO: Setting the User's Chain
-  // const success = await onboard.setChain({ chainId: '0x89' })
-  // NOTE: onboard.state.select("chains").subscribe is not working ?
-  // TODO: Create invalid selected chain (only Rinkeby and Gnosis chain allowed)
-
   // TODO: Autoselect previous wallets:
   // see https://docs.blocknative.com/onboard/core#auto-selecting-a-wallet
 
-  // TODO: Add disconnect wallet logic
+  // TODO: Add disconnect wallet logic (Wallet details page)
   // https://docs.blocknative.com/onboard/core#disconnecting-a-wallet
 
-  // suscriptions to onboard state changes
+  // suscriptions to onboard state (chain & wallet updates)
   useEffect(() => {
-    // if the user select a new wallet we update the state with it
-    onboard.state.select("wallets").subscribe((update) => {
-      setWallet((wallet) => {
-        const newWallet = update?.[0];
-        const newAddress = newWallet?.accounts?.[0]?.address;
-        const oldAddress = wallet?.accounts?.[0]?.address;
-        const walletHasChanged = oldAddress !== newAddress;
+    const wallets = onboard.state.select("wallets");
+    wallets.subscribe((update) => {
+      const newWallet = update?.[0];
 
-        if (walletHasChanged) {
-          return newWallet;
+      if (!!newWallet) {
+        // if the user select a new wallet we update the state with it
+        setWallet((wallet) => {
+          const newAddress = newWallet?.accounts?.[0]?.address;
+          const oldAddress = wallet?.accounts?.[0]?.address;
+          const walletHasChanged = oldAddress !== newAddress;
+
+          if (walletHasChanged) {
+            return newWallet; // we update the wallet state
+          }
+
+          return wallet; // no state update
+        });
+
+        // if the user select a new valid chain we update the state with it
+        const newChainId = newWallet?.chains?.[0]?.id;
+        const newChain = chains.find((chain) => chain.id === newChainId);
+        const isValidChain = !!newChain;
+
+        if (isValidChain) {
+          setProvider(new ethers.providers.Web3Provider(newWallet.provider)); // we update the provider state
+          setIsValidChain(true);
+          setChain((chain) => {
+            const chainHasChanged = newChain.id !== chain.id;
+
+            if (chainHasChanged) {
+              return newChain; // we update the chain state
+            }
+
+            return chain; // no state update
+          });
+        } else {
+          // invalid selected chain
+          setIsValidChain(false);
         }
-
-        return wallet;
-      });
+      }
     });
   }, []);
-
-  // chain react state & onboard state reconciliation
-  useEffect(() => {
-    if (wallet) {
-      onboard.setChain({ chainId: chain.id, chainNamespace: "evm" });
-    }
-  }, [chain, wallet]);
 
   const showConnectWalletModal = useCallback(async () => {
     const wallets = await onboard.connectWallet();
@@ -132,21 +150,27 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
     setProvider(undefined);
   }, []);
 
+  const switchChain = useCallback(async (chain: Chain) => {
+    await onboard.setChain({ chainId: chain.id, chainNamespace: "evm" });
+  }, []);
+
   const accounts = wallet?.accounts;
   const userAddress = accounts?.[0].address;
   const userBalance = accounts?.[0].balance;
   const isWalletConnected = !!userAddress;
 
   const state = {
-    chain,
     wallet,
     provider,
+    chain,
+    isValidChain,
 
     isWalletConnected,
     userAddress,
     userBalance,
 
     showConnectWalletModal,
+    switchChain,
     disconnectWallet,
   };
 
