@@ -24,7 +24,15 @@ const getTheme = (themeMode: PaletteMode): Theme => {
       ...themeOptions,
       palette: {
         ...themeOptions.palette,
+
         mode: themeMode,
+
+        background:
+          themeMode === LIGHT_THEME
+            ? {
+                default: "#eef5ec", // light body background color
+              }
+            : {},
       },
     })
   );
