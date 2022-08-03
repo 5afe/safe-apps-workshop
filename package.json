@@ -1,6 +1,7 @@
 {
   "name": "safe-apps-workshop",
   "version": "0.1.0",
+  "homepage": ".",
   "license": "MIT",
   "private": true,
   "dependencies": {
