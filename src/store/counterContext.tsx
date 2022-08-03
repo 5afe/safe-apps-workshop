@@ -77,7 +77,7 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
 
   // load counter contract
   useEffect(() => {
-    if (provider) {
+    if (provider && counterContractAddress) {
       setIsCounterLoading(true);
       const counterContract = new ethers.Contract(
         counterContractAddress,
@@ -85,6 +85,8 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
         provider.getSigner()
       );
       setCounterContract(counterContract);
+    } else {
+      setCounterContract(undefined);
     }
   }, [provider, counterContractAddress]);
 
@@ -275,6 +277,10 @@ const getCounterContractAddress = (
 
   if (!counterContractAddress && isValidChain) {
     throw new Error("no contract address provided in the .env file");
+  }
+
+  if (!isValidChain) {
+    return "";
   }
 
   return counterContractAddress;

@@ -15,6 +15,7 @@ import { ethers } from "ethers";
 
 import Chain from "src/models/chain";
 import chains, { initialChain } from "src/chains/chains";
+import usePolling from "src/hooks/usePolling";
 
 // TODO: Remove ledger & trezor support
 
@@ -80,8 +81,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
   const [chain, setChain] = useState<Chain>(initialChain);
   const [isValidChain, setIsValidChain] = useState<boolean>();
 
-  // TODO: ADD POLLING TO UPDATE BALANCES: updatedBalances
-  // onboard.state.actions.updateBalances(); // update all balances for all connected addresses
+  const [userBalance, setUserBalance] = useState<Balances>();
 
   // TODO: Autoselect previous wallets:
   // see https://docs.blocknative.com/onboard/core#auto-selecting-a-wallet
@@ -115,12 +115,16 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
         const isValidChain = !!newChain;
 
         if (isValidChain) {
-          setProvider(new ethers.providers.Web3Provider(newWallet.provider)); // we update the provider state
           setIsValidChain(true);
           setChain((chain) => {
             const chainHasChanged = newChain.id !== chain.id;
 
             if (chainHasChanged) {
+              // we update the provider state
+              setProvider(
+                new ethers.providers.Web3Provider(newWallet.provider)
+              );
+
               return newChain; // we update the chain state
             }
 
@@ -129,6 +133,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
         } else {
           // invalid selected chain
           setIsValidChain(false);
+          setProvider(undefined);
         }
       }
     });
@@ -156,8 +161,22 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 
   const accounts = wallet?.accounts;
   const userAddress = accounts?.[0].address;
-  const userBalance = accounts?.[0].balance;
   const isWalletConnected = !!userAddress;
+
+  const getUserBalance = useCallback(async () => {
+    if (userAddress && isValidChain && chain) {
+      await onboard.state.actions.updateBalances([userAddress]);
+      const [wallet] = await onboard.state.get().wallets;
+      const updatedBalance = wallet?.accounts?.[0].balance;
+
+      setUserBalance(updatedBalance);
+    } else {
+      setUserBalance(undefined);
+    }
+  }, [userAddress, isValidChain, chain]);
+
+  // user balance polling every 6 secs
+  usePolling(getUserBalance);
 
   const state = {
     wallet,
