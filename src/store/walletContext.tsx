@@ -36,9 +36,12 @@ const onboard = Onboard({
     // 4.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
     // gnosisModule(),
     //
-    // 5.- disable the last used wallet autoconnect uncommenting the line 231 in the bottom of this file
+    // 5.- disable the last used wallet autoconnect uncommenting the line 239 in the bottom of this file
     //
     // 6.- go to src/components/connected-wallet/ConnectedWallet.tsx file and add the safe logo in the UI
+    //
+    // 7.- you can change the UI if a Safe wallet is connected, as an example we can remove the disconnect wallet button
+    // Go to the line 199 and add the logic to detect if a Safe App is connected
   ],
   chains,
   accountCenter: {
@@ -59,6 +62,7 @@ type walletContextValue = {
   switchChain: (chain: Chain) => Promise<void>;
   disconnectWallet: () => void;
   isWalletConnected: boolean;
+  isSafeAppWallet: boolean;
   isValidChain?: boolean;
   chain: Chain;
   provider?: ethers.providers.Web3Provider;
@@ -66,6 +70,7 @@ type walletContextValue = {
 
 const initialState = {
   isWalletConnected: false,
+  isSafeAppWallet: false,
   showConnectWalletModal: () => Promise.resolve(),
   switchChain: () => Promise.resolve(),
   disconnectWallet: () => {},
@@ -191,12 +196,16 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
   // user balance polling every 6 secs
   usePolling(getUserBalance);
 
+  // TODO: remove the line 200 and uncomment the line 201
+  const isSafeAppWallet = false;
+  // const isSafeAppWallet = wallet?.label === "Gnosis Safe";
+
   // we update the localstorage with the lastUsedWallet
   useEffect(() => {
-    if (wallet?.label && wallet.label !== "Gnosis Safe") {
+    if (wallet?.label && !isSafeAppWallet) {
       localStorage?.setItem(LAST_USED_USER_WALLET_KEY, wallet.label);
     }
-  }, [wallet]);
+  }, [wallet, isSafeAppWallet]);
 
   const state = {
     wallet,
@@ -205,6 +214,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
     isValidChain,
 
     isWalletConnected,
+    isSafeAppWallet,
     userAddress,
     userBalance,
 

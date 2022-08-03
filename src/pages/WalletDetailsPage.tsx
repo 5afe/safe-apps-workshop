@@ -25,6 +25,7 @@ const WalletDetailsPage = () => {
     wallet,
     userAddress,
     userBalance,
+    isSafeAppWallet,
 
     isValidChain,
     chain,
@@ -76,50 +77,52 @@ const WalletDetailsPage = () => {
           />
         </Typography>
 
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="center"
-          spacing={2}
-          component="span"
-        >
-          <Tooltip title="disconnect wallet">
-            <Button
-              color={"error"}
-              variant="outlined"
-              aria-label="disconnect wallet"
-              startIcon={<WalletIcon />}
-              onClick={disconnectWallet}
-            >
-              Disconnect Wallet
-            </Button>
-          </Tooltip>
+        {!isSafeAppWallet && (
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="center"
+            spacing={2}
+            component="span"
+          >
+            <Tooltip title="disconnect wallet">
+              <Button
+                color={"error"}
+                variant="outlined"
+                aria-label="disconnect wallet"
+                startIcon={<WalletIcon />}
+                onClick={disconnectWallet}
+              >
+                Disconnect Wallet
+              </Button>
+            </Tooltip>
 
-          {isGnosisChain ? (
-            <Tooltip title="switch to Rinkeby chain">
-              <Button
-                color={"warning"}
-                variant="outlined"
-                aria-label="switch to Rinkeby chain"
-                startIcon={<WalletIcon />}
-                onClick={() => switchChain(rinkebyChain)}
-              >
-                Switch to Rinkeby
-              </Button>
-            </Tooltip>
-          ) : (
-            <Tooltip title="switch to Gnosis chain">
-              <Button
-                variant="outlined"
-                aria-label="switch to Gnosis chain"
-                startIcon={<WalletIcon />}
-                onClick={() => switchChain(gnosisChain)}
-              >
-                Switch to Gnosis Chain
-              </Button>
-            </Tooltip>
-          )}
-        </Stack>
+            {isGnosisChain ? (
+              <Tooltip title="switch to Rinkeby chain">
+                <Button
+                  color={"warning"}
+                  variant="outlined"
+                  aria-label="switch to Rinkeby chain"
+                  startIcon={<WalletIcon />}
+                  onClick={() => switchChain(rinkebyChain)}
+                >
+                  Switch to Rinkeby
+                </Button>
+              </Tooltip>
+            ) : (
+              <Tooltip title="switch to Gnosis chain">
+                <Button
+                  variant="outlined"
+                  aria-label="switch to Gnosis chain"
+                  startIcon={<WalletIcon />}
+                  onClick={() => switchChain(gnosisChain)}
+                >
+                  Switch to Gnosis Chain
+                </Button>
+              </Tooltip>
+            )}
+          </Stack>
+        )}
       </Wrapper>
 
       <AssetsTableContainer>
