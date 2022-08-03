@@ -10,6 +10,8 @@ import injectedModule from "@web3-onboard/injected-wallets";
 import walletConnectModule from "@web3-onboard/walletconnect";
 import { Balances, WalletState } from "@web3-onboard/core/dist/types";
 import { ethers } from "ethers";
+// TODO: uncomment the line below to import the Gnosis Safe web3-onboard module
+// import gnosisModule from "@web3-onboard/gnosis";
 
 import Chain from "src/models/chain";
 import chains, { initialChain } from "src/chains/chains";
@@ -19,7 +21,15 @@ const onboard = Onboard({
   wallets: [
     injectedModule(),
     walletConnectModule(),
-    // TODO: uncomment this to use Gnosis Module
+    // To use this Dapp as a Safe App:
+    //
+    // 1.- Install the Gnosis Safe web3-onboard module
+    // yarn add @web3-onboard/gnosis
+    //
+    // 2.- after install it, uncomment the line 14 of this file to import the Gnosis Safe web3-onboard module
+    //
+    // 3.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
+    // gnosisModule()
   ],
   chains,
   accountCenter: {
