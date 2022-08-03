@@ -22,7 +22,7 @@ import walletConnectLogo from "src/assets/WalletConnect_logo.png";
 const logos: Record<string, string> = {
   WalletConnect: walletConnectLogo,
   MetaMask: metamaskLogo,
-  // SafeApp: safeWalletLogo,
+  // "Gnosis Safe": safeWalletLogo,
   unknown: "TODO: Add unknown wallet icon",
 };
 
@@ -104,7 +104,7 @@ const Container = styled("div")(
   background-color: ${
     theme.palette.mode === LIGHT_THEME
       ? theme.palette.background.paper
-      : theme.palette.grey["600"]
+      : theme.palette.grey["800"]
   };
 
   color: ${theme.palette.getContrastText(theme.palette.background.paper)};

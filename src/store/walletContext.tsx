@@ -36,7 +36,7 @@ const onboard = Onboard({
     // 4.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
     // gnosisModule(),
     //
-    // 5.- disable the last used wallet autoconnect uncommenting the line 222 in the bottom of this file
+    // 5.- disable the last used wallet autoconnect uncommenting the line 231 in the bottom of this file
     //
     // 6.- go to src/components/connected-wallet/ConnectedWallet.tsx file and add the safe logo in the UI
   ],
@@ -193,7 +193,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 
   // we update the localstorage with the lastUsedWallet
   useEffect(() => {
-    if (wallet?.label) {
+    if (wallet?.label && wallet.label !== "Gnosis Safe") {
       localStorage?.setItem(LAST_USED_USER_WALLET_KEY, wallet.label);
     }
   }, [wallet]);
@@ -225,10 +225,12 @@ const LAST_USED_USER_WALLET_KEY = "lastUsedWallet";
 const getInitialWallet = async (): Promise<WalletState | undefined> => {
   const lastUsedWallet = localStorage?.getItem(LAST_USED_USER_WALLET_KEY);
 
-  // TODO Uncomment this 5 lines below to disable the last used wallet connection if you are in the Safe UI
-  // const isASafeApp = window === window.parent;
+  // TODO: Uncomment this 7 lines below to force Safe connection if you are in an iframe
+  // const isASafeApp = window.self !== window.top;
   // if (isASafeApp) {
-  //   onboard.connectWallet();
+  //   onboard.connectWallet({
+  //     autoSelect: { label: "Gnosis Safe", disableModals: true },
+  //   });
   //   return;
   // }
 
