@@ -8,8 +8,6 @@ import {
 import Onboard from "@web3-onboard/core";
 import injectedModule from "@web3-onboard/injected-wallets";
 import walletConnectModule from "@web3-onboard/walletconnect";
-// import ledgerModule from "@web3-onboard/ledger";
-// import trezorModule from "@web3-onboard/trezor";
 import { Balances, WalletState } from "@web3-onboard/core/dist/types";
 import { ethers } from "ethers";
 
@@ -17,18 +15,11 @@ import Chain from "src/models/chain";
 import chains, { initialChain } from "src/chains/chains";
 import usePolling from "src/hooks/usePolling";
 
-// TODO: Remove ledger & trezor support
-
 const onboard = Onboard({
   wallets: [
     injectedModule(),
-    // ledgerModule(),
-    // trezorModule({
-    //   // TODO: Add proper values
-    //   email: "test@test.test",
-    //   appUrl: "http://localhost:3000/",
-    // }),
     walletConnectModule(),
+    // TODO: uncomment this to use Gnosis Module
   ],
   chains,
   accountCenter: {
