@@ -29,7 +29,9 @@ const onboard = Onboard({
     // 2.- after install it, uncomment the line 14 of this file to import the Gnosis Safe web3-onboard module
     //
     // 3.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
-    // gnosisModule()
+    // gnosisModule(),
+    //
+    // 4.- disable the last used wallet autoconnect uncommenting the line 222 in the bottom of this file
   ],
   chains,
   accountCenter: {
@@ -215,6 +217,13 @@ const LAST_USED_USER_WALLET_KEY = "lastUsedWallet";
 
 const getInitialWallet = async (): Promise<WalletState | undefined> => {
   const lastUsedWallet = localStorage?.getItem(LAST_USED_USER_WALLET_KEY);
+
+  // TODO Uncomment this 5 lines below to disable the last used wallet connection if you are in the Safe UI
+  // const isASafeApp = window === window.parent;
+  // if (isASafeApp) {
+  //   onboard.connectWallet();
+  //   return;
+  // }
 
   if (lastUsedWallet) {
     onboard.connectWallet({
