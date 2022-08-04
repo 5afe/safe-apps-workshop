@@ -13,7 +13,7 @@ import { COUNTER_CONTRACT_PATHNAME, HOME_PATHNAME } from "src/routes/routes";
 import { gnosisChain, rinkebyChain } from "src/chains/chains";
 
 const InvalidChainPage = () => {
-  const { wallet, isValidChain, switchChain } = useWallet();
+  const { wallet, isValidChain, switchChain, isSafeAppWallet } = useWallet();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,36 +34,38 @@ const InvalidChainPage = () => {
         Invalid wallet Chain
       </Typography>
 
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-        spacing={2}
-        component="span"
-      >
-        <Tooltip title="switch to Rinkeby chain">
-          <Button
-            color={"warning"}
-            variant="outlined"
-            aria-label="switch to Rinkeby chain"
-            startIcon={<WalletIcon />}
-            onClick={() => switchChain(rinkebyChain)}
-          >
-            Switch to Rinkeby
-          </Button>
-        </Tooltip>
+      {!isSafeAppWallet && (
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="center"
+          spacing={2}
+          component="span"
+        >
+          <Tooltip title="switch to Rinkeby chain">
+            <Button
+              color={"warning"}
+              variant="outlined"
+              aria-label="switch to Rinkeby chain"
+              startIcon={<WalletIcon />}
+              onClick={() => switchChain(rinkebyChain)}
+            >
+              Switch to Rinkeby
+            </Button>
+          </Tooltip>
 
-        <Tooltip title="switch to Gnosis chain">
-          <Button
-            variant="outlined"
-            aria-label="switch to Gnosis chain"
-            startIcon={<WalletIcon />}
-            onClick={() => switchChain(gnosisChain)}
-          >
-            Switch to Gnosis Chain
-          </Button>
-        </Tooltip>
-      </Stack>
+          <Tooltip title="switch to Gnosis chain">
+            <Button
+              variant="outlined"
+              aria-label="switch to Gnosis chain"
+              startIcon={<WalletIcon />}
+              onClick={() => switchChain(gnosisChain)}
+            >
+              Switch to Gnosis Chain
+            </Button>
+          </Tooltip>
+        </Stack>
+      )}
     </Wrapper>
   );
 };
