@@ -64,7 +64,7 @@ const CounterPage = () => {
   const rows = useMemo(
     () =>
       counterEvents.map((event) => ({
-        id: event.transactionHash,
+        id: event.EventId,
         status: <StatusLabel status={event.status} />,
         method: <CounterEventLabel eventType={event.eventType} />,
         user: <AddressLabel address={event.userAddress} />,

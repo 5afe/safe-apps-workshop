@@ -30,6 +30,7 @@ type counterContextValue = {
 export type CounterEventsStatus = "completed" | "pending";
 
 type CounterEvent = {
+  EventId: string;
   transactionHash: string;
   event: string;
   status: CounterEventsStatus;
@@ -124,15 +125,18 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
       );
 
       setcounterEvents(
-        counterEvents.reverse().map(({ transactionHash, event, args }) => ({
-          transactionHash,
-          event: event || "unknown event",
-          status: "completed",
-          eventType: args?.eventType,
-          prevCounter: args?.prevCounter.toString(),
-          newCounter: args?.newCounter.toString(),
-          userAddress: args?.userAddress,
-        }))
+        counterEvents
+          .reverse()
+          .map(({ event, args, transactionHash, blockHash, logIndex }) => ({
+            EventId: `${transactionHash}-${blockHash}-${logIndex}`, // to uniquely identify the event
+            transactionHash,
+            event: event || "unknown event",
+            status: "completed",
+            eventType: args?.eventType,
+            prevCounter: args?.prevCounter.toString(),
+            newCounter: args?.newCounter.toString(),
+            userAddress: args?.userAddress,
+          }))
       );
 
       setIsEventsLoading(false);
@@ -181,6 +185,7 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
     // we add the new pending transaction to the event table as "pending" status
     setcounterEvents((events) => {
       const newEvent: CounterEvent = {
+        EventId: transaction.hash,
         transactionHash: transaction.hash,
         event: "CounterChange",
         status: "pending",
@@ -200,6 +205,7 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
     // we add the new pending transaction to the event table as "pending" status
     setcounterEvents((events) => {
       const newEvent: CounterEvent = {
+        EventId: transaction.hash,
         transactionHash: transaction.hash,
         event: "CounterChange",
         status: "pending",
@@ -219,6 +225,7 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
     // we add the new pending transaction to the event table as "pending" status
     setcounterEvents((events) => {
       const newEvent: CounterEvent = {
+        EventId: transaction.hash,
         transactionHash: transaction.hash,
         event: "CounterChange",
         status: "pending",

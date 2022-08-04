@@ -31,7 +31,7 @@ const InvalidChainPage = () => {
   return (
     <Wrapper>
       <Typography component="h2" variant="h4" gutterBottom>
-        Invalid wallet Chain
+        Invalid Chain
       </Typography>
 
       {!isSafeAppWallet && (

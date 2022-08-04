@@ -25,3 +25,9 @@ jest.mock("@web3-onboard/walletconnect", () => {
     console.log("TODO: mock walletconnect");
   };
 });
+
+jest.mock("@web3-onboard/gnosis", () => {
+  return () => {
+    console.log("TODO: mock @web3-onboard/gnosis");
+  };
+});
