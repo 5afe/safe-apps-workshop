@@ -17,8 +17,10 @@ export const gnosisChain: Chain = {
   label: "Gnosis Chain",
   rpcUrl: "https://rpc.gnosischain.com",
   blockExplorerUrl: "https://blockscout.com/xdai/mainnet",
-  color: "#48a9a6",
+  color: "#3e6957",
 };
+
+// TODO: add support to other chains ?
 
 const chains: Chain[] = [rinkebyChain, gnosisChain];
 
