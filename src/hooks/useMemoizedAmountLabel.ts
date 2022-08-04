@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-const DECIMALS_DISPLAYED = 3;
+const DECIMALS_DISPLAYED = 4;
 
 const useMemoizedAmountLabel = (amount: string, tokenSymbol: string) => {
   const amountLabel = useMemo(() => {

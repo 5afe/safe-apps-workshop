@@ -113,7 +113,6 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
           const walletHasChanged = oldAddress !== newAddress;
 
           if (walletHasChanged) {
-            setProvider(new ethers.providers.Web3Provider(newWallet.provider));
             return newWallet; // we update the wallet state
           }
 
@@ -131,11 +130,6 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
             const chainHasChanged = newChain.id !== chain.id;
 
             if (chainHasChanged) {
-              // we update the provider state
-              setProvider(
-                new ethers.providers.Web3Provider(newWallet.provider)
-              );
-
               return newChain; // we update the chain state
             }
 
@@ -144,10 +138,9 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
         } else {
           // invalid selected chain
           setIsValidChain(false);
-          setProvider(undefined);
         }
       } else {
-        setProvider(undefined);
+        // disconnected wallet
         setWallet(undefined);
       }
     });
@@ -157,12 +150,21 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
     getInitialWallet();
   }, []);
 
+  // update the provider if a valid wallet & chain is present
+  useEffect(() => {
+    if (wallet && chain && isValidChain) {
+      setProvider(new ethers.providers.Web3Provider(wallet.provider));
+    }
+    return () => {
+      setProvider(undefined);
+    };
+  }, [wallet, isValidChain, chain]);
+
   const showConnectWalletModal = useCallback(async () => {
     const wallets = await onboard.connectWallet();
 
     if (wallets.length > 0) {
-      setWallet(wallets[0]);
-      setProvider(new ethers.providers.Web3Provider(wallets[0].provider));
+      setWallet(wallets[0]); // to simplify this example we only connect one wallet
     }
   }, []);
 
@@ -170,7 +172,6 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
     const [wallet] = onboard.state.get().wallets;
     await onboard.disconnectWallet({ label: wallet.label });
     setWallet(undefined);
-    setProvider(undefined);
   }, []);
 
   const switchChain = useCallback(async (chain: Chain) => {
