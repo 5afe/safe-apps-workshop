@@ -9,7 +9,7 @@ import WalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { styled } from "@mui/material/styles";
 
 import { useWallet } from "src/store/walletContext";
-import { COUNTER_CONTRACT_PATHNAME, HOME_PATHNAME } from "src/routes/routes";
+import { CONNECT_WALLET_PATHNAME, HOME_PATHNAME } from "src/routes/routes";
 import { gnosisChain, rinkebyChain } from "src/chains/chains";
 
 const InvalidChainPage = () => {
@@ -18,13 +18,13 @@ const InvalidChainPage = () => {
 
   useEffect(() => {
     if (!wallet) {
-      navigate(HOME_PATHNAME);
+      navigate(CONNECT_WALLET_PATHNAME);
     }
   }, [wallet, navigate]);
 
   useEffect(() => {
     if (isValidChain) {
-      navigate(COUNTER_CONTRACT_PATHNAME);
+      navigate(HOME_PATHNAME);
     }
   }, [isValidChain, navigate]);
 

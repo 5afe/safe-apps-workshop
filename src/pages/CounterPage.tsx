@@ -18,7 +18,10 @@ import useMultiOnClickPrevention from "src/hooks/useMultiOnClicksPrevention";
 import CounterEventLabel from "src/components/counter-event-label/CounterEventLabel";
 import StatusLabel from "src/components/status-label/StatusLabel";
 import { useWallet } from "src/store/walletContext";
-import { HOME_PATHNAME, INVALID_CHAIN_PATHNAME } from "src/routes/routes";
+import {
+  CONNECT_WALLET_PATHNAME,
+  INVALID_CHAIN_PATHNAME,
+} from "src/routes/routes";
 
 const CounterPage = () => {
   const { wallet, isValidChain } = useWallet();
@@ -26,7 +29,7 @@ const CounterPage = () => {
 
   useEffect(() => {
     if (!wallet) {
-      navigate(HOME_PATHNAME);
+      navigate(CONNECT_WALLET_PATHNAME);
     }
   }, [wallet, navigate]);
 

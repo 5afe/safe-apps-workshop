@@ -14,10 +14,7 @@ import Loader from "src/components/loader/Loader";
 import AddressLabel from "src/components/address-label/AddressLabel";
 import DataTable, { RowType } from "src/components/data-table/DataTable";
 import { gnosisChain, rinkebyChain } from "src/chains/chains";
-import {
-  COUNTER_CONTRACT_PATHNAME,
-  INVALID_CHAIN_PATHNAME,
-} from "src/routes/routes";
+import { HOME_PATHNAME, INVALID_CHAIN_PATHNAME } from "src/routes/routes";
 import { useWallet } from "src/store/walletContext";
 
 const WalletDetailsPage = () => {
@@ -55,10 +52,10 @@ const WalletDetailsPage = () => {
     <>
       <Wrapper>
         <GoBackLink
-          href={COUNTER_CONTRACT_PATHNAME}
+          href={HOME_PATHNAME}
           onClick={(e) => {
             e.preventDefault();
-            navigate(COUNTER_CONTRACT_PATHNAME);
+            navigate(HOME_PATHNAME);
           }}
         >
           Go back to your counter

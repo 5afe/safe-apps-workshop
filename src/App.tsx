@@ -6,8 +6,8 @@ import CounterPage from "./pages/CounterPage";
 import InvalidChainPage from "./pages/InvalidChainPage";
 import WalletDetailsPage from "./pages/WalletDetailsPage";
 import {
-  COUNTER_CONTRACT_PATHNAME,
   HOME_PATHNAME,
+  CONNECT_WALLET_PATHNAME,
   INVALID_CHAIN_PATHNAME,
   WALLET_DETAILS_PATHNAME,
 } from "./routes/routes";
@@ -19,8 +19,11 @@ function App() {
         <Header />
         <main>
           <Routes>
-            <Route path={HOME_PATHNAME} element={<ConnectYourWalletPage />} />
-            <Route path={COUNTER_CONTRACT_PATHNAME} element={<CounterPage />} />
+            <Route path={HOME_PATHNAME} element={<CounterPage />} />
+            <Route
+              path={CONNECT_WALLET_PATHNAME}
+              element={<ConnectYourWalletPage />}
+            />
             <Route
               path={INVALID_CHAIN_PATHNAME}
               element={<InvalidChainPage />}

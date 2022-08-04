@@ -13,23 +13,22 @@ import ChainLabel from "src/components/chain-label/ChainLabel";
 import InvalidChainLabel from "../invalid-chain-label/InvalidChainLabel";
 import { WALLET_DETAILS_PATHNAME } from "src/routes/routes";
 import metamaskLogo from "src/assets/Metamask_logo.svg";
+import QuestionMarkRoundedIcon from "@mui/icons-material/QuestionMarkRounded";
 import walletConnectLogo from "src/assets/WalletConnect_logo.png";
 
 // TODO: uncomment the line 20 and 25 to add the Safe Wallet logo in the UI
-
 // import safeWalletLogo from "src/assets/SafeWallet_logo.png";
 
 const logos: Record<string, string> = {
   WalletConnect: walletConnectLogo,
   MetaMask: metamaskLogo,
   // "Gnosis Safe": safeWalletLogo,
-  unknown: "TODO: Add unknown wallet icon",
 };
 
 const ConnectedWallet = () => {
   const { userAddress, wallet, chain, userBalance, isValidChain } = useWallet();
 
-  const walletLabel = wallet?.label || "unknown";
+  const walletLabel = wallet?.label || "Unknown Wallet";
   const walletLogo = logos[walletLabel];
   const nativeTokenSymbol = chain.token;
   const amount = userBalance?.[nativeTokenSymbol];
@@ -69,7 +68,14 @@ const ConnectedWallet = () => {
           spacing={0.5}
           component="span"
         >
-          <img src={walletLogo} alt="connected wallet logo" height={24} />
+          {walletLogo ? (
+            <img src={walletLogo} alt="connected Wallet logo" height={24} />
+          ) : (
+            <Tooltip title="Unknown connected Wallet">
+              <QuestionMarkRoundedIcon />
+            </Tooltip>
+          )}
+
           <Typography variant="body2">
             {userAddress && (
               <AddressLabel address={userAddress} showBlockExplorerLink />

@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import WalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { styled } from "@mui/material/styles";
 
-import { COUNTER_CONTRACT_PATHNAME } from "src/routes/routes";
+import { HOME_PATHNAME } from "src/routes/routes";
 
 import { useWallet } from "src/store/walletContext";
 
@@ -18,7 +18,7 @@ const ConnectYourWalletPage = () => {
 
   useEffect(() => {
     if (wallet) {
-      navigate(COUNTER_CONTRACT_PATHNAME);
+      navigate(HOME_PATHNAME);
     }
   }, [wallet, navigate]);
 
