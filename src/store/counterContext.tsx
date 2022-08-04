@@ -154,22 +154,11 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
         userAddress // userAddress
       );
 
-      // Listen to incoming CounterChange user events:
-      counterContract.on(
-        filterUserCounterEvents,
-        (eventType, prevCounter, newCounter, signerAddress, newEvent) => {
-          // we need to check if its a new counter change event
-          const isNewEvent = !counterEvents.some(
-            (event) => event.transactionHash === newEvent.transactionHash
-          );
-
-          //if its a new counter change event we update the counter and the tx list
-          if (isNewEvent) {
-            getCounter();
-            getCounterEvents();
-          }
-        }
-      );
+      // Listen to incoming CounterChange user events and update the UI
+      counterContract.on(filterUserCounterEvents, () => {
+        getCounter();
+        getCounterEvents();
+      });
     }
   }, [
     counterContract,
