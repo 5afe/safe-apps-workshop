@@ -36,7 +36,7 @@ const onboard = Onboard({
     // 4.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
     // gnosisModule(),
     //
-    // 5.- disable the last used wallet autoconnect uncommenting the line 239 in the bottom of this file
+    // 5.- disable the last used wallet autoconnect uncommenting the line 231 in the bottom of this file
     //
     // 6.- go to src/components/connected-wallet/ConnectedWallet.tsx file and add the safe logo in the UI
     //
@@ -99,57 +99,6 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 
   const [userBalance, setUserBalance] = useState<Balances>();
 
-  // suscriptions to onboard state (chain & wallet updates)
-  useEffect(() => {
-    const wallets = onboard.state.select("wallets");
-    wallets.subscribe((update) => {
-      const newWallet = update?.[0];
-
-      if (!!newWallet) {
-        // if the user select a new wallet we update the state with it
-        setWallet((wallet) => {
-          const newAddress = newWallet?.accounts?.[0]?.address;
-          const oldAddress = wallet?.accounts?.[0]?.address;
-          const walletHasChanged = oldAddress !== newAddress;
-
-          if (walletHasChanged) {
-            return newWallet; // we update the wallet state
-          }
-
-          return wallet; // no state update
-        });
-
-        // if the user select a new valid chain we update the state with it
-        const newChainId = newWallet?.chains?.[0]?.id;
-        const newChain = chains.find((chain) => chain.id === newChainId);
-        const isValidChain = !!newChain;
-
-        if (isValidChain) {
-          setIsValidChain(true);
-          setChain((chain) => {
-            const chainHasChanged = newChain.id !== chain.id;
-
-            if (chainHasChanged) {
-              return newChain; // we update the chain state
-            }
-
-            return chain; // no state update
-          });
-        } else {
-          // invalid selected chain
-          setIsValidChain(false);
-        }
-      } else {
-        // disconnected wallet
-        setWallet(undefined);
-      }
-    });
-
-    // auto selecting the user wallet
-    // see https://docs.blocknative.com/onboard/core#auto-selecting-a-wallet
-    getInitialWallet();
-  }, []);
-
   // update the provider if a valid wallet & chain is present
   useEffect(() => {
     if (wallet && chain && isValidChain) {
@@ -160,18 +109,60 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
     };
   }, [wallet, isValidChain, chain]);
 
+  // suscriptions to onboard state (chain & wallet updates)
+  useEffect(() => {
+    const wallets = onboard.state.select("wallets");
+    wallets.subscribe((update) => {
+      const newWallet = update?.[0];
+      const newChainId = newWallet?.chains?.[0]?.id;
+      const newChain = chains.find((chain) => chain.id === newChainId);
+
+      setIsValidChain(!!newChain);
+
+      // we only update the state if a new wallet is present
+      setWallet((wallet) => {
+        const newAddress = newWallet?.accounts?.[0]?.address;
+        const currentAddress = wallet?.accounts?.[0]?.address;
+        const isNewWallet =
+          currentAddress !== newAddress || wallet?.label !== newWallet?.label;
+
+        if (isNewWallet) {
+          return newWallet;
+        }
+
+        return wallet;
+      });
+
+      // we only update the state if a new chain is present
+      setChain((chain) => {
+        const isNewChain = newChainId !== chain.id;
+
+        if (isNewChain) {
+          setWallet(newWallet);
+          return newChain || initialChain;
+        }
+
+        return chain;
+      });
+    });
+
+    // auto selecting the user wallet
+    // see https://docs.blocknative.com/onboard/core#auto-selecting-a-wallet
+    getInitialWallet();
+  }, []);
+
   const showConnectWalletModal = useCallback(async () => {
     const wallets = await onboard.connectWallet();
 
     if (wallets.length > 0) {
-      setWallet(wallets[0]); // to simplify this example we only connect one wallet
+      setWallet(wallets[0]); // for simplicity, we only connect one wallet
     }
   }, []);
 
   const disconnectWallet = useCallback(async () => {
     const [wallet] = onboard.state.get().wallets;
-    await onboard.disconnectWallet({ label: wallet.label });
     setWallet(undefined);
+    await onboard.disconnectWallet({ label: wallet.label });
   }, []);
 
   const switchChain = useCallback(async (chain: Chain) => {
@@ -197,8 +188,8 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
   // user balance polling every 6 secs
   usePolling(getUserBalance);
 
-  // TODO: remove the line 200 and uncomment the line 201
-  const isSafeAppWallet = false;
+  // TODO: remove the line 192 and uncomment the line 193
+  const isSafeAppWallet = false; // delete this
   // const isSafeAppWallet = wallet?.label === "Gnosis Safe";
 
   // we update the localstorage with the lastUsedWallet
