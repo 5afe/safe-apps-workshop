@@ -19,6 +19,8 @@ const Label = styled("span")(
     margin-right: 8px;
     border-radius: 4px;
     padding: 4px 12px;
+
+    border: 1px solid #fff;
   
     background-color: ${color};
   

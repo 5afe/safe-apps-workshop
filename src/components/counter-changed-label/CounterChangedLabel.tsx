@@ -31,7 +31,7 @@ const ValueLabel = styled(Typography)(
         ? theme.palette.grey["100"]
         : theme.palette.grey["800"]
     };
-    borderRadius: 4px;
+    border-radius: 4px;
     border: 1px solid;
     border-color:  ${theme.palette.divider};
 `

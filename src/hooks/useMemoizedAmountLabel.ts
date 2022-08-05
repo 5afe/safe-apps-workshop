@@ -1,22 +1,32 @@
 import { useMemo } from "react";
 
-const DECIMALS_DISPLAYED = 4;
+const DEFAULT_DECIMALS_DISPLAYED = 4;
 
-const useMemoizedAmountLabel = (amount: string, tokenSymbol: string) => {
+type useMemoizedAmountLabelType = (
+  amount: string,
+  tokenSymbol: string,
+  decimalsDisplayed?: number
+) => string;
+
+const useMemoizedAmountLabel: useMemoizedAmountLabelType = (
+  amount,
+  tokenSymbol,
+  decimalsDisplayed = DEFAULT_DECIMALS_DISPLAYED
+) => {
   const amountLabel = useMemo(() => {
     if (amount) {
       const [integerPart, decimalPart] = amount.split(".");
 
       const hasDecimal = !!decimalPart;
       const decimalLabel = hasDecimal
-        ? `.${decimalPart.slice(0, DECIMALS_DISPLAYED)}`
+        ? `.${decimalPart.slice(0, decimalsDisplayed)}`
         : "";
 
       return `${integerPart}${decimalLabel} ${tokenSymbol}`;
     }
 
     return `0 ${tokenSymbol}`;
-  }, [amount, tokenSymbol]);
+  }, [amount, tokenSymbol, decimalsDisplayed]);
 
   return amountLabel;
 };
