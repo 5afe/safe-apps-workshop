@@ -5,10 +5,19 @@ import useMemoizedAmountLabel from "src/hooks/useMemoizedAmountLabel";
 type AmountLabelType = {
   amount: string;
   tokenSymbol: string;
+  decimalsDisplayed?: number;
 };
 
-function AmountLabel({ amount, tokenSymbol }: AmountLabelType) {
-  const amountLabel = useMemoizedAmountLabel(amount, tokenSymbol);
+function AmountLabel({
+  amount,
+  tokenSymbol,
+  decimalsDisplayed,
+}: AmountLabelType) {
+  const amountLabel = useMemoizedAmountLabel(
+    amount,
+    tokenSymbol,
+    decimalsDisplayed
+  );
 
   return (
     <Tooltip title={`${amount} ${tokenSymbol}`}>

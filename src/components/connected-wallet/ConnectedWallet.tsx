@@ -3,6 +3,8 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import { styled } from "@mui/material/styles";
+import { formatEther } from "ethers/lib/utils";
+import { SafeBalances } from "@gnosis.pm/safe-apps-sdk";
 
 import { LIGHT_THEME } from "src/theme/theme";
 import { useWallet } from "src/store/walletContext";
@@ -15,14 +17,23 @@ import { WALLET_DETAILS_PATHNAME } from "src/routes/routes";
 import metamaskLogo from "src/assets/Metamask_logo.svg";
 import QuestionMarkRoundedIcon from "@mui/icons-material/QuestionMarkRounded";
 import walletConnectLogo from "src/assets/WalletConnect_logo.png";
-
-// TODO: uncomment the line 20 and 25 to add the Safe Wallet logo in the UI
-// import safeWalletLogo from "src/assets/SafeWallet_logo.png";
+import safeWalletLogo from "src/assets/SafeWallet_logo.png";
 
 const logos: Record<string, string> = {
   WalletConnect: walletConnectLogo,
   MetaMask: metamaskLogo,
-  // "Gnosis Safe": safeWalletLogo,
+  "Gnosis Safe": safeWalletLogo,
+};
+
+const getNativeTokenAmount = (userBalance?: SafeBalances) => {
+  if (!userBalance) {
+    return 0;
+  }
+
+  return formatEther(
+    userBalance.items.find(({ tokenInfo }) => tokenInfo.type === "NATIVE_TOKEN")
+      ?.balance || 0
+  );
 };
 
 const ConnectedWallet = () => {
@@ -31,7 +42,7 @@ const ConnectedWallet = () => {
   const walletLabel = wallet?.label || "Unknown Wallet";
   const walletLogo = logos[walletLabel];
   const nativeTokenSymbol = chain.token;
-  const amount = userBalance?.[nativeTokenSymbol];
+  const amount = getNativeTokenAmount(userBalance);
   const hasFounds = !!amount && nativeTokenSymbol;
 
   const navigate = useNavigate();

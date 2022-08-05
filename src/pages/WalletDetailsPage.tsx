@@ -6,9 +6,12 @@ import Paper from "@mui/material/Paper";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
 import WalletIcon from "@mui/icons-material/AccountBalanceWallet";
+import OpenInNew from "@mui/icons-material/OpenInNew";
 import { styled } from "@mui/material/styles";
-import { Balances } from "@web3-onboard/core/dist/types";
+import { formatEther } from "ethers/lib/utils";
+import { SafeBalances } from "@gnosis.pm/safe-apps-sdk";
 
 import Loader from "src/components/loader/Loader";
 import AddressLabel from "src/components/address-label/AddressLabel";
@@ -16,6 +19,8 @@ import DataTable, { RowType } from "src/components/data-table/DataTable";
 import { gnosisChain, rinkebyChain } from "src/chains/chains";
 import { HOME_PATHNAME, INVALID_CHAIN_PATHNAME } from "src/routes/routes";
 import { useWallet } from "src/store/walletContext";
+import AmountLabel from "src/components/amount-label/AmountLabel";
+import Chain from "src/models/chain";
 
 const WalletDetailsPage = () => {
   const {
@@ -41,8 +46,11 @@ const WalletDetailsPage = () => {
 
   const isGnosisChain = chain.id === gnosisChain.id;
 
-  const assetColumns = ["token", "amount"];
-  const assetRows = useMemo(() => getBalanceRows(userBalance), [userBalance]);
+  const assetColumns = ["token", "type", "balance", "value"];
+  const assetRows = useMemo(
+    () => getBalanceRows(chain, userBalance),
+    [chain, userBalance]
+  );
 
   if (!userAddress) {
     return <Loader isLoading />;
@@ -73,6 +81,21 @@ const WalletDetailsPage = () => {
             showBlockExplorerLink
           />
         </Typography>
+
+        {/* Your total balance */}
+        {userBalance && (
+          <>
+            <Typography component="h4" variant="h6" gutterBottom>
+              Total Balance
+            </Typography>
+
+            <AmountLabel
+              amount={userBalance.fiatTotal}
+              tokenSymbol={"USD"}
+              decimalsDisplayed={2}
+            />
+          </>
+        )}
 
         {!isSafeAppWallet && (
           <Stack
@@ -155,14 +178,80 @@ const AssetsTableContainer = styled(Paper)`
   margin-top: 24px;
 `;
 
-const getBalanceRows = (balances: Balances | undefined): RowType[] => {
-  if (!balances) {
+const getBalanceRows = (
+  chain: Chain,
+  userBalance?: SafeBalances
+): RowType[] => {
+  if (!userBalance) {
     return [];
   }
 
-  return Object.keys(balances).map((token) => ({
-    id: token,
-    token,
-    amount: balances[token],
+  return userBalance.items.map((token) => ({
+    id: token.tokenInfo.name,
+    token: (
+      <TokenNameLabel
+        name={token.tokenInfo.name}
+        logoUri={token.tokenInfo.logoUri}
+        address={
+          token.tokenInfo.type === "NATIVE_TOKEN" ? "" : token.tokenInfo.address
+        }
+        chain={chain}
+      />
+    ),
+    type:
+      token.tokenInfo.type === "NATIVE_TOKEN"
+        ? "Native Token"
+        : token.tokenInfo.type,
+    balance: (
+      <AmountLabel
+        amount={formatEther(token.balance)}
+        tokenSymbol={token.tokenInfo.symbol}
+      />
+    ),
+    value: (
+      <AmountLabel
+        amount={token.fiatBalance}
+        tokenSymbol={"USD"}
+        decimalsDisplayed={2}
+      />
+    ),
   }));
+};
+
+const TokenNameLabel = ({
+  name,
+  logoUri,
+  chain,
+  address,
+}: {
+  name: string;
+  logoUri: string;
+  chain: Chain;
+  address?: string;
+}) => {
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="flex-start"
+      spacing={0.5}
+    >
+      <img src={logoUri} height="24" alt="" />
+      <div>{name}</div>
+      {address && (
+        <Tooltip title={"view details on block Explorer"}>
+          <IconButton
+            aria-label={`Show token details on block Explorer`}
+            component="a"
+            href={`${chain?.blockExplorerUrl}/address/${address}`}
+            target="_blank"
+            rel="noopener"
+            size={"small"}
+          >
+            <OpenInNew fontSize="inherit" />
+          </IconButton>
+        </Tooltip>
+      )}
+    </Stack>
+  );
 };
