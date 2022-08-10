@@ -22,6 +22,8 @@ export const gnosisChain: Chain = {
 
 // TODO: add support to other chains ?
 
+// TODO: add Goerli testnet
+
 const chains: Chain[] = [rinkebyChain, gnosisChain];
 
 export const initialChain = rinkebyChain;

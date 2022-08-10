@@ -20,11 +20,12 @@ import StatusLabel from "src/components/status-label/StatusLabel";
 import { useWallet } from "src/store/walletContext";
 import {
   CONNECT_WALLET_PATHNAME,
+  FAUCET_PATHNAME,
   INVALID_CHAIN_PATHNAME,
 } from "src/routes/routes";
 
 const CounterPage = () => {
-  const { wallet, isValidChain } = useWallet();
+  const { wallet, isValidChain, userBalance, chain } = useWallet();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,6 +39,16 @@ const CounterPage = () => {
       navigate(INVALID_CHAIN_PATHNAME);
     }
   }, [isValidChain, navigate]);
+
+  useEffect(() => {
+    const nativeTokenSymbol = chain.token;
+    const amount = userBalance?.[nativeTokenSymbol];
+    const hasFounds = !!Number(amount);
+
+    if (userBalance && !hasFounds) {
+      navigate(FAUCET_PATHNAME);
+    }
+  }, [chain, userBalance, navigate]);
 
   const {
     counterContractAddress,

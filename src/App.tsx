@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "src/components/header/Header";
 import ConnectYourWalletPage from "./pages/ConnectYourWalletPage";
 import CounterPage from "./pages/CounterPage";
+import FaucetPage from "./pages/FaucetPage";
 import InvalidChainPage from "./pages/InvalidChainPage";
 import WalletDetailsPage from "./pages/WalletDetailsPage";
 import {
@@ -10,6 +11,7 @@ import {
   CONNECT_WALLET_PATHNAME,
   INVALID_CHAIN_PATHNAME,
   WALLET_DETAILS_PATHNAME,
+  FAUCET_PATHNAME,
 } from "./routes/routes";
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
               path={WALLET_DETAILS_PATHNAME}
               element={<WalletDetailsPage />}
             />
+
+            <Route path={FAUCET_PATHNAME} element={<FaucetPage />} />
           </Routes>
         </main>
       </BrowserRouter>
