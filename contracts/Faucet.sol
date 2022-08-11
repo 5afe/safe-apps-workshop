@@ -15,7 +15,7 @@ contract Faucet is Ownable, Pausable {
     event FundsClaimed(
         address indexed userAddress,
         uint64 claimTime,
-        uint64 claimableAmount
+        uint64 claimedAmount
     );
 
     struct Claim {

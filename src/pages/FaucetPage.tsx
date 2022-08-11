@@ -1,4 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+import { ethers } from "ethers";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
@@ -14,9 +16,6 @@ import useFaucet from "src/hooks/useFaucet";
 import { useWallet } from "src/store/walletContext";
 import { LIGHT_THEME } from "src/theme/theme";
 import { HOME_PATHNAME } from "src/routes/routes";
-import { useNavigate } from "react-router-dom";
-
-const TRANSFER_AMOUNT = 0.02;
 
 const FaucetPage = () => {
   const { chain, userBalance } = useWallet();
@@ -32,31 +31,31 @@ const FaucetPage = () => {
     isEventsLoading,
   } = useFaucet();
 
-  // TODO: add recaptcha
-
   const isBalanceLoading = !userBalance;
   const nativeTokenSymbol = chain.token;
   const amount = userBalance?.[nativeTokenSymbol];
 
   const rows = useMemo(
     () =>
-      userClaims.map((claim) => ({
-        id: claim.EventId,
-        status: <StatusLabel status={claim.status} />,
-        date: new Date(Number(claim.claimTime) * 1000).toLocaleString(),
-        transaction: (
-          <TransactionLabel
-            transactionHash={claim.transactionHash}
-            showBlockExplorerLink
-          />
-        ),
-        amount: (
-          <AmountLabel
-            amount={`${TRANSFER_AMOUNT}`}
-            tokenSymbol={nativeTokenSymbol}
-          />
-        ),
-      })),
+      userClaims.map(
+        ({ EventId, status, claimTime, transactionHash, claimedAmount }) => ({
+          id: EventId,
+          status: <StatusLabel status={status} />,
+          date: new Date(Number(claimTime) * 1000).toLocaleString(),
+          transaction: (
+            <TransactionLabel
+              transactionHash={transactionHash}
+              showBlockExplorerLink
+            />
+          ),
+          amount: (
+            <AmountLabel
+              amount={ethers.utils.formatEther(claimedAmount)}
+              tokenSymbol={nativeTokenSymbol}
+            />
+          ),
+        })
+      ),
     [userClaims, nativeTokenSymbol]
   );
 
@@ -118,7 +117,7 @@ const FaucetPage = () => {
               <ClaimErrorLabel color="error">{claimError}</ClaimErrorLabel>
             )}
 
-            {!isBalanceLoading && Number(amount) > TRANSFER_AMOUNT && (
+            {!isBalanceLoading && Number(amount) > 0.02 && (
               <LinkToCounter>
                 <Link
                   href={HOME_PATHNAME}

@@ -31,6 +31,7 @@ type ClaimFundsEvent = {
   transactionHash: string;
   status: ClaimFundsEventStatus;
   claimTime: string;
+  claimedAmount: string;
 };
 
 function useFaucet(): useFauceReturnType {
@@ -70,6 +71,7 @@ function useFaucet(): useFauceReturnType {
           transactionHash: transaction,
           status: "pending",
           claimTime: new Date().getTime().toString(),
+          claimedAmount: "?",
         };
 
         return [newEvent, ...events];
@@ -106,7 +108,8 @@ function useFaucet(): useFauceReturnType {
       // event FundsClaimed(address userAddress) filterd by the current user
       const filteredClaimEvents = faucetContract.filters.FundsClaimed(
         userAddress, // userAddress
-        null // claimTime
+        null, // claimTime
+        null // claimedAmount
       );
 
       const faucetEvents = await faucetContract.queryFilter(
@@ -123,6 +126,7 @@ function useFaucet(): useFauceReturnType {
             transactionHash,
             status: "completed",
             claimTime: args?.claimTime.toString(),
+            claimedAmount: args?.claimedAmount.toString(),
           }))
       );
 
@@ -141,7 +145,8 @@ function useFaucet(): useFauceReturnType {
       // see docs: https://docs.ethers.io/v5/api/contract/example/#erc20-meta-events
       const filteredClaimEvents = faucetContract.filters.FundsClaimed(
         userAddress, // userAddress
-        null // claimTime
+        null, // claimTime
+        null // claimedAmount
       );
 
       // Listen to incoming ClaimEvents user events and update the UI
