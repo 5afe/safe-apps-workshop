@@ -4,11 +4,17 @@ const { REACT_APP_FAUCET_BACKEND_URL } = process.env;
 
 const FAUCET_URL = `${REACT_APP_FAUCET_BACKEND_URL}/api/faucet`;
 
+// TODO: Create requestFunds type
+
 const requestFunds = async (body: any) => {
   try {
-    return await axios.post(FAUCET_URL, body);
+    const response = await axios.post(FAUCET_URL, body);
+
+    return response.data;
   } catch (error: any) {
-    return Promise.reject(error.response.data.error || "request founds request failed");
+    return Promise.reject(
+      error.response.data.error || "request funds request failed"
+    );
   }
 };
 

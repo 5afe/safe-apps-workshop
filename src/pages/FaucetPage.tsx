@@ -1,57 +1,68 @@
-// REACT_APP_FAUCET_BACKEND_URL
-
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
+import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
 
 import TransactionLabel from "src/components/transaction-label/TransactionLabel";
 import AmountLabel from "src/components/amount-label/AmountLabel";
 import Loader from "src/components/loader/Loader";
-import requestFunds from "src/api/requestFunds";
+import DataTable from "src/components/data-table/DataTable";
+import StatusLabel from "src/components/status-label/StatusLabel";
+import useFaucet from "src/hooks/useFaucet";
 import { useWallet } from "src/store/walletContext";
 import { LIGHT_THEME } from "src/theme/theme";
+import { HOME_PATHNAME } from "src/routes/routes";
+import { useNavigate } from "react-router-dom";
+
+const TRANSFER_AMOUNT = 0.02;
 
 const FaucetPage = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [transaction, setTransaction] = useState<string>();
-  const [error, setError] = useState<string>("");
+  const { chain, userBalance } = useWallet();
 
-  const { userAddress, chain, userBalance } = useWallet();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    setError("");
-  }, [userAddress, chain]);
+  const {
+    claimFunds,
+    isClaimLoading,
+    claimError,
 
-  // TODO: create useFaucet
+    userClaims,
+    isEventsLoading,
+  } = useFaucet();
 
-  // TODO: create redirection to Faucet if no funds are present
-
-  // TODO: create redirection to Counter if funds are present
-
-  // TODO: ADD RECAPTCHA ????
+  // TODO: add recaptcha
 
   const isBalanceLoading = !userBalance;
   const nativeTokenSymbol = chain.token;
   const amount = userBalance?.[nativeTokenSymbol];
-  const hasError = !!error;
 
-  const claimFunds = async () => {
-    try {
-      setIsLoading(true);
-      setError("");
-      const response = await requestFunds({
-        address: userAddress,
-        chainId: chain.id,
-      });
-      setTransaction(response.data.transaction);
-    } catch (error) {
-      setError(error as string);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const rows = useMemo(
+    () =>
+      userClaims.map((claim) => ({
+        id: claim.EventId,
+        status: <StatusLabel status={claim.status} />,
+        date: new Date(Number(claim.claimTime) * 1000).toLocaleString(),
+        transaction: (
+          <TransactionLabel
+            transactionHash={claim.transactionHash}
+            showBlockExplorerLink
+          />
+        ),
+        amount: (
+          <AmountLabel
+            amount={`${TRANSFER_AMOUNT}`}
+            tokenSymbol={nativeTokenSymbol}
+          />
+        ),
+      })),
+    [userClaims, nativeTokenSymbol]
+  );
+
+  const columns = ["status", "date", "transaction", "amount"];
+
+  const isClaimPending = userClaims.some((claim) => claim.status === "pending");
 
   return (
     <>
@@ -68,14 +79,14 @@ const FaucetPage = () => {
         </Typography>
 
         <Loader
-          isLoading={isLoading}
-          loadingText={"Requesting funds..."}
-          minHeight={170}
+          isLoading={isClaimLoading || isClaimPending}
+          loadingText="Requesting funds..."
+          minHeight={233}
         >
           <Loader
             isLoading={isBalanceLoading}
-            loadingText={"Loading founds..."}
-            minHeight={133}
+            loadingText="Loading funds..."
+            minHeight={123}
           >
             <BalanceWrapper>
               <Typography component="h3" variant="h5" gutterBottom>
@@ -93,34 +104,50 @@ const FaucetPage = () => {
             </BalanceWrapper>
           </Loader>
 
-          <div>
-            {transaction ? (
-              <TransactionLabel transactionHash={transaction} />
-            ) : (
-              <Button
-                aria-label="claim founds"
-                onClick={claimFunds}
-                variant="contained"
-                disabled={isBalanceLoading}
-              >
-                Request Funds
-              </Button>
-            )}
-          </div>
+          <ButtonContainer>
+            <Button
+              aria-label="claim funds"
+              onClick={claimFunds}
+              variant="contained"
+              disabled={isBalanceLoading}
+            >
+              Request Funds
+            </Button>
 
-          {/* {hasError && (
-            <Typography color="error" gutterBottom>
-              {error}
-            </Typography>
-          )} */}
+            {!!claimError && (
+              <ClaimErrorLabel color="error">{claimError}</ClaimErrorLabel>
+            )}
+
+            {!isBalanceLoading && Number(amount) > TRANSFER_AMOUNT && (
+              <LinkToCounter>
+                <Link
+                  href={HOME_PATHNAME}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate(HOME_PATHNAME);
+                  }}
+                >
+                  Go to your counter page
+                </Link>
+              </LinkToCounter>
+            )}
+          </ButtonContainer>
         </Loader>
       </Wrapper>
 
-      {/* Claims Table */}
-      <Wrapper>
-        {/* TODO: check transaction here! */}
-        <Typography>TODO: Claims Table</Typography>
-      </Wrapper>
+      <TableContainer>
+        <Loader
+          isLoading={isEventsLoading}
+          loadingText={"Loading events..."}
+          minHeight={200}
+        >
+          <DataTable
+            rows={rows}
+            columns={columns}
+            ariaLabel="user claim funds event table"
+          />
+        </Loader>
+      </TableContainer>
     </>
   );
 };
@@ -135,7 +162,7 @@ const Wrapper = styled(Paper)`
 `;
 
 const BalanceWrapper = styled("div")`
-  margin: 24px 0 42px 0;
+  margin: 24px 0 32px 0;
 `;
 
 const AmountContainer = styled(Paper)(
@@ -153,3 +180,21 @@ const AmountContainer = styled(Paper)(
   }
 `
 );
+
+const ButtonContainer = styled("div")`
+  min-height: 110px;
+`;
+
+const ClaimErrorLabel = styled(Typography)`
+  margin: 12px 0;
+`;
+
+const LinkToCounter = styled(Typography)`
+  margin: 12px 0 0 0;
+`;
+
+const TableContainer = styled(Paper)`
+  max-width: 800px;
+  margin: 0 auto;
+  margin-top: 24px;
+`;

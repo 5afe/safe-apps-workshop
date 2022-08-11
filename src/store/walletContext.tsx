@@ -92,6 +92,8 @@ const useWallet = () => {
 const WalletProvider = ({ children }: { children: JSX.Element }) => {
   const [wallet, setWallet] = useState<WalletState | undefined>();
 
+  // TODO: Create a isWalletLoading!
+
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
 
   const [chain, setChain] = useState<Chain>(initialChain);

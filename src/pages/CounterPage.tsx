@@ -28,6 +28,7 @@ const CounterPage = () => {
   const { wallet, isValidChain, userBalance, chain } = useWallet();
   const navigate = useNavigate();
 
+  // TODO: create a custom hook for this?
   useEffect(() => {
     if (!wallet) {
       navigate(CONNECT_WALLET_PATHNAME);
@@ -41,11 +42,12 @@ const CounterPage = () => {
   }, [isValidChain, navigate]);
 
   useEffect(() => {
-    const nativeTokenSymbol = chain.token;
-    const amount = userBalance?.[nativeTokenSymbol];
-    const hasFounds = !!Number(amount);
+    const nativeToken = chain.token;
+    const nativeTokenFunds = userBalance?.[nativeToken];
+    const hasFunds = nativeTokenFunds && !!Number(nativeTokenFunds);
+    const redirectToFaucetPage = userBalance && !hasFunds;
 
-    if (userBalance && !hasFounds) {
+    if (redirectToFaucetPage) {
       navigate(FAUCET_PATHNAME);
     }
   }, [chain, userBalance, navigate]);
@@ -64,7 +66,7 @@ const CounterPage = () => {
     decrementCounter,
   } = useCounter();
 
-  // to prevent trigger multiple clicks
+  // to prevent trigger multiple clicks on the action buttons
   const { disabled, preventMultiOnClick } = useMultiOnClickPrevention();
 
   const columns: string[] = [

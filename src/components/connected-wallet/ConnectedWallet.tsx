@@ -32,7 +32,7 @@ const ConnectedWallet = () => {
   const walletLogo = logos[walletLabel];
   const nativeTokenSymbol = chain.token;
   const amount = userBalance?.[nativeTokenSymbol];
-  const hasFounds = !!amount && nativeTokenSymbol;
+  const hasFunds = !!amount && nativeTokenSymbol;
 
   const navigate = useNavigate();
   const isWalletDetailsPage = useMatch(WALLET_DETAILS_PATHNAME);
@@ -84,8 +84,8 @@ const ConnectedWallet = () => {
         </Stack>
       </Container>
 
-      {/* native founds section */}
-      {hasFounds && (
+      {/* native hasFunds section */}
+      {hasFunds && (
         <Container>
           <Typography variant="body2">
             <AmountLabel amount={amount} tokenSymbol={nativeTokenSymbol} />

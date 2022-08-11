@@ -167,7 +167,6 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
   }, [
     counterContract,
     userAddress,
-    counterEvents,
     getCounter,
     getCounterEvents,
   ]);

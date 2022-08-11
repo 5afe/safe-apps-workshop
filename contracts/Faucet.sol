@@ -12,7 +12,11 @@ uint64 constant claimCooldown = 1 minutes;
 /// @title Faucet Contract - A simple faucet contract for the safe apps workshop
 /// @author Daniel Somoza - <daniel.somoza@safe.global>
 contract Faucet is Ownable, Pausable {
-    event FundsClaimed(address userAddress);
+    event FundsClaimed(
+        address indexed userAddress,
+        uint64 claimTime,
+        uint64 claimableAmount
+    );
 
     struct Claim {
         uint64 amount; // total amount claimed
@@ -54,10 +58,14 @@ contract Faucet is Ownable, Pausable {
         claimLimitNotReached(userAddress)
         isReadyToClaim(userAddress)
     {
+        uint64 _lastClaimTime = uint64(block.timestamp);
+
         claims[userAddress].amount += claimableAmount;
-        claims[userAddress].lastClaimTime = uint64(block.timestamp);
+        claims[userAddress].lastClaimTime = _lastClaimTime;
+
         payable(userAddress).transfer(claimableAmount);
-        emit FundsClaimed(userAddress);
+
+        emit FundsClaimed(userAddress, _lastClaimTime, claimableAmount);
     }
 
     function withdraw() external onlyOwner {
