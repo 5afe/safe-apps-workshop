@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
@@ -25,8 +26,21 @@ const ConnectYourWalletPage = () => {
   return (
     <Wrapper>
       <Typography component="h2" variant="h4" gutterBottom>
-        Connect your wallet!
+        Open the Safe App{" "}
+        <Link href="https://gnosis-safe.io/app/welcome">in the Safe UI!</Link>
       </Typography>
+
+      <Tooltip title="Connect your wallet">
+        <Button
+          color="inherit"
+          variant="outlined"
+          aria-label="Connect yout wallet"
+          startIcon={<WalletIcon />}
+          onClick={showConnectWalletModal}
+        >
+          Connect
+        </Button>
+      </Tooltip>
 
       {!isSafeAppWallet && (
         <Tooltip title="Connect your wallet">
