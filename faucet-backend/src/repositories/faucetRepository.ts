@@ -1,5 +1,8 @@
+import { TransactionResponse } from "@ethersproject/providers";
 import dotenv from "dotenv";
 import { ethers } from "ethers";
+
+import { log } from "../logger/logger";
 
 dotenv.config();
 
@@ -14,60 +17,25 @@ async function claimFunds(
   address: string,
   chainId: number
 ): Promise<{ transaction: string }> {
-  const faucetContract = getFaucetContract(chainId);
-
   try {
-    const transaction = await faucetContract.claimFunds(address, {
-      // gasLimit: 70000,
-      // TODO: check nonce ????
-      // nonce: nonce || undefined,
-    });
+    const transaction = await enqueueClaimsTransactions(() => {
+      const faucetContract = getFaucetContract(chainId);
+
+      return faucetContract.claimFunds(address);
+    }, address);
 
     return {
-      transaction: transaction.hash,
+      transaction: transaction?.hash || "",
     };
   } catch (error: any) {
-    throw new Error(parseError(error, chainId));
+    const errorLabel = error?.error?.reason || error?.error || error;
+    throw new Error(errorLabel);
   }
 }
 
 const faucetRepository = { claimFunds };
 
 export default faucetRepository;
-
-/**
- * Parses a Faucet contract error to string.
- *
- * @param {any} error the error.
- * @param {number} chainId the chainId.
- * @return {string} The parsed error to string.
- */
-function parseError(error: any, chainId: number): string {
-  if (chainId === rinkebyChainId) {
-    const [, errorLabel] = error.error.reason.split("execution reverted:");
-    return errorLabel;
-  }
-
-  if (chainId === gnosisChainId) {
-    const gnosisError = JSON.parse(error.error.body);
-
-    const [, hexError] = gnosisError.error.message.split("0x");
-
-    return hexToString(hexError);
-  }
-
-  return "unknown error";
-}
-
-/**
- * Parse a hexadecimal string value to UTF-8.
- *
- * @param {string} message The message in hexadecimal format.
- * @return {string} The parsed UTF-8 string.
- */
-const hexToString = (message: string): string => {
-  return Buffer.from(message, "hex").toString("utf8");
-};
 
 // cache with all chain Contract instances
 const contracts: Record<number, ethers.Contract> = {};
@@ -97,7 +65,11 @@ const initializeFaucetContract = (chainId: number): ethers.Contract => {
 
   const wallet = new ethers.Wallet(PRIVATE_KEY as string, provider);
 
-  const faucetAddress = faucetAddresses[chainId] as string;
+  const faucetAddress = faucetAddresses[chainId];
+
+  if (!faucetAddress) {
+    throw new Error("Validation Error: Faucet address not found");
+  }
 
   const faucetContract = new ethers.Contract(faucetAddress, faucetAbi, wallet);
 
@@ -130,3 +102,58 @@ type Chain = {
   id: number;
   rpcUrl: string;
 };
+
+type ClaimFn = () => Promise<TransactionResponse>;
+
+const transactionQueue: Promise<TransactionResponse>[] = [];
+
+/**
+ * Enqueues all Claim transactions and execute them sequentially to avoid nonce collisions
+ *
+ * @param {ClaimFn} claim The claim callback
+ * @param {string} address the claim address
+ * @return {Promise<TransactionResponse>} the claim transaction response
+ */
+async function enqueueClaimsTransactions(
+  claim: ClaimFn,
+  address: string
+): Promise<TransactionResponse> {
+  // we add the Claim wrapperd in a promise in the queue without execute it
+  const myPosition = transactionQueue.length;
+  let executeClaim = () => {};
+  const pendingClaim = new Promise<TransactionResponse>((resolve, reject) => {
+    executeClaim = async () => {
+      try {
+        const transaction = await claim();
+        resolve(transaction);
+      } catch (e) {
+        reject(e);
+      } finally {
+        log.info(`[FINISHED] [#${myPosition}] claim(${address})`);
+      }
+    };
+  });
+
+  transactionQueue.push(pendingClaim);
+
+  log.info(`[QUEUED] [#${myPosition}] claim(${address})`);
+
+  try {
+    // we wait for the previous claim
+    const previousTransaction = await transactionQueue[myPosition - 1];
+
+    // we need to wait for the previous claim transaction to perform the new one to make sure that we use a new nonce
+    if (previousTransaction?.hash) {
+      await previousTransaction.wait();
+    }
+  } catch (error) {
+    // nothing to do here
+  } finally {
+    log.info(`[STARTED] [#${myPosition}] claim(${address})`);
+
+    // after the execution of the previous claim, we can execute our current claim
+    executeClaim();
+
+    return transactionQueue[myPosition];
+  }
+}

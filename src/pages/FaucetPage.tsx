@@ -50,7 +50,11 @@ const FaucetPage = () => {
           ),
           amount: (
             <AmountLabel
-              amount={ethers.utils.formatEther(claimedAmount)}
+              amount={
+                claimedAmount !== "?"
+                  ? ethers.utils.formatEther(claimedAmount)
+                  : claimedAmount
+              }
               tokenSymbol={nativeTokenSymbol}
             />
           ),
