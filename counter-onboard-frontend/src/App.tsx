@@ -34,7 +34,6 @@ function App() {
               path={WALLET_DETAILS_PATHNAME}
               element={<WalletDetailsPage />}
             />
-
             <Route path={FAUCET_PATHNAME} element={<FaucetPage />} />
           </Routes>
         </main>

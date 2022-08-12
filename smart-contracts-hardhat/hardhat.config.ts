@@ -4,10 +4,10 @@ import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-deploy";
 
 // tasks
-import "./src/hardhat/tasks/deploy_contracts";
+import "./src/tasks/deploy_contracts";
 
 config();
-const { ETHERSCAN_API_KEY, REACT_APP_INFURA_TOKEN, PRIVATE_KEY } = process.env;
+const { ETHERSCAN_API_KEY, INFURA_TOKEN, PRIVATE_KEY } = process.env;
 
 const hardhatConfig: HardhatUserConfig = {
   solidity: {
@@ -25,7 +25,7 @@ const hardhatConfig: HardhatUserConfig = {
     localhost: {},
     rinkeby: {
       accounts: [`0x${PRIVATE_KEY}`],
-      url: `https://rinkeby.infura.io/v3/${REACT_APP_INFURA_TOKEN}`,
+      url: `https://rinkeby.infura.io/v3/${INFURA_TOKEN}`,
     },
     xdai: {
       accounts: [`0x${PRIVATE_KEY}`],
@@ -38,11 +38,11 @@ const hardhatConfig: HardhatUserConfig = {
   },
 
   paths: {
-    sources: "./contracts",
-    tests: "./src/hardhat/test",
+    sources: "./src/contracts",
+    tests: "./src/test",
     cache: "./src/cache",
     artifacts: "./src/artifacts",
-    deploy: "./src/hardhat/deploy",
+    deploy: "./src/deploy",
   },
 
   namedAccounts: {

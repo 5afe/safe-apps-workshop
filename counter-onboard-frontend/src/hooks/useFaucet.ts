@@ -3,11 +3,9 @@ import { Contract, ethers } from "ethers";
 
 import { useWallet } from "src/store/walletContext";
 import requestFunds from "src/api/requestFunds";
-import FaucetContractArtifact from "src/artifacts/contracts/Faucet.sol/Faucet.json";
+import faucetAbi from "src/contract-abi/faucetAbi";
 import { gnosisChain, rinkebyChain } from "src/chains/chains";
 import Chain from "src/models/chain";
-
-const faucetAbi = FaucetContractArtifact.abi;
 
 const {
   REACT_APP_FAUCET_CONTRACT_ADDRESS_RINKEBY,

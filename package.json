@@ -1,101 +1,32 @@
 {
   "name": "safe-apps-workshop",
-  "version": "0.1.0",
-  "homepage": ".",
-  "license": "MIT",
+  "version": "1.0.0",
+  "description": "safe apps workshop monorepo",
+  "main": "index.js",
   "private": true,
-  "dependencies": {
-    "@craco/craco": "^6.4.5",
-    "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3",
-    "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.9.2",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^13.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.13",
-    "@types/react": "^18.0.0",
-    "@types/react-dom": "^18.0.0",
-    "@web3-onboard/core": "^2.5.0",
-    "@web3-onboard/injected-wallets": "^2.0.14",
-    "@web3-onboard/walletconnect": "^2.0.7",
-    "axios": "^0.27.2",
-    "ethers": "^5.6.9",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "6",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.5.0"
-  },
+  "repository": "git@github.com:5afe/safe-apps-workshop.git",
+  "author": "Daniel Somoza <daniel.somoza@safe.global>",
+  "license": "MIT",
   "scripts": {
-    "start": "hardhat compile && craco start",
-    "build": "hardhat compile && craco build",
-    "test": "hardhat compile && yarn contract:test && craco test",
-    "test:coverage": "hardhat compile && yarn contract:test && craco test --coverage --watchAll=false",
-    "contract:deploy": "hardhat deploy-contracts --network",
-    "contract:test": "hardhat test"
+    "test": "yarn workspaces run test",
+    "test:coverage": "yarn workspaces run test:coverage",
+    "contract:deploy": "yarn workspace smart-contracts-hardhat contract:deploy",
+    "start:counter-onboard": "yarn workspace counter-onboard-frontend start",
+    "start:faucet": "yarn workspace faucet-backend start",
+    "start:faucet:prod": "yarn workspace faucet-backend start:prod"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ],
-    "overrides": [
-      {
-        "files": [
-          "**/hardhat/test/**test.ts"
-        ],
-        "rules": {
-          "jest/valid-expect": "off"
-        }
-      }
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "workspaces": [
+    "counter-onboard-frontend",
+    "counter-safe-app-only-frontend",
+    "faucet-backend",
+    "smart-contracts-hardhat"
+  ],
+  "dependencies": {
+    "ethers": "^5.6.9"
   },
   "devDependencies": {
-    "@ethersproject/abi": "^5.4.7",
-    "@ethersproject/providers": "^5.4.7",
-    "@nomicfoundation/hardhat-chai-matchers": "^1.0.0",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
-    "@nomicfoundation/hardhat-toolbox": "^1.0.1",
-    "@nomiclabs/hardhat-ethers": "^2.0.0",
-    "@nomiclabs/hardhat-etherscan": "^3.0.0",
-    "@openzeppelin/contracts": "^4.7.2",
-    "@typechain/ethers-v5": "^10.1.0",
-    "@typechain/hardhat": "^6.1.2",
-    "@types/chai": "^4.2.0",
-    "@types/chai-as-promised": "^7.1.5",
-    "@types/mocha": "^9.1.0",
-    "assert": "^2.0.0",
-    "buffer": "^6.0.3",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
-    "crypto-browserify": "^3.12.0",
-    "hardhat": "^2.9.1",
-    "hardhat-deploy": "^0.11.12",
-    "hardhat-gas-reporter": "^1.0.8",
-    "https-browserify": "^1.0.0",
-    "mocha": "^10.0.0",
-    "os-browserify": "^0.3.0",
-    "process": "^0.11.10",
-    "solidity-coverage": "^0.7.21",
-    "stream": "^0.0.2",
-    "stream-browserify": "^3.0.0",
-    "stream-http": "^3.2.0",
-    "ts-node": ">=8.0.0",
-    "typechain": "^8.1.0",
-    "util": "^0.12.4"
+    "@types/node": "^18.6.4",
+    "dotenv": "^16.0.1",
+    "typescript": "^4.7.4"
   }
 }

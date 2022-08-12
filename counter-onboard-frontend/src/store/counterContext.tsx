@@ -5,11 +5,9 @@ import { useContext, useState } from "react";
 import { createContext } from "react";
 
 import { useWallet } from "src/store/walletContext";
-import CounterContractArtifact from "src/artifacts/contracts/Counter.sol/Counter.json";
 import { gnosisChain, rinkebyChain } from "src/chains/chains";
 import Chain from "src/models/chain";
-
-const counterAbi = CounterContractArtifact.abi;
+import counterAbi from "src/contract-abi/counterAbi";
 
 const {
   REACT_APP_COUNTER_CONTRACT_ADDRESS_RINKEBY,
@@ -164,12 +162,7 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
         getCounterEvents();
       });
     }
-  }, [
-    counterContract,
-    userAddress,
-    getCounter,
-    getCounterEvents,
-  ]);
+  }, [counterContract, userAddress, getCounter, getCounterEvents]);
 
   // remove all listeners if the contract changes
   useEffect(() => {
