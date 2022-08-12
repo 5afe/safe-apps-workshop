@@ -8,10 +8,10 @@
   "author": "Daniel Somoza <daniel.somoza@safe.global>",
   "license": "MIT",
   "scripts": {
+    "start:counter-onboard": "yarn workspace counter-onboard-frontend start",
     "test": "yarn workspaces run test",
     "test:coverage": "yarn workspaces run test:coverage",
     "contract:deploy": "yarn workspace smart-contracts-hardhat contract:deploy",
-    "start:counter-onboard": "yarn workspace counter-onboard-frontend start",
     "start:faucet": "yarn workspace faucet-backend start",
     "start:faucet:prod": "yarn workspace faucet-backend start:prod"
   },

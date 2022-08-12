@@ -1,39 +1,42 @@
-# Getting Started with Create React App
+# Safe Apps Workshop
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Safe Apps workshop monorepo.
 
-
-// TODO: CREATE A README
-
-// TODO: CREATE A README FOR EACH REPO (4)
+| Project                        | Description                                                                                                                            |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| counter-onboard-frontend       | Simple Counter Dapp implemented with [React](https://reactjs.org/) & [Web3-onboard](https://docs.blocknative.com/onboard)              |
+| counter-safe-app-only-frontend | Simple Counter Safe App implemented with [React](https://reactjs.org/) & [Safe Apps SDK](https://github.com/safe-global/safe-apps-sdk) |
+| faucet-backend                 | Simple Faucet backend                                                                                                                  |
+| smart-contracts-hardhat        | Hardhat Project with the Counter & Faucet contracts                                                                                    |
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project root directory, you can run:
 
-### `yarn start`
+### `start:counter-onboard`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the Counter Dapp using [Web3-onboard](https://docs.blocknative.com/onboard). In the first part of the workshop we will use the [Web3-onboard Safe Module](https://docs.blocknative.com/onboard/gnosis) to use this Dapp as a Safe App \
 
+After run the start script, open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
 ### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner.
 
-### `yarn build`
+### `yarn test:coverage`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Generates the test coverage report.
 
 ### `yarn contract:deploy <network>`
 
-You can deploy your own tests contracts
+You can deploy your own Counter and Faucet contracts
+
+### `start:faucet`
+
+Runs the Faucet backend in development mode
+
+### `start:faucet:prod`
+
+Runs the Faucet backend in production mode
