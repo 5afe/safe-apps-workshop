@@ -12,6 +12,11 @@ import Chain from "src/models/chain";
 import chains, { initialChain } from "src/chains/chains";
 import usePolling from "src/hooks/usePolling";
 
+// TODO: update the manifest.json
+// "name": "Counter Safe App",
+// "description": "Update your counter!",
+// "iconPath": "logo512.png",
+
 // TODO: uncomment those 2 lines below to import the SDK and the safe app provider
 // import SafeAppsSDK from "@gnosis.pm/safe-apps-sdk";
 // import { SafeAppProvider } from "@gnosis.pm/safe-apps-provider";
