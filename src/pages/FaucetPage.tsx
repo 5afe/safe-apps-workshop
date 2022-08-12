@@ -18,7 +18,7 @@ import { LIGHT_THEME } from "src/theme/theme";
 import { HOME_PATHNAME } from "src/routes/routes";
 
 const FaucetPage = () => {
-  const { chain, userBalance } = useWallet();
+  const { chain, userBalance, userAddress } = useWallet();
 
   const navigate = useNavigate();
 
@@ -110,7 +110,7 @@ const FaucetPage = () => {
           <ButtonContainer>
             <Button
               aria-label="claim funds"
-              onClick={claimFunds}
+              onClick={() => claimFunds(userAddress as string)}
               variant="contained"
               disabled={isBalanceLoading}
             >

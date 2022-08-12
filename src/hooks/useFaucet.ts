@@ -20,7 +20,7 @@ type useFauceReturnType = {
   isEventsLoading: boolean;
   claimTransaction?: string;
   claimError?: string;
-  claimFunds: () => Promise<void>;
+  claimFunds: (address: string) => Promise<void>;
   userClaims: ClaimFundsEvent[];
 };
 
@@ -53,12 +53,12 @@ function useFaucet(): useFauceReturnType {
     setClaimTransaction("");
   }, [userAddress, chain]);
 
-  const claimFunds = async () => {
+  const claimFunds = async (address: string) => {
     try {
       setIsClaimLoading(true);
       setClaimError("");
       const { transaction } = await requestFunds({
-        address: userAddress,
+        address,
         chainId: chain.id,
       });
 
