@@ -9,18 +9,15 @@ import WalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { styled } from "@mui/material/styles";
 
 import { useWallet } from "src/store/walletContext";
-import { CONNECT_WALLET_PATHNAME, HOME_PATHNAME } from "src/routes/routes";
+import { HOME_PATHNAME } from "src/routes/routes";
 import { gnosisChain, rinkebyChain } from "src/chains/chains";
+import useNoWalletConnectedRedirection from "src/hooks/useNoWalletConnectedRedirection";
 
 const InvalidChainPage = () => {
-  const { wallet, isValidChain, switchChain, isSafeAppWallet } = useWallet();
+  const { isValidChain, switchChain, isSafeAppWallet } = useWallet();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!wallet) {
-      navigate(CONNECT_WALLET_PATHNAME);
-    }
-  }, [wallet, navigate]);
+  useNoWalletConnectedRedirection();
 
   useEffect(() => {
     if (isValidChain) {

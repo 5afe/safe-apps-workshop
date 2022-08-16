@@ -16,16 +16,24 @@ import useFaucet from "src/hooks/useFaucet";
 import { useWallet } from "src/store/walletContext";
 import { LIGHT_THEME } from "src/theme/theme";
 import { HOME_PATHNAME } from "src/routes/routes";
+import useNoWalletConnectedRedirection from "src/hooks/useNoWalletConnectedRedirection";
+import useInvalidChainRedirection from "src/hooks/useInvalidChainRedirection";
+import AddressLabel from "src/components/address-label/AddressLabel";
 
 const FaucetPage = () => {
   const { chain, userBalance, userAddress } = useWallet();
 
   const navigate = useNavigate();
 
+  useNoWalletConnectedRedirection();
+
+  useInvalidChainRedirection();
+
   const {
     claimFunds,
-    isClaimLoading,
     claimError,
+    isClaimLoading,
+    faucetContractAddress,
 
     userClaims,
     isEventsLoading,
@@ -71,7 +79,16 @@ const FaucetPage = () => {
     <>
       <Wrapper>
         <Typography component="h2" variant="h4" gutterBottom>
-          Request Funds
+          Faucet Contract
+        </Typography>
+
+        {/* Faucet contract address */}
+        <Typography component="h3" variant="h5" gutterBottom>
+          <AddressLabel
+            address={faucetContractAddress}
+            showCopyIntoClipboardButton
+            showBlockExplorerLink
+          />
         </Typography>
 
         <Typography gutterBottom>
@@ -92,7 +109,7 @@ const FaucetPage = () => {
             minHeight={123}
           >
             <BalanceWrapper>
-              <Typography component="h3" variant="h5" gutterBottom>
+              <Typography component="h4" variant="h5" gutterBottom>
                 Your current balance
               </Typography>
 

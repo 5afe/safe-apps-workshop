@@ -4,7 +4,6 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import MenuIcon from "@mui/icons-material/Menu";
 import WalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import DarkThemeIcon from "@mui/icons-material/Brightness4";
 import LightThemeIcon from "@mui/icons-material/Brightness7";
@@ -12,6 +11,7 @@ import LightThemeIcon from "@mui/icons-material/Brightness7";
 import ConnectedWallet from "src/components/connected-wallet/ConnectedWallet";
 import { useWallet } from "src/store/walletContext";
 import { useTheme } from "src/store/themeContext";
+import MenuDrawer from "../menu-drawer/MenuDrawer";
 
 const Header = () => {
   const { isWalletConnected, showConnectWalletModal } = useWallet();
@@ -21,17 +21,9 @@ const Header = () => {
   return (
     <AppBar position="sticky">
       <Toolbar>
-        <IconButton
-          size="large"
-          color="inherit"
-          aria-label="open-menu-bar"
-          edge="start"
-          onClick={() => {
-            console.log("open menu! ");
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
+        <div>
+          <MenuDrawer />
+        </div>
 
         <Typography component="h1" sx={{ flexGrow: 1 }}>
           Safe Apps Workshop

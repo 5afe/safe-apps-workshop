@@ -1,5 +1,4 @@
-import { useMemo, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
@@ -17,40 +16,16 @@ import TransactionLabel from "src/components/transaction-label/TransactionLabel"
 import useMultiOnClickPrevention from "src/hooks/useMultiOnClicksPrevention";
 import CounterEventLabel from "src/components/counter-event-label/CounterEventLabel";
 import StatusLabel from "src/components/status-label/StatusLabel";
-import { useWallet } from "src/store/walletContext";
-import {
-  CONNECT_WALLET_PATHNAME,
-  FAUCET_PATHNAME,
-  INVALID_CHAIN_PATHNAME,
-} from "src/routes/routes";
+import useNoWalletConnectedRedirection from "src/hooks/useNoWalletConnectedRedirection";
+import useInvalidChainRedirection from "src/hooks/useInvalidChainRedirection";
+import useFaucetRedirection from "src/hooks/useFaucetRedirection";
 
 const CounterPage = () => {
-  const { wallet, isValidChain, userBalance, chain } = useWallet();
-  const navigate = useNavigate();
+  useNoWalletConnectedRedirection();
 
-  // TODO: create a custom hook for this?
-  useEffect(() => {
-    if (!wallet) {
-      navigate(CONNECT_WALLET_PATHNAME);
-    }
-  }, [wallet, navigate]);
+  useInvalidChainRedirection();
 
-  useEffect(() => {
-    if (!isValidChain) {
-      navigate(INVALID_CHAIN_PATHNAME);
-    }
-  }, [isValidChain, navigate]);
-
-  useEffect(() => {
-    const nativeToken = chain.token;
-    const nativeTokenFunds = userBalance?.[nativeToken];
-    const hasFunds = nativeTokenFunds && !!Number(nativeTokenFunds);
-    const redirectToFaucetPage = userBalance && !hasFunds;
-
-    if (redirectToFaucetPage) {
-      navigate(FAUCET_PATHNAME);
-    }
-  }, [chain, userBalance, navigate]);
+  useFaucetRedirection();
 
   const {
     counterContractAddress,

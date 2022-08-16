@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
@@ -14,17 +14,17 @@ import Loader from "src/components/loader/Loader";
 import AddressLabel from "src/components/address-label/AddressLabel";
 import DataTable, { RowType } from "src/components/data-table/DataTable";
 import { gnosisChain, rinkebyChain } from "src/chains/chains";
-import { HOME_PATHNAME, INVALID_CHAIN_PATHNAME } from "src/routes/routes";
+import { HOME_PATHNAME } from "src/routes/routes";
 import { useWallet } from "src/store/walletContext";
+import useInvalidChainRedirection from "src/hooks/useInvalidChainRedirection";
+import useNoWalletConnectedRedirection from "src/hooks/useNoWalletConnectedRedirection";
 
 const WalletDetailsPage = () => {
   const {
-    wallet,
     userAddress,
     userBalance,
     isSafeAppWallet,
 
-    isValidChain,
     chain,
 
     switchChain,
@@ -33,11 +33,9 @@ const WalletDetailsPage = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!wallet || !isValidChain) {
-      navigate(INVALID_CHAIN_PATHNAME);
-    }
-  }, [wallet, isValidChain, navigate]);
+  useNoWalletConnectedRedirection();
+
+  useInvalidChainRedirection();
 
   const isGnosisChain = chain.id === gnosisChain.id;
 
@@ -51,16 +49,6 @@ const WalletDetailsPage = () => {
   return (
     <>
       <Wrapper>
-        <GoBackLink
-          href={HOME_PATHNAME}
-          onClick={(e) => {
-            e.preventDefault();
-            navigate(HOME_PATHNAME);
-          }}
-        >
-          Go back to your counter
-        </GoBackLink>
-
         <Typography component="h2" variant="h4" gutterBottom>
           Your Wallet Details
         </Typography>
@@ -120,6 +108,18 @@ const WalletDetailsPage = () => {
             )}
           </Stack>
         )}
+
+        <LinkWrapper>
+          <Link
+            href={HOME_PATHNAME}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(HOME_PATHNAME);
+            }}
+          >
+            Go back to your counter page
+          </Link>
+        </LinkWrapper>
       </Wrapper>
 
       <AssetsTableContainer>
@@ -136,17 +136,14 @@ const WalletDetailsPage = () => {
 export default WalletDetailsPage;
 
 const Wrapper = styled(Paper)`
-  position: relative;
   max-width: 800px;
   margin: 64px auto;
   padding: 16px;
   text-align: center;
 `;
 
-const GoBackLink = styled(Link)`
-  position: absolute;
-  top: -28px;
-  left: 0;
+const LinkWrapper = styled("div")`
+  margin: 24px 0;
 `;
 
 const AssetsTableContainer = styled(Paper)`

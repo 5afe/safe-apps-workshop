@@ -17,10 +17,13 @@ import Chain from "src/models/chain";
 import chains, { initialChain } from "src/chains/chains";
 import usePolling from "src/hooks/usePolling";
 
+const injected = injectedModule();
+const walletConnect = walletConnectModule();
+
 const onboard = Onboard({
   wallets: [
-    injectedModule(),
-    walletConnectModule(),
+    injected,
+    walletConnect,
     // To use this Dapp as a Safe App:
     //
     // 1.- Update the manifest.json file and add this 3 lines:
@@ -62,6 +65,7 @@ type walletContextValue = {
   switchChain: (chain: Chain) => Promise<void>;
   disconnectWallet: () => void;
   isWalletConnected: boolean;
+  isWalletLoading: boolean;
   isSafeAppWallet: boolean;
   isValidChain?: boolean;
   chain: Chain;
@@ -71,6 +75,7 @@ type walletContextValue = {
 const initialState = {
   isWalletConnected: false,
   isSafeAppWallet: false,
+  isWalletLoading: true,
   showConnectWalletModal: () => Promise.resolve(),
   switchChain: () => Promise.resolve(),
   disconnectWallet: () => {},
@@ -91,8 +96,7 @@ const useWallet = () => {
 
 const WalletProvider = ({ children }: { children: JSX.Element }) => {
   const [wallet, setWallet] = useState<WalletState | undefined>();
-
-  // TODO: Create a isWalletLoading!
+  const [isWalletLoading, setIsWalletLoading] = useState<boolean>(true);
 
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
 
@@ -150,14 +154,18 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 
     // auto selecting the user wallet
     // see https://docs.blocknative.com/onboard/core#auto-selecting-a-wallet
-    getInitialWallet();
+    getInitialWallet().finally(() => setIsWalletLoading(false));
   }, []);
 
   const showConnectWalletModal = useCallback(async () => {
+    // we only display metamask and walletconnect wallets in the onboard Modal
+    onboard.state.actions.setWalletModules([injected, walletConnect]);
+
     const wallets = await onboard.connectWallet();
 
     if (wallets.length > 0) {
       setWallet(wallets[0]); // for simplicity, we only connect one wallet
+      localStorage?.setItem(LAST_USED_USER_WALLET_KEY, wallets[0].label);
     }
   }, []);
 
@@ -165,6 +173,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
     const [wallet] = onboard.state.get().wallets;
     setWallet(undefined);
     await onboard.disconnectWallet({ label: wallet.label });
+    localStorage?.setItem(LAST_USED_USER_WALLET_KEY, "");
   }, []);
 
   const switchChain = useCallback(async (chain: Chain) => {
@@ -194,19 +203,14 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
   const isSafeAppWallet = false; // delete this
   // const isSafeAppWallet = wallet?.label === "Gnosis Safe";
 
-  // we update the localstorage with the lastUsedWallet
-  useEffect(() => {
-    if (wallet?.label && !isSafeAppWallet) {
-      localStorage?.setItem(LAST_USED_USER_WALLET_KEY, wallet.label);
-    }
-  }, [wallet, isSafeAppWallet]);
-
   const state = {
     wallet,
     provider,
+
     chain,
     isValidChain,
 
+    isWalletLoading,
     isWalletConnected,
     isSafeAppWallet,
     userAddress,
@@ -232,14 +236,14 @@ const getInitialWallet = async (): Promise<WalletState | undefined> => {
   // TODO: Uncomment this 7 lines below to force Safe connection if you are in an iframe
   // const isASafeApp = window.self !== window.top;
   // if (isASafeApp) {
-  //   onboard.connectWallet({
+  //   await onboard.connectWallet({
   //     autoSelect: { label: "Gnosis Safe", disableModals: true },
   //   });
   //   return;
   // }
 
   if (lastUsedWallet) {
-    onboard.connectWallet({
+    await onboard.connectWallet({
       autoSelect: { label: lastUsedWallet, disableModals: true },
     });
   }

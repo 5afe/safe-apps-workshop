@@ -17,6 +17,7 @@ type useFauceReturnType = {
   isFaucetLoading: boolean;
   isEventsLoading: boolean;
   claimTransaction?: string;
+  faucetContractAddress: string;
   claimError?: string;
   claimFunds: (address: string) => Promise<void>;
   userClaims: ClaimFundsEvent[];
@@ -159,6 +160,7 @@ function useFaucet(): useFauceReturnType {
     claimError,
 
     isFaucetLoading,
+    faucetContractAddress,
 
     userClaims,
     isEventsLoading,
