@@ -13,7 +13,6 @@ import ListItem from "@mui/material/ListItem";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
-import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
 import {
@@ -65,61 +64,52 @@ const MenuDrawer = () => {
               <List>
                 {/* Counter Page link */}
                 <ListItem disablePadding>
-                  <ListItemButton>
+                  <ListItemButton
+                    component={"a"}
+                    href={HOME_PATHNAME}
+                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                      e.preventDefault();
+                      navigate(HOME_PATHNAME);
+                    }}
+                  >
                     <ListItemIcon>
                       <ArticleIcon />
                     </ListItemIcon>
-                    <Link
-                      href={HOME_PATHNAME}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate(HOME_PATHNAME);
-                      }}
-                      underline="hover"
-                      color="inherit"
-                    >
-                      <ListItemText primary={"Counter DApp"} />
-                    </Link>
+                    <ListItemText primary={"Counter DApp"} />
                   </ListItemButton>
                 </ListItem>
 
                 {/* Wallet Details link */}
                 <ListItem disablePadding>
-                  <ListItemButton>
+                  <ListItemButton
+                    component={"a"}
+                    href={WALLET_DETAILS_PATHNAME}
+                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                      e.preventDefault();
+                      navigate(WALLET_DETAILS_PATHNAME);
+                    }}
+                  >
                     <ListItemIcon>
                       <WalletIcon />
                     </ListItemIcon>
-                    <Link
-                      href={WALLET_DETAILS_PATHNAME}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate(WALLET_DETAILS_PATHNAME);
-                      }}
-                      underline="hover"
-                      color="inherit"
-                    >
-                      <ListItemText primary={"Wallet Details"} />
-                    </Link>
+                    <ListItemText primary={"Wallet Details"} />
                   </ListItemButton>
                 </ListItem>
 
                 {/* Faucet Page link */}
                 <ListItem disablePadding>
-                  <ListItemButton>
+                  <ListItemButton
+                    component={"a"}
+                    href={FAUCET_PATHNAME}
+                    onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                      e.preventDefault();
+                      navigate(FAUCET_PATHNAME);
+                    }}
+                  >
                     <ListItemIcon>
                       <RequestQuoteIcon />
                     </ListItemIcon>
-                    <Link
-                      href={FAUCET_PATHNAME}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        navigate(FAUCET_PATHNAME);
-                      }}
-                      underline="hover"
-                      color="inherit"
-                    >
-                      <ListItemText primary={"Faucet DApp"} />
-                    </Link>
+                    <ListItemText primary={"Faucet DApp"} />
                   </ListItemButton>
                 </ListItem>
               </List>

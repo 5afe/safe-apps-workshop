@@ -39,12 +39,14 @@ const useTheme = () => {
 };
 
 const ThemeProvider = ({ children }: { children: JSX.Element }) => {
-  const [themeMode, setThemeMode] = useState<PaletteMode>(DARK_THEME);
+  const [themeMode, setThemeMode] = useState<PaletteMode>(getInitialThemeMode);
 
   const switchThemeMode = useCallback(() => {
     setThemeMode((prevThemeMode: PaletteMode) => {
       const isDarkTheme = prevThemeMode === DARK_THEME;
-      return isDarkTheme ? LIGHT_THEME : DARK_THEME;
+      const newThemeMode = isDarkTheme ? LIGHT_THEME : DARK_THEME;
+      localStorage?.setItem(THEM_MODE_KEY, newThemeMode);
+      return newThemeMode;
     });
   }, []);
 
@@ -70,3 +72,9 @@ const ThemeProvider = ({ children }: { children: JSX.Element }) => {
 };
 
 export { useTheme, ThemeProvider };
+
+const THEM_MODE_KEY = "themeMode";
+
+const getInitialThemeMode = (): PaletteMode => {
+  return (localStorage?.getItem(THEM_MODE_KEY) as PaletteMode) || DARK_THEME;
+};

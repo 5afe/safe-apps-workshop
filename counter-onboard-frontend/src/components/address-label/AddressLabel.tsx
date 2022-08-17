@@ -64,6 +64,9 @@ const AddressLabel = ({
             target="_blank"
             rel="noopener"
             size={iconSize || "small"}
+            onClick={(e: React.MouseEvent) => {
+              e.stopPropagation();
+            }}
           >
             <OpenInNew fontSize="inherit" />
           </IconButton>

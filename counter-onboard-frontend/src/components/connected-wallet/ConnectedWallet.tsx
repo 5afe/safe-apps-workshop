@@ -2,6 +2,7 @@ import { useNavigate, useMatch } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
+import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
 
 import { LIGHT_THEME } from "src/theme/theme";
@@ -54,7 +55,6 @@ const ConnectedWallet = () => {
       )}
 
       {/* connected address section */}
-      {/* TODO: improve accessibility here */}
       <Container
         onClick={() => {
           if (!isWalletDetailsPage) {
