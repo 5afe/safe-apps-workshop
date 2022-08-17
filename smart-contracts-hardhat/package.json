@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "test": "hardhat compile && hardhat test",
-    "test:coverage": "hardhat compile && yarn contract:test && craco test --coverage --watchAll=false",
+    "test:coverage": "hardhat compile && hardhat coverage",
     "contract:deploy": "hardhat deploy-contracts --network"
   },
   "devDependencies": {
