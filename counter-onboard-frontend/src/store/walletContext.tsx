@@ -34,7 +34,7 @@ const onboard = Onboard({
     // 2.- Install the Gnosis Safe web3-onboard module
     // yarn add @web3-onboard/gnosis
     //
-    // 3.- after install it, uncomment the line 14 of this file to import the Gnosis Safe web3-onboard module
+    // 3.- after installing it, uncomment the line 14 of this file to import the Gnosis Safe web3-onboard module
     //
     // 4.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
     // gnosisModule(),
