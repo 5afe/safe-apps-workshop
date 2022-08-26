@@ -10,7 +10,7 @@ import injectedModule from "@web3-onboard/injected-wallets";
 import walletConnectModule from "@web3-onboard/walletconnect";
 import { Balances, WalletState } from "@web3-onboard/core/dist/types";
 import { ethers } from "ethers";
-// TODO: uncomment the line below to import the Gnosis Safe web3-onboard module
+// TODO: uncomment the line below to import the Safe web3-onboard module
 // import gnosisModule from "@web3-onboard/gnosis";
 
 import Chain from "src/models/chain";
@@ -31,10 +31,10 @@ const onboard = Onboard({
     // "description": "Update your counter!",
     // "iconPath": "logo512.png",
     //
-    // 2.- Install the Gnosis Safe web3-onboard module
+    // 2.- Install the Safe web3-onboard module
     // yarn add @web3-onboard/gnosis
     //
-    // 3.- after installing it, uncomment the line 14 of this file to import the Gnosis Safe web3-onboard module
+    // 3.- after installing it, uncomment the line 14 of this file to import the Safe web3-onboard module
     //
     // 4.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
     // gnosisModule(),
