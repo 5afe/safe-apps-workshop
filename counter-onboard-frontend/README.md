@@ -17,6 +17,14 @@ You will see some errors in the console and the app won't be loading. This is me
 
 Search for [counter-onboard-frontend/src/store/walletContext](counter-onboard-frontend/src/store/walletContext.tsx)
 
+Search for the following tags to quick navigate to the specific points
+
+TODO [W1.1] - Import Safe web3-onboard module
+TODO [W1.2] - Enable gnosisModule() in web3-onboard configuration
+TODO [W1.3] - Force Safe App connection when being inside of an iframe
+TODO [W1.4] - isSafeApp wallet property
+TODO [W1.5] - Enable wallet icon
+
 
 ### Adding Safe App information to the `manifest.json`
 
