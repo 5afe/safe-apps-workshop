@@ -2,7 +2,6 @@ import { useNavigate, useMatch } from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
-import Link from "@mui/material/Link";
 import { styled } from "@mui/material/styles";
 
 import { LIGHT_THEME } from "src/theme/theme";
@@ -15,7 +14,7 @@ import InvalidChainLabel from "../invalid-chain-label/InvalidChainLabel";
 import { WALLET_DETAILS_PATHNAME } from "src/routes/routes";
 import metamaskLogo from "src/assets/Metamask_logo.svg";
 import QuestionMarkRoundedIcon from "@mui/icons-material/QuestionMarkRounded";
-import walletConnectLogo from "src/assets/WalletConnect_logo.svg";
+import walletConnectLogo from "src/assets/WalletConnect_logo.png";
 
 // TODO: uncomment the line 20 and 25 to add the Safe Wallet logo in the UI
 // import safeWalletLogo from "src/assets/SafeWallet_logo.svg";
