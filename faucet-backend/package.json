@@ -9,8 +9,8 @@
   "scripts": {
     "build": "tsc",
     "prestart:prod": "yarn build",
-    "start:prod": "node build/index.js| pino-pretty",
-    "start": "nodemon --exec ts-node index.ts| pino-pretty",
+    "start:prod": "node build/index.js | pino-pretty",
+    "start": "nodemon --exec ts-node index.ts | pino-pretty",
     "test": "echo 'TODO: add tests'",
     "test:coverage": "echo 'TODO: add tests'"
   },
