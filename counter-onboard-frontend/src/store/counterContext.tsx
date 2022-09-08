@@ -13,7 +13,8 @@ const COUNTER_CONTRACT_ADDRESS_RINKEBY =
   "0x2AEEE557fcb83c866EDf667860631EbE2a39803e";
 const COUNTER_CONTRACT_ADDRESS_GNOSIS_CHAIN =
   "0xC098C5D10334c9ac0d18C51f1388C2148Eb611aF";
-const COUNTER_CONTRACT_ADDRESS_GOERLI = "TODO: ADD GOERLI ADDRESS";
+const COUNTER_CONTRACT_ADDRESS_GOERLI =
+  "0x0c8aE83da26d20Eb1b503E0b312B28Dc066Aec11";
 
 type counterContextValue = {
   counterContractAddress: string;
@@ -256,7 +257,7 @@ export { useCounter, CounterProvider };
 const counterContractAddresses = {
   [rinkebyChain.id]: COUNTER_CONTRACT_ADDRESS_RINKEBY,
   [gnosisChain.id]: COUNTER_CONTRACT_ADDRESS_GNOSIS_CHAIN,
-  [goerliChain.id]: COUNTER_CONTRACT_ADDRESS_GOERLI
+  [goerliChain.id]: COUNTER_CONTRACT_ADDRESS_GOERLI,
 };
 
 const getCounterContractAddress = (

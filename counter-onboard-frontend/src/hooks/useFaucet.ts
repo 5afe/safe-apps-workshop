@@ -7,9 +7,12 @@ import faucetAbi from "src/contract-abi/faucetAbi";
 import { gnosisChain, rinkebyChain, goerliChain } from "src/chains/chains";
 import Chain from "src/models/chain";
 
-const FAUCET_CONTRACT_ADDRESS_RINKEBY = "0x93885EBaE734Edc78190E569DB812Be21F863518";
-const FAUCET_CONTRACT_ADDRESS_GNOSIS_CHAIN = "0x394A2D5ad4Ed471881D3f8deD91251279db91eBf";
-const FAUCET_CONTRACT_ADDRESS_GOERLI = "";
+const FAUCET_CONTRACT_ADDRESS_RINKEBY =
+  "0x93885EBaE734Edc78190E569DB812Be21F863518";
+const FAUCET_CONTRACT_ADDRESS_GNOSIS_CHAIN =
+  "0x394A2D5ad4Ed471881D3f8deD91251279db91eBf";
+const FAUCET_CONTRACT_ADDRESS_GOERLI =
+  "0x6EDcB4c5B049f4b3dB7ffd8E9ce0EC45ebB7981E";
 
 type useFauceReturnType = {
   isClaimLoading: boolean;
