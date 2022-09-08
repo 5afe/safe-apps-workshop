@@ -77,7 +77,8 @@ function useFaucet(): useFauceReturnType {
         return [newEvent, ...events];
       });
     } catch (error) {
-      setClaimError(error as string);
+      console.log("claim error: ", claimError);
+      setClaimError("Error claiming funds");
     } finally {
       setIsClaimLoading(false);
     }
