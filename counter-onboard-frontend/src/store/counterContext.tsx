@@ -5,14 +5,15 @@ import { useContext, useState } from "react";
 import { createContext } from "react";
 
 import { useWallet } from "src/store/walletContext";
-import { gnosisChain, rinkebyChain } from "src/chains/chains";
+import { gnosisChain, rinkebyChain, goerliChain } from "src/chains/chains";
 import Chain from "src/models/chain";
 import counterAbi from "src/contract-abi/counterAbi";
 
-const {
-  REACT_APP_COUNTER_CONTRACT_ADDRESS_RINKEBY,
-  REACT_APP_COUNTER_CONTRACT_ADDRESS_GNOSIS_CHAIN,
-} = process.env;
+const COUNTER_CONTRACT_ADDRESS_RINKEBY =
+  "0x2AEEE557fcb83c866EDf667860631EbE2a39803e";
+const COUNTER_CONTRACT_ADDRESS_GNOSIS_CHAIN =
+  "0xC098C5D10334c9ac0d18C51f1388C2148Eb611aF";
+const COUNTER_CONTRACT_ADDRESS_GOERLI = "TODO: ADD GOERLI ADDRESS";
 
 type counterContextValue = {
   counterContractAddress: string;
@@ -253,8 +254,9 @@ const CounterProvider = ({ children }: { children: JSX.Element }) => {
 export { useCounter, CounterProvider };
 
 const counterContractAddresses = {
-  [rinkebyChain.id]: REACT_APP_COUNTER_CONTRACT_ADDRESS_RINKEBY,
-  [gnosisChain.id]: REACT_APP_COUNTER_CONTRACT_ADDRESS_GNOSIS_CHAIN,
+  [rinkebyChain.id]: COUNTER_CONTRACT_ADDRESS_RINKEBY,
+  [gnosisChain.id]: COUNTER_CONTRACT_ADDRESS_GNOSIS_CHAIN,
+  [goerliChain.id]: COUNTER_CONTRACT_ADDRESS_GOERLI
 };
 
 const getCounterContractAddress = (
@@ -264,7 +266,7 @@ const getCounterContractAddress = (
   const counterContractAddress = counterContractAddresses[chain.id] || "";
 
   if (!counterContractAddress && isValidChain) {
-    throw new Error("no contract address provided in the .env file");
+    throw new Error("no contract address for the selected chain");
   }
 
   if (!isValidChain) {

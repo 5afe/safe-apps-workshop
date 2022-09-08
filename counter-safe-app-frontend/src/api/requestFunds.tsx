@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const { REACT_APP_FAUCET_BACKEND_URL } = process.env;
+const FAUCET_BASE_URL = "http://localhost:3001";
 
-const FAUCET_URL = `${REACT_APP_FAUCET_BACKEND_URL}/api/faucet`;
+const FAUCET_URL = `${FAUCET_BASE_URL}/api/faucet`;
 
 type requestPayload = {
   address: string;
