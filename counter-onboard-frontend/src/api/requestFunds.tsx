@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const FAUCET_BASE_URL = "http://localhost:3001";
+const FAUCET_BASE_URL = "https://faucet-backend-deploy.onrender.com";
 
 const FAUCET_URL = `${FAUCET_BASE_URL}/api/faucet`;
 
