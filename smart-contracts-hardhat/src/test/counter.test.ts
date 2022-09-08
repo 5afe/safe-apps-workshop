@@ -45,6 +45,10 @@ describe("Counter Contract", () => {
     await counterContract.increment();
 
     expect((await counterContract.getCounter()).toNumber()).equal(3);
+
+    await counterContract.reset();
+
+    expect((await counterContract.getCounter()).toNumber()).equal(0);
   });
 
   it("sets user counter", async () => {

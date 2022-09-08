@@ -39,12 +39,12 @@ const onboard = Onboard({
     // 4.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
     // gnosisModule(),
     //
-    // 5.- disable the last used wallet autoconnect uncommenting the line 231 in the bottom of this file
+    // 5.- disable the last used wallet autoconnect uncommenting the line 237 in the bottom of this file
     //
     // 6.- go to src/components/connected-wallet/ConnectedWallet.tsx file and add the safe logo in the UI
     //
     // 7.- you can change the UI if a Safe wallet is connected, as an example we can remove the disconnect wallet button
-    // Go to the line 199 and add the logic to detect if a Safe App is connected
+    // Go to the line 203 and add the logic to detect if a Safe App is connected
   ],
   chains,
   accountCenter: {
