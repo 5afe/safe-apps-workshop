@@ -15,7 +15,7 @@ import { WALLET_DETAILS_PATHNAME } from "src/routes/routes";
 import metamaskLogo from "src/assets/Metamask_logo.svg";
 import QuestionMarkRoundedIcon from "@mui/icons-material/QuestionMarkRounded";
 import walletConnectLogo from "src/assets/WalletConnect_logo.png";
-import safeWalletLogo from "src/assets/SafeWallet_logo.png";
+import safeWalletLogo from "src/assets/SafeWallet_logo.svg";
 import getNativeTokenAmount from "src/lib/getNativeTokenAmount";
 
 const logos: Record<string, string> = {
