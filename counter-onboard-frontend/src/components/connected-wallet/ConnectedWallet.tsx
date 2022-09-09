@@ -17,7 +17,7 @@ import QuestionMarkRoundedIcon from "@mui/icons-material/QuestionMarkRounded";
 import walletConnectLogo from "src/assets/WalletConnect_logo.png";
 
 // TODO [W1.5]: uncomment the line 20 and 25 to add the Safe Wallet logo in the UI
-// import safeWalletLogo from "src/assets/SafeWallet_logo.png";
+// import safeWalletLogo from "src/assets/SafeWallet_logo.svg";
 
 const logos: Record<string, string> = {
   WalletConnect: walletConnectLogo,

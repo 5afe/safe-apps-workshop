@@ -18,14 +18,11 @@ import CounterEventLabel from "src/components/counter-event-label/CounterEventLa
 import StatusLabel from "src/components/status-label/StatusLabel";
 import useNoWalletConnectedRedirection from "src/hooks/useNoWalletConnectedRedirection";
 import useInvalidChainRedirection from "src/hooks/useInvalidChainRedirection";
-import useFaucetRedirection from "src/hooks/useFaucetRedirection";
 
 const CounterPage = () => {
   useNoWalletConnectedRedirection();
 
   useInvalidChainRedirection();
-
-  useFaucetRedirection();
 
   const {
     counterContractAddress,

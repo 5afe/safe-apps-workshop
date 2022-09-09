@@ -12,16 +12,9 @@ import Chain from "src/models/chain";
 import chains, { initialChain } from "src/chains/chains";
 import usePolling from "src/hooks/usePolling";
 
-// TODO: update the manifest.json
-// "name": "Counter Safe App",
-// "description": "Update your counter!",
-// "iconPath": "logo512.png",
-
-// TODO [W2.1]: uncomment those 2 lines below to import the SDK and the safe app provider
+// TODO [W2.1]: uncomment those 3 lines below to import the SDK and the safe app provider
 // import SafeAppsSDK from "@gnosis.pm/safe-apps-sdk";
 // import { SafeAppProvider } from "@gnosis.pm/safe-apps-provider";
-
-// TODO [W2.2]: uncomment the line below to create a new Safe Apps SDK instance to interact with your Safe wallet
 // const appsSdk = new SafeAppsSDK();
 
 type Wallet = SafeInfo & { label: string };

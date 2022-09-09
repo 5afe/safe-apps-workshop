@@ -4,13 +4,15 @@ import { Contract, ethers } from "ethers";
 import { useWallet } from "src/store/walletContext";
 import requestFunds from "src/api/requestFunds";
 import faucetAbi from "src/contract-abi/faucetAbi";
-import { gnosisChain, rinkebyChain } from "src/chains/chains";
+import { gnosisChain, rinkebyChain, goerliChain } from "src/chains/chains";
 import Chain from "src/models/chain";
 
-const {
-  REACT_APP_FAUCET_CONTRACT_ADDRESS_RINKEBY,
-  REACT_APP_FAUCET_CONTRACT_ADDRESS_GNOSIS_CHAIN,
-} = process.env;
+const FAUCET_CONTRACT_ADDRESS_RINKEBY =
+  "0x93885EBaE734Edc78190E569DB812Be21F863518";
+const FAUCET_CONTRACT_ADDRESS_GNOSIS_CHAIN =
+  "0x394A2D5ad4Ed471881D3f8deD91251279db91eBf";
+const FAUCET_CONTRACT_ADDRESS_GOERLI =
+  "0x6EDcB4c5B049f4b3dB7ffd8E9ce0EC45ebB7981E";
 
 type useFauceReturnType = {
   isClaimLoading: boolean;
@@ -76,7 +78,8 @@ function useFaucet(): useFauceReturnType {
         return [newEvent, ...events];
       });
     } catch (error) {
-      setClaimError(error as string);
+      console.log("claim error: ", claimError);
+      setClaimError("Error claiming funds");
     } finally {
       setIsClaimLoading(false);
     }
@@ -170,8 +173,9 @@ function useFaucet(): useFauceReturnType {
 export default useFaucet;
 
 const faucetContractAddresses = {
-  [rinkebyChain.id]: REACT_APP_FAUCET_CONTRACT_ADDRESS_RINKEBY,
-  [gnosisChain.id]: REACT_APP_FAUCET_CONTRACT_ADDRESS_GNOSIS_CHAIN,
+  [rinkebyChain.id]: FAUCET_CONTRACT_ADDRESS_RINKEBY,
+  [gnosisChain.id]: FAUCET_CONTRACT_ADDRESS_GNOSIS_CHAIN,
+  [goerliChain.id]: FAUCET_CONTRACT_ADDRESS_GOERLI,
 };
 
 const getFaucetContractAddress = (
@@ -181,7 +185,7 @@ const getFaucetContractAddress = (
   const faucetContractAddress = faucetContractAddresses[chain.id] || "";
 
   if (!faucetContractAddress && isValidChain) {
-    throw new Error("no contract address provided in the .env file");
+    throw new Error("no Faucet contract address defined for this chain");
   }
 
   if (!isValidChain) {

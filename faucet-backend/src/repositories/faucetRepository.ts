@@ -9,6 +9,7 @@ dotenv.config();
 const {
   FAUCET_CONTRACT_ADDRESS_RINKEBY,
   FAUCET_CONTRACT_ADDRESS_GNOSIS_CHAIN,
+  FAUCET_CONTRACT_ADDRESS_GOERLI,
   INFURA_TOKEN,
   PRIVATE_KEY,
 } = process.env;
@@ -79,11 +80,13 @@ const initializeFaucetContract = (chainId: number): ethers.Contract => {
 const faucetAbi = ["function claimFunds(address userAddress)"];
 
 const rinkebyChainId = 4;
+const goerliChainId = 5;
 const gnosisChainId = 100;
 
 const faucetAddresses: Record<number, string | undefined> = {
   [rinkebyChainId]: FAUCET_CONTRACT_ADDRESS_RINKEBY,
   [gnosisChainId]: FAUCET_CONTRACT_ADDRESS_GNOSIS_CHAIN,
+  [goerliChainId]: FAUCET_CONTRACT_ADDRESS_GOERLI,
 };
 
 const rinkebyChain: Chain = {
@@ -96,7 +99,12 @@ const gnosisChain: Chain = {
   rpcUrl: "https://rpc.gnosischain.com",
 };
 
-const chains = [rinkebyChain, gnosisChain];
+const goerliChain: Chain = {
+  id: goerliChainId,
+  rpcUrl: `https://goerli.infura.io/v3/${INFURA_TOKEN}`,
+};
+
+const chains = [rinkebyChain, gnosisChain, goerliChain];
 
 type Chain = {
   id: number;

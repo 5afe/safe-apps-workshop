@@ -13,7 +13,7 @@ import { Balances } from "@web3-onboard/core/dist/types";
 import Loader from "src/components/loader/Loader";
 import AddressLabel from "src/components/address-label/AddressLabel";
 import DataTable, { RowType } from "src/components/data-table/DataTable";
-import { gnosisChain, rinkebyChain } from "src/chains/chains";
+import { gnosisChain, goerliChain, rinkebyChain } from "src/chains/chains";
 import { HOME_PATHNAME } from "src/routes/routes";
 import { useWallet } from "src/store/walletContext";
 import useInvalidChainRedirection from "src/hooks/useInvalidChainRedirection";
@@ -38,6 +38,8 @@ const WalletDetailsPage = () => {
   useInvalidChainRedirection();
 
   const isGnosisChain = chain.id === gnosisChain.id;
+  const isRinkebyChain = chain.id === rinkebyChain.id;
+  const isGoerliChain = chain.id === goerliChain.id;
 
   const assetColumns = ["token", "amount"];
   const assetRows = useMemo(() => getBalanceRows(userBalance), [userBalance]);
@@ -82,7 +84,7 @@ const WalletDetailsPage = () => {
               </Button>
             </Tooltip>
 
-            {isGnosisChain ? (
+            {!isGnosisChain && (
               <Tooltip title="switch to Rinkeby chain">
                 <Button
                   color={"warning"}
@@ -94,7 +96,8 @@ const WalletDetailsPage = () => {
                   Switch to Rinkeby
                 </Button>
               </Tooltip>
-            ) : (
+            )}
+            {!isRinkebyChain && (
               <Tooltip title="switch to Gnosis chain">
                 <Button
                   variant="outlined"
@@ -103,6 +106,20 @@ const WalletDetailsPage = () => {
                   onClick={() => switchChain(gnosisChain)}
                 >
                   Switch to Gnosis Chain
+                </Button>
+              </Tooltip>
+            )}
+
+            {!isGoerliChain && (
+              <Tooltip title="switch to Görli chain">
+                <Button
+                  color={"warning"}
+                  variant="outlined"
+                  aria-label="switch to Görli chain"
+                  startIcon={<WalletIcon />}
+                  onClick={() => switchChain(goerliChain)}
+                >
+                  Switch to Görli Chain
                 </Button>
               </Tooltip>
             )}
