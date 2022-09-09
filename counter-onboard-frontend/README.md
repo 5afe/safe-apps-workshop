@@ -22,6 +22,8 @@ From the project root use:
 yarn start:counter-onboard
 ```
 
+The page will automatically reload when you add changes to the code.
+
 ### Checking `walletContext` in detail
 
 Search for [counter-onboard-frontend/src/store/walletContext](counter-onboard-frontend/src/store/walletContext.tsx)

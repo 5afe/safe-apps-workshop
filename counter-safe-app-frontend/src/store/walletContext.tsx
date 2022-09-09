@@ -68,7 +68,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 
   //  Get the Safe information
   const getSafeInfo = useCallback(async () => {
-    // TODO: uncomment those 8 lines below to set the Safe information in the React state
+    // TODO [W2.2]: uncomment those 6 lines below to set the Safe information in the React state
     // const safeWallet = await appsSdk.safe.getInfo();
     // console.log("safe Wallet: ", safeWallet);
     // setWallet({
@@ -83,7 +83,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 
   // Get the Chain information
   const getChainInfo = useCallback(async () => {
-    // TODO: uncomment those 10 lines below to set the Chain information in the React state
+    // TODO [W2.3]: uncomment those 8 lines below to set the Chain information in the React state
     // const chainInfo = await appsSdk.safe.getChainInfo();
     // console.log("chain: ", chainInfo);
     // const chain = chains.find(
@@ -100,7 +100,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 
   // Get the Balance information
   const getBalanceInfo = useCallback(async () => {
-    // TODO: uncomment those 5 lines below to set the Safe Balance information in the React state
+    // TODO [W2.4]: uncomment those 3 lines below to set the Safe Balance information in the React state
     // const balances = await appsSdk.safe.experimental_getBalances();
     // console.log("balances: ", balances);
     // setUserBalance(balances);
@@ -115,7 +115,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 
   // we set the provider
   useEffect(() => {
-    // TODO: uncomment those 4 lines below to set the Safe Provider in the React state
+    // TODO [W2.5]: uncomment those 5 lines below to set the Safe Provider in the React state
     // if (wallet) {
     //   setProvider(
     //     new ethers.providers.Web3Provider(new SafeAppProvider(wallet, appsSdk))
