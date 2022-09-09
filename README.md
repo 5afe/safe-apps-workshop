@@ -19,7 +19,7 @@ yarn install
 
 ## Tutorial guide
 
-It is expected that `counter-onboard-frontend` and `counter-safe-app-frontend` are not working out of the box. To make them work you should follow instructions from [counter-onboard-frontend](counter-onboard-frontend/README.md) or [counter-safe-app-frontend](counter-safe-app-frontend/README.md).
+It is expected that `counter-onboard-frontend` and `counter-safe-app-frontend` are not working as a Safe App out of the box. To make them work you should follow instructions from [counter-onboard-frontend](counter-onboard-frontend/README.md) or [counter-safe-app-frontend](counter-safe-app-frontend/README.md).
 We recommend you getting a quick look to the [available scripts](#available-scripts) before starting with any of the guides.
 
 ## Available Scripts
