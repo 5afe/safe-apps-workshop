@@ -14,7 +14,7 @@ export const gnosisChain: Chain = {
   token: "xDai",
   label: "Gnosis Chain",
   rpcUrl: "https://rpc.gnosischain.com",
-  blockExplorerUrl: "https://blockscout.com/xdai/mainnet",
+  blockExplorerUrl: "https://gnosisscan.io/",
   color: "#3e6957",
 };
 
