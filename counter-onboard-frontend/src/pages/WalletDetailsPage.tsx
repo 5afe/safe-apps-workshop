@@ -84,7 +84,7 @@ const WalletDetailsPage = () => {
               </Button>
             </Tooltip>
 
-            {!isGnosisChain && (
+            {!isRinkebyChain && (
               <Tooltip title="switch to Rinkeby chain">
                 <Button
                   color={"warning"}
@@ -97,7 +97,7 @@ const WalletDetailsPage = () => {
                 </Button>
               </Tooltip>
             )}
-            {!isRinkebyChain && (
+            {!isGnosisChain && (
               <Tooltip title="switch to Gnosis chain">
                 <Button
                   variant="outlined"
