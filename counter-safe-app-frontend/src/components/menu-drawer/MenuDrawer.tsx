@@ -130,7 +130,7 @@ export default MenuDrawer;
 
 const StyledMenuDrawer = styled(Drawer)`
   .MuiDrawer-paper {
-    margin-top: 64px;
+    padding-top: 64px;
     width: 270px;
   }
 `;
