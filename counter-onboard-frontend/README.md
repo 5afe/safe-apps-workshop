@@ -1,6 +1,6 @@
 # Safe App using Web3 onboard
 
-In this example we will guide you throught the important points to enable a Dapp to communicate with the Safe, assuming you are using [Web3-onboard](https://docs.blocknative.com/onboard to handle Web3 wallets connections.
+In this example we will guide you throught the important points to enable a Dapp to communicate with the Safe, assuming you are using [Web3-onboard](https://docs.blocknative.com/onboard) to handle Web3 wallets connections.
 
 ## How to start
 
