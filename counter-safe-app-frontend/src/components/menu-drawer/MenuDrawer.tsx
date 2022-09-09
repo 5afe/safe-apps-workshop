@@ -20,6 +20,7 @@ import {
   HOME_PATHNAME,
   WALLET_DETAILS_PATHNAME,
 } from "src/routes/routes";
+import WorkshopSteps from "../workshop-steps/WorkshopSteps";
 
 const MenuDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -115,6 +116,9 @@ const MenuDrawer = () => {
               </List>
             </nav>
             <Divider />
+
+            {/* Workshop Steps */}
+            <WorkshopSteps />
           </Box>
         </ClickAwayListener>
       </StyledMenuDrawer>
@@ -127,6 +131,6 @@ export default MenuDrawer;
 const StyledMenuDrawer = styled(Drawer)`
   .MuiDrawer-paper {
     margin-top: 64px;
-    width: 240px;
+    width: 270px;
   }
 `;
