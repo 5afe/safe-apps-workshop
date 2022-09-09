@@ -20,32 +20,15 @@ import usePolling from "src/hooks/usePolling";
 const injected = injectedModule();
 const walletConnect = walletConnectModule();
 
+const wallets = [
+  injected,
+  walletConnect,
+  // TODO [W1.2]: uncomment the line below to enable Gnosis Safe Module in web3-onboard
+  // gnosisModule()
+];
+
 const onboard = Onboard({
-  wallets: [
-    injected,
-    walletConnect,
-    // To use this Dapp as a Safe App:
-    //
-    // 1.- Update the manifest.json file and add this 3 lines:
-    // "name": "Counter App",
-    // "description": "Update your counter!",
-    // "iconPath": "logo512.png",
-    //
-    // 2.- Install the Gnosis Safe web3-onboard module
-    // yarn add @web3-onboard/gnosis
-    //
-    // 3.- after install it, uncomment the line 14 of this file to import the Gnosis Safe web3-onboard module
-    //
-    // 4.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
-    // gnosisModule(),
-    //
-    // 5.- disable the last used wallet autoconnect uncommenting the line 237 in the bottom of this file
-    //
-    // 6.- go to src/components/connected-wallet/ConnectedWallet.tsx file and add the safe logo in the UI
-    //
-    // 7.- you can change the UI if a Safe wallet is connected, as an example we can remove the disconnect wallet button
-    // Go to the line 203 and add the logic to detect if a Safe App is connected
-  ],
+  wallets,
   chains,
   accountCenter: {
     desktop: {
@@ -154,7 +137,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 
     // auto selecting the user wallet
     // see https://docs.blocknative.com/onboard/core#auto-selecting-a-wallet
-    getInitialWallet().finally(() => setIsWalletLoading(false));
+    getDefaultWallet().finally(() => setIsWalletLoading(false));
   }, []);
 
   const showConnectWalletModal = useCallback(async () => {
@@ -226,14 +209,14 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
   );
 };
 
-export { useWallet, WalletProvider };
+export { useWallet, WalletProvider, wallets };
 
 const LAST_USED_USER_WALLET_KEY = "lastUsedWallet";
 
-const getInitialWallet = async (): Promise<WalletState | undefined> => {
+const getDefaultWallet = async (): Promise<WalletState | undefined> => {
   const lastUsedWallet = localStorage?.getItem(LAST_USED_USER_WALLET_KEY);
 
-  // TODO: Uncomment this 7 lines below to force Safe connection if you are in an iframe
+  // TODO [W1.3]: Uncomment this 7 lines below to disable the auto selection of the last used wallet
   // const isASafeApp = window.self !== window.top;
   // if (isASafeApp) {
   //   await onboard.connectWallet({

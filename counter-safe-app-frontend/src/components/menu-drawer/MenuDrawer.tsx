@@ -117,7 +117,7 @@ const MenuDrawer = () => {
             </nav>
             <Divider />
 
-            {/* Workshop Steps */}
+            {/* Safe App sdk Workshop Steps */}
             <WorkshopSteps />
           </Box>
         </ClickAwayListener>
