@@ -180,7 +180,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
   // user balance polling every 6 secs
   usePolling(getUserBalance);
 
-  // TODO [W1.4]: remove the line 191 and uncomment the line 192
+  // TODO [W1.4]: remove the line 184 and uncomment the line 185
   const isSafeAppWallet = false; // delete this
   // const isSafeAppWallet = wallet?.label === "Gnosis Safe";
 
