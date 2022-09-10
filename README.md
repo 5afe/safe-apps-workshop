@@ -1,6 +1,6 @@
 # Safe Apps Workshop
 
-Safe Apps workshop monorepo.
+Welcome to the Safe Apps Workshop monorepo. In this repository you will find some resources to showcase step by step how to integrate a Dapp with the Safe. Even if you are creating a new application or adapting an existing one you will be able to check here some examples explaining the key points.
 
 | Project                   | Description                                                                                                                            |
 | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
@@ -9,9 +9,22 @@ Safe Apps workshop monorepo.
 | faucet-backend            | Simple Faucet backend                                                                                                                  |
 | smart-contracts-hardhat   | Hardhat Project with the Counter & Faucet contracts                                                                                    |
 
+## Setting up the environment
+
+To use this repository we are assuming that you have `git`, `node` and [yarn](https://yarnpkg.com) already installed.
+Install project dependencies using:
+```
+yarn install
+```
+
+## Tutorial guide
+
+It is expected that `counter-onboard-frontend` and `counter-safe-app-frontend` are not working as a Safe App out of the box. To make them work you should follow instructions from [counter-onboard-frontend](counter-onboard-frontend/README.md) or [counter-safe-app-frontend](counter-safe-app-frontend/README.md).
+We recommend you getting a quick look to the [available scripts](#available-scripts) before starting with any of the guides.
+
 ## Available Scripts
 
-In the project root directory, you can run:
+To run the different projects you can use the following commands in the root directory:
 
 ### `start:counter-onboard`
 
