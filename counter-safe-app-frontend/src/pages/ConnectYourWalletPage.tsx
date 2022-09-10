@@ -20,12 +20,27 @@ const ConnectYourWalletPage = () => {
     }
   }, [wallet, navigate]);
 
+  const isAnIframe = window.self !== window.top;
+
   return (
     <Wrapper>
-      <Typography component="h2" variant="h4" gutterBottom>
-        Update the Manifest.json and open this Safe App{" "}
-        <Link href="https://gnosis-safe.io/app/welcome">in the Safe UI!</Link>
-      </Typography>
+      {isAnIframe ? (
+        <>
+          <Typography component="h2" variant="h4" gutterBottom>
+            Counter Safe App Loaded!
+          </Typography>
+
+          <Typography>
+            Now you can open the <strong>WalletContext.tsx</strong> file and
+            start the implementation of your Counter Safe App!
+          </Typography>
+        </>
+      ) : (
+        <Typography component="h2" variant="h4" gutterBottom>
+          Update the Manifest.json and open this Safe App{" "}
+          <Link href="https://gnosis-safe.io/app/welcome">in the Safe UI!</Link>
+        </Typography>
+      )}
     </Wrapper>
   );
 };
