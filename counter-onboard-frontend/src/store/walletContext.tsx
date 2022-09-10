@@ -10,7 +10,7 @@ import injectedModule from "@web3-onboard/injected-wallets";
 import walletConnectModule from "@web3-onboard/walletconnect";
 import { Balances, WalletState } from "@web3-onboard/core/dist/types";
 import { ethers } from "ethers";
-// TODO: uncomment the line below to import the Gnosis Safe web3-onboard module
+// TODO [W1.1]: uncomment the line below to import the Safe web3-onboard module
 // import gnosisModule from "@web3-onboard/gnosis";
 
 import Chain from "src/models/chain";
@@ -24,27 +24,8 @@ const onboard = Onboard({
   wallets: [
     injected,
     walletConnect,
-    // To use this Dapp as a Safe App:
-    //
-    // 1.- Update the manifest.json file and add this 3 lines:
-    // "name": "Counter App",
-    // "description": "Update your counter!",
-    // "iconPath": "logo512.png",
-    //
-    // 2.- Install the Gnosis Safe web3-onboard module
-    // yarn add @web3-onboard/gnosis
-    //
-    // 3.- after install it, uncomment the line 14 of this file to import the Gnosis Safe web3-onboard module
-    //
-    // 4.- after import the Gnosis Module, uncomment the line below to use Gnosis Module with web3-onboard
+    // TODO [W1.2]: uncomment the line below to enable Gnosis Module in web3-onboard
     // gnosisModule(),
-    //
-    // 5.- disable the last used wallet autoconnect uncommenting the line 237 in the bottom of this file
-    //
-    // 6.- go to src/components/connected-wallet/ConnectedWallet.tsx file and add the safe logo in the UI
-    //
-    // 7.- you can change the UI if a Safe wallet is connected, as an example we can remove the disconnect wallet button
-    // Go to the line 203 and add the logic to detect if a Safe App is connected
   ],
   chains,
   accountCenter: {
@@ -199,7 +180,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
   // user balance polling every 6 secs
   usePolling(getUserBalance);
 
-  // TODO: remove the line 192 and uncomment the line 193
+  // TODO [W1.4]: remove the line 184 and uncomment the line 185
   const isSafeAppWallet = false; // delete this
   // const isSafeAppWallet = wallet?.label === "Gnosis Safe";
 
@@ -233,7 +214,7 @@ const LAST_USED_USER_WALLET_KEY = "lastUsedWallet";
 const getInitialWallet = async (): Promise<WalletState | undefined> => {
   const lastUsedWallet = localStorage?.getItem(LAST_USED_USER_WALLET_KEY);
 
-  // TODO: Uncomment this 7 lines below to force Safe connection if you are in an iframe
+  // TODO [W1.3]: Uncomment this 7 lines below to force Safe connection if you are in an iframe
   // const isASafeApp = window.self !== window.top;
   // if (isASafeApp) {
   //   await onboard.connectWallet({
