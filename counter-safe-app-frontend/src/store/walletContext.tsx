@@ -57,8 +57,6 @@ const useWallet = () => {
 const WalletProvider = ({ children }: { children: JSX.Element }) => {
   const [wallet, setWallet] = useState<Wallet>();
 
-  // TODO: Create a isWalletLoading!
-
   const [chain, setChain] = useState<Chain>(initialChain);
   const [isValidChain, setIsValidChain] = useState<boolean>();
 

@@ -53,7 +53,6 @@ const ConnectedWallet = () => {
       )}
 
       {/* connected address section */}
-      {/* TODO: improve accessibility here */}
       <Container
         onClick={() => {
           if (!isWalletDetailsPage) {
