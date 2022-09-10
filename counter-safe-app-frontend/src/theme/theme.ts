@@ -1,4 +1,4 @@
- import {
+import {
   Theme,
   ThemeOptions,
   PaletteMode,
@@ -17,8 +17,8 @@ const themeOptions: ThemeOptions = {
     mode: DARK_THEME,
   },
   zIndex: {
-    appBar: 1250
-  }
+    appBar: 1250,
+  },
 };
 
 const getTheme = (themeMode: PaletteMode): Theme => {
