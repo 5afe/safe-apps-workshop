@@ -8,7 +8,7 @@ jest.mock("@web3-onboard/core", () => {
   return () => ({
     state: {
       select: () => {
-        console.log("TODO: mock onboard");
+        console.log("mock onboard");
       },
     },
   });
@@ -16,18 +16,18 @@ jest.mock("@web3-onboard/core", () => {
 
 jest.mock("@web3-onboard/injected-wallets", () => {
   return () => {
-    console.log("TODO: mock  injected-wallets");
+    console.log("mock  injected-wallets");
   };
 });
 
 jest.mock("@web3-onboard/walletconnect", () => {
   return () => {
-    console.log("TODO: mock walletconnect");
+    console.log("mock walletconnect");
   };
 });
 
 jest.mock("@web3-onboard/gnosis", () => {
   return () => {
-    console.log("TODO: mock @web3-onboard/gnosis");
+    console.log("mock @web3-onboard/gnosis");
   };
 });

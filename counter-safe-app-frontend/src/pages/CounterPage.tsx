@@ -29,7 +29,6 @@ const CounterPage = () => {
   const { wallet, isValidChain, userBalance, chain } = useWallet();
   const navigate = useNavigate();
 
-  // TODO: create a custom hook for this?
   useEffect(() => {
     if (!wallet) {
       navigate(CONNECT_WALLET_PATHNAME);
