@@ -26,7 +26,7 @@ import {
 import getNativeTokenAmount from "src/lib/getNativeTokenAmount";
 
 const CounterPage = () => {
-  const { wallet, isValidChain, userBalance, chain } = useWallet();
+  const { wallet, isValidChain } = useWallet();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,16 +40,6 @@ const CounterPage = () => {
       navigate(INVALID_CHAIN_PATHNAME);
     }
   }, [isValidChain, navigate]);
-
-  useEffect(() => {
-    const nativeTokenFunds = getNativeTokenAmount(userBalance);
-    const hasFunds = nativeTokenFunds && !!Number(nativeTokenFunds);
-    const redirectToFaucetPage = userBalance && !hasFunds;
-
-    if (redirectToFaucetPage) {
-      navigate(FAUCET_PATHNAME);
-    }
-  }, [chain, userBalance, navigate]);
 
   const {
     counterContractAddress,
