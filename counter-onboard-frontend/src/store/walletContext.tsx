@@ -20,13 +20,15 @@ import usePolling from "src/hooks/usePolling";
 const injected = injectedModule();
 const walletConnect = walletConnectModule();
 
+const wallets = [
+  injected,
+  walletConnect,
+  // TODO [W1.2]: uncomment the line below to enable Gnosis Safe Module in web3-onboard
+  // gnosisModule()
+];
+
 const onboard = Onboard({
-  wallets: [
-    injected,
-    walletConnect,
-    // TODO [W1.2]: uncomment the line below to enable Gnosis Module in web3-onboard
-    // gnosisModule(),
-  ],
+  wallets,
   chains,
   accountCenter: {
     desktop: {
@@ -135,7 +137,7 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
 
     // auto selecting the user wallet
     // see https://docs.blocknative.com/onboard/core#auto-selecting-a-wallet
-    getInitialWallet().finally(() => setIsWalletLoading(false));
+    getDefaultWallet().finally(() => setIsWalletLoading(false));
   }, []);
 
   const showConnectWalletModal = useCallback(async () => {
@@ -207,14 +209,14 @@ const WalletProvider = ({ children }: { children: JSX.Element }) => {
   );
 };
 
-export { useWallet, WalletProvider };
+export { useWallet, WalletProvider, wallets };
 
 const LAST_USED_USER_WALLET_KEY = "lastUsedWallet";
 
-const getInitialWallet = async (): Promise<WalletState | undefined> => {
+const getDefaultWallet = async (): Promise<WalletState | undefined> => {
   const lastUsedWallet = localStorage?.getItem(LAST_USED_USER_WALLET_KEY);
 
-  // TODO [W1.3]: Uncomment this 7 lines below to force Safe connection if you are in an iframe
+  // TODO [W1.3]: Uncomment this 7 lines below to disable the auto selection of the last used wallet if you are in an iframe
   // const isASafeApp = window.self !== window.top;
   // if (isASafeApp) {
   //   await onboard.connectWallet({

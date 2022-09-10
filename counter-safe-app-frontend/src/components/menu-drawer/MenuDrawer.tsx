@@ -117,7 +117,7 @@ const MenuDrawer = () => {
             </nav>
             <Divider />
 
-            {/* Workshop Steps */}
+            {/* Safe App sdk Workshop Steps */}
             <WorkshopSteps />
           </Box>
         </ClickAwayListener>
@@ -130,7 +130,7 @@ export default MenuDrawer;
 
 const StyledMenuDrawer = styled(Drawer)`
   .MuiDrawer-paper {
-    margin-top: 64px;
+    padding-top: 64px;
     width: 270px;
   }
 `;
