@@ -11,8 +11,8 @@
     "prestart:prod": "yarn build",
     "start:prod": "node build/index.js | pino-pretty",
     "start": "nodemon --exec ts-node index.ts | pino-pretty",
-    "test": "echo 'TODO: add tests'",
-    "test:coverage": "echo 'TODO: add tests'"
+    "test": "echo 'add tests'",
+    "test:coverage": "echo 'add tests'"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

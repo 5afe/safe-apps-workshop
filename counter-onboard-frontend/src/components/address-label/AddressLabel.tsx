@@ -16,8 +16,6 @@ type AddressLabelProps = {
   showCopyIntoClipboardButton?: boolean;
 };
 
-// TODO: Support chain short name
-
 const AddressLabel = ({
   address,
   ariaLabel,

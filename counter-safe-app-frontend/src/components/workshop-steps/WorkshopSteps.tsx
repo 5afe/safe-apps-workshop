@@ -61,7 +61,6 @@ const ManifestWorkshopStep = () => {
   const [manifest, setManifest] = useState<any>();
 
   useEffect(() => {
-    // TODO: ADD CORRECT BASE URL ?
     axios.get("http://localhost:3000/manifest.json").then((req) => {
       setManifest(req.data);
     });
@@ -77,8 +76,7 @@ const ManifestWorkshopStep = () => {
       isLoading={isLoading}
       isCompleted={isManifestUpdated}
       stepText="Update Manifest"
-      // TODO: ADD CORRECT README LINK
-      stepLink="https://www.github.com/5afe/safe-apps-workshop"
+      stepLink="https://github.com/5afe/safe-apps-workshop/blob/master/counter-safe-app-frontend/README.md#checking-walletcontext-in-detail"
     />
   );
 };
@@ -91,8 +89,7 @@ const AddAsCustomSafeAppStep = () => {
       isLoading={false}
       isCompleted={isCustomSafeApp}
       stepText="Add Custom Safe App"
-      // TODO: ADD CORRECT README LINK
-      stepLink="https://www.github.com/5afe/safe-apps-workshop"
+      stepLink="https://github.com/5afe/safe-apps-workshop/blob/master/counter-safe-app-frontend/README.md#checking-walletcontext-in-detail"
     />
   );
 };
@@ -107,8 +104,7 @@ const GetSafeInfoStep = () => {
       isLoading={false}
       isCompleted={isCompleted}
       stepText="Get Safe App Info"
-      // TODO: ADD CORRECT README LINK
-      stepLink="https://www.github.com/5afe/safe-apps-workshop"
+      stepLink="https://github.com/5afe/safe-apps-workshop/blob/master/counter-safe-app-frontend/README.md#checking-walletcontext-in-detail"
     />
   );
 };
@@ -123,8 +119,7 @@ const GetChainInfoStep = () => {
       isLoading={false}
       isCompleted={isCompleted}
       stepText="Get Chain Info"
-      // TODO: ADD CORRECT README LINK
-      stepLink="https://www.github.com/5afe/safe-apps-workshop"
+      stepLink="https://github.com/5afe/safe-apps-workshop/blob/master/counter-safe-app-frontend/README.md#checking-walletcontext-in-detail"
     />
   );
 };
@@ -139,8 +134,7 @@ const GetSafeBalanceStep = () => {
       isLoading={false}
       isCompleted={isCompleted}
       stepText="Get Safe Assets"
-      // TODO: ADD CORRECT README LINK
-      stepLink="https://www.github.com/5afe/safe-apps-workshop"
+      stepLink="https://github.com/5afe/safe-apps-workshop/blob/master/counter-safe-app-frontend/README.md#checking-walletcontext-in-detail"
     />
   );
 };
@@ -155,8 +149,7 @@ const GetSafeProviderStep = () => {
       isLoading={false}
       isCompleted={isCompleted}
       stepText="Set Web3 Provider"
-      // TODO: ADD CORRECT README LINK
-      stepLink="https://www.github.com/5afe/safe-apps-workshop"
+      stepLink="https://github.com/5afe/safe-apps-workshop/blob/master/counter-safe-app-frontend/README.md#checking-walletcontext-in-detail"
     />
   );
 };

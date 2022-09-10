@@ -59,7 +59,6 @@ const ManifestWorkshopStep = () => {
   const [manifest, setManifest] = useState<any>();
 
   useEffect(() => {
-    // TODO: ADD CORRECT BASE URL ?
     axios.get("http://localhost:3000/manifest.json").then((req) => {
       setManifest(req.data);
     });
@@ -75,8 +74,7 @@ const ManifestWorkshopStep = () => {
       isLoading={isLoading}
       isCompleted={isManifestUpdated}
       stepText="Update Manifest"
-      // TODO: ADD CORRECT README LINK
-      stepLink="https://www.github.com/5afe/safe-apps-workshop"
+      stepLink="https://github.com/5afe/safe-apps-workshop/tree/master/counter-onboard-frontend#checking-walletcontext-in-detail"
     />
   );
 };
@@ -89,8 +87,7 @@ const AddAsCustomSafeAppStep = () => {
       isLoading={false}
       isCompleted={isCustomSafeApp}
       stepText="Add Custom Safe App"
-      // TODO: ADD CORRECT README LINK
-      stepLink="https://www.github.com/5afe/safe-apps-workshop"
+      stepLink="https://github.com/5afe/safe-apps-workshop/tree/master/counter-onboard-frontend#checking-walletcontext-in-detail"
     />
   );
 };
@@ -103,8 +100,7 @@ const InjectOnboardSafeModuleStep = () => {
       isLoading={false}
       isCompleted={isCompleted}
       stepText="Import Safe Module"
-      // TODO: ADD CORRECT README LINK
-      stepLink="https://www.github.com/5afe/safe-apps-workshop"
+      stepLink="https://github.com/5afe/safe-apps-workshop/tree/master/counter-onboard-frontend#checking-walletcontext-in-detail"
     />
   );
 };
@@ -119,8 +115,7 @@ const DisableAutoWalletSelectionStep = () => {
       isLoading={false}
       isCompleted={isSafeAppWallet}
       stepText="Auto connect Safe Wallet"
-      // TODO: ADD CORRECT README LINK
-      stepLink="https://www.github.com/5afe/safe-apps-workshop"
+      stepLink="https://github.com/5afe/safe-apps-workshop/tree/master/counter-onboard-frontend#checking-walletcontext-in-detail"
     />
   );
 };

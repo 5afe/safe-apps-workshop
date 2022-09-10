@@ -18,8 +18,6 @@ type DataTableProps = {
 };
 
 const DataTable = ({ rows, columns, ariaLabel }: DataTableProps) => {
-  // TODO: ADD PAGINATION
-
   const hasRows = rows.length > 0;
 
   return (

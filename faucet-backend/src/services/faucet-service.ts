@@ -11,8 +11,6 @@ type faucetReturnType = Promise<{
   transaction: string;
 }>;
 
-// TODO: add a logger lib (pine)
-
 async function claimFunds(faucetRequest: faucetParamsType): faucetReturnType {
   if (!isAddress(faucetRequest.address) || !faucetRequest.address) {
     throw new Error("Validation Error: Address not valid");
