@@ -1,4 +1,4 @@
-# Safe App using Web3 onboard
+# Safe App using Safe Apps SDK
 
 In this example we will guide you throught the important points to create a Safe App specifically for the Safe using the [Safe Apps SDK](https://github.com/safe-global/safe-apps-sdk)
 

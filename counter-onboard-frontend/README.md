@@ -40,4 +40,3 @@ You can search for `TODO [Wx.x]` to quick find specific points explanied below:
  - TODO [W1.4] - Define `isSafeAppWallet` property
     - This property will be useful across our Dapp to detect whenever the connected wallet is a Safe to customize some behaviors.
     - An example for this would be to send `MultiSend` transactions to save users some gas when we need to execute more than one transaction sequentialy.
- - TODO [W1.5] - Enable wallet icon
